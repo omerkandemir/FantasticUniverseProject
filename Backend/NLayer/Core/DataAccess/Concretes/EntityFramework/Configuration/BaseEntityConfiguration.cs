@@ -16,6 +16,7 @@ namespace NLayerCore.DataAccess.Concretes.EntityFramework.Configuration
         {
             builder.Property<int>("Id").HasColumnName("Id");
             builder.Property(x => x.CreatedDate).HasColumnName("CreatedDate").ValueGeneratedOnAdd();
+            builder.Property(x => x.IsActive).HasColumnName("IsActive").ValueGeneratedOnUpdate();
             builder.Property(x => x.UpdatedDate).HasColumnName("UpdatedDate");
             builder.Property(x => x.DeletedDate).HasColumnName("DeletedDate");
         }

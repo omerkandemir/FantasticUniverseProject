@@ -12,6 +12,8 @@ namespace NLayerBusiness.Abstracts
     public interface IAbilityService
     {
         CreatedAbilityResponse Add(CreateAbilityRequest ability);
+        UpdatedAbilityResponse Update(UpdateAbilityRequest ability);
         List<GetAllAbilityResponse> GetAll();
+        GetAllAbilityResponse Get(int id);
     }
 }

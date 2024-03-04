@@ -23,9 +23,20 @@ namespace WebApi.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult GetAll()
         {
             return Ok(_abilityService.GetAll());
         }
+        //[HttpGet]
+        //public IActionResult Get(int Id = 1)
+        //{
+        //    return Ok(_abilityService.Get(Id));
+        //}
+        //[HttpPost]
+        //public IActionResult Update(UpdateAbilityRequest updateAbilityRequest)
+        //{
+        //    UpdatedAbilityResponse updatedAbilityResponse = _abilityService.Update(updateAbilityRequest);
+        //    return Ok(updatedAbilityResponse);
+        //}
     }
 }

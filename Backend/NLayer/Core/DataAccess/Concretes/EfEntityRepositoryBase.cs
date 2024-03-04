@@ -58,6 +58,7 @@ namespace NLAyerCore.DataAccess.Concretes.EntityFramework
                 context.SaveChanges();
             }
         }
+        
 
         public TEntity Get(Expression<Func<TEntity, bool>> filter)
         {

@@ -20,6 +20,21 @@ namespace NLayerBusiness.Concretes
         {
             _abilityDal = abilityDal;
         }
+        public UpdatedAbilityResponse Update(UpdateAbilityRequest updateAbilityRequest)
+        {
+            Ability ability = new();
+            ability.Id = updateAbilityRequest.Id;
+            ability.Name = updateAbilityRequest.Name;
+            //ability.UpdatedDate = DateTime.Now;
+
+            _abilityDal.Update(ability);
+
+            UpdatedAbilityResponse updatedAbilityResponse = new UpdatedAbilityResponse();
+            updatedAbilityResponse.Id = ability.Id;
+            updatedAbilityResponse.Name = ability.Name;
+            updatedAbilityResponse.UpdatedDate = (DateTime)ability.UpdatedDate;
+            return updatedAbilityResponse;
+        }
 
         public CreatedAbilityResponse Add(CreateAbilityRequest createAbilityRequest)
         {
@@ -29,7 +44,7 @@ namespace NLayerBusiness.Concretes
             //Mapping -->automapper
             Ability ability = new();
             ability.Name = createAbilityRequest.Name;
-            ability.CreatedDate = DateTime.Now;
+            //ability.CreatedDate = DateTime.Now;
 
 
             _abilityDal.Add(ability);
@@ -40,6 +55,16 @@ namespace NLayerBusiness.Concretes
             createAbilityResponse.CreatedDate = ability.CreatedDate;
 
             return createAbilityResponse;
+        }
+
+        public GetAllAbilityResponse Get(int id)
+        {
+            GetAllAbilityResponse getAllAbilityResponse = new GetAllAbilityResponse();
+            Ability ability = _abilityDal.Get(x => x.Id == id);
+            getAllAbilityResponse.Id = ability.Id;
+            getAllAbilityResponse.Name = ability.Name;
+            //getAllAbilityResponse.CreatedDate = ability.CreatedDate;
+            return getAllAbilityResponse;
         }
 
         public List<GetAllAbilityResponse> GetAll()
@@ -53,7 +78,7 @@ namespace NLayerBusiness.Concretes
                 GetAllAbilityResponse getAllAbilityResponse = new GetAllAbilityResponse();
                 getAllAbilityResponse.Id = ability.Id;
                 getAllAbilityResponse.Name = ability.Name;
-                getAllAbilityResponse.CreatedDate = ability.CreatedDate;
+                //getAllAbilityResponse.CreatedDate = ability.CreatedDate;
 
                 getAllAbilityResponses.Add(getAllAbilityResponse);
             }
