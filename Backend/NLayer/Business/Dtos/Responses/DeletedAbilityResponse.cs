@@ -6,11 +6,8 @@ using System.Threading.Tasks;
 
 namespace NLayerBusiness.Dtos.Responses
 {
-    public class CreatedAbilityResponse
+    public class DeletedAbilityResponse
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public bool IsActive { get; set; }
     }
 }

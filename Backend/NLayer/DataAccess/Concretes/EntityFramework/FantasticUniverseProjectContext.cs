@@ -27,52 +27,9 @@ namespace NLayerDataAccess.Concretes.EntityFramework
         }
         public override int SaveChanges()
         {
-            OnBeforeSaving2();
+            OnBeforeSaving();
             return base.SaveChanges();
         }
-        protected virtual void OnBeforeSaving2()
-        {
-            this.ChangeTracker.DetectChanges();
-
-            var addedOrModifiedEntities = this.ChangeTracker.Entries()
-                .Where(entry => entry.Entity is IEntity)
-                .Select(entry => entry.Entity)
-                .ToArray();
-
-            foreach (var entity in addedOrModifiedEntities)
-            {
-                if (entity is IEntity)
-                {
-                    var track = entity as IEntity;
-
-                    // Eğer varlık yeni ekleniyorsa ve CreatedDate boşsa, şu anki zamanı atayın
-                    if (this.Entry(entity).State == EntityState.Added && track.CreatedDate == default(DateTime))
-                    {
-                        track.CreatedDate = DateTime.Now;
-                        track.IsActive = true;
-                    }
-
-                    // Güncellenen varlıkların CreatedDate özelliğini değiştirmeyin
-                    if (this.Entry(entity).State == EntityState.Modified)
-                    {
-                        // Değişiklikleri alın
-                        var currentValues = this.Entry(entity).CurrentValues;
-                        var originalValues = this.Entry(entity).OriginalValues;
-
-                        // Eğer CreatedDate değeri değiştiyse, orijinal değerini geri al
-                        if (currentValues[nameof(IEntity.CreatedDate)].Equals(originalValues[nameof(IEntity.CreatedDate)]))
-                        {
-                            this.Entry(entity).Property(nameof(IEntity.CreatedDate)).IsModified = false;
-                        }
-                        // UpdatedDate'i güncelleyin
-                        track.UpdatedDate = DateTime.Now;
-                        track.IsActive = true;
-                    }
-                }
-            }
-        }
-
-
         protected virtual void OnBeforeSaving()
         {
             this.ChangeTracker.DetectChanges();
@@ -86,6 +43,7 @@ namespace NLayerDataAccess.Concretes.EntityFramework
                 {
                     var track = entity as IEntity;
                     track.CreatedDate = DateTime.Now;
+                    track.IsActive = true;
                     //track.CreatedBy = UserId;
                 }
             }
@@ -99,7 +57,9 @@ namespace NLayerDataAccess.Concretes.EntityFramework
                 if (entity is IEntity)
                 {
                     var track = entity as IEntity;
+                    this.Entry(entity).Property(nameof(IEntity.CreatedDate)).IsModified = false;
                     track.UpdatedDate = DateTime.Now;
+                    track.IsActive = true;
                     //track.ModifiedBy = UserId;
                 }
             }

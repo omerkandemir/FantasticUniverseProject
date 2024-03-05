@@ -13,6 +13,7 @@ namespace NLayerBusiness.Abstracts
     {
         CreatedAbilityResponse Add(CreateAbilityRequest ability);
         UpdatedAbilityResponse Update(UpdateAbilityRequest ability);
+        DeletedAbilityResponse Delete(DeleteAbilityRequest Ability);
         List<GetAllAbilityResponse> GetAll();
         GetAllAbilityResponse Get(int id);
     }

@@ -25,7 +25,6 @@ namespace NLayerBusiness.Concretes
             Ability ability = new();
             ability.Id = updateAbilityRequest.Id;
             ability.Name = updateAbilityRequest.Name;
-            //ability.UpdatedDate = DateTime.Now;
 
             _abilityDal.Update(ability);
 
@@ -35,7 +34,14 @@ namespace NLayerBusiness.Concretes
             updatedAbilityResponse.UpdatedDate = (DateTime)ability.UpdatedDate;
             return updatedAbilityResponse;
         }
-
+        public DeletedAbilityResponse Delete(DeleteAbilityRequest deleteAbilityRequest)
+        {
+            Ability ability = new() { Id = deleteAbilityRequest.Id };
+            _abilityDal.Delete(ability);
+            DeletedAbilityResponse deletedAbilityResponse = new DeletedAbilityResponse();
+            deleteAbilityRequest.Id = ability.Id;
+            return deletedAbilityResponse;
+        }
         public CreatedAbilityResponse Add(CreateAbilityRequest createAbilityRequest)
         {
             // business Rules
@@ -46,13 +52,14 @@ namespace NLayerBusiness.Concretes
             ability.Name = createAbilityRequest.Name;
             //ability.CreatedDate = DateTime.Now;
 
-
+            ValidationTool.Validate(new AbilityValidator(), ability);
             _abilityDal.Add(ability);
 
             CreatedAbilityResponse createAbilityResponse = new CreatedAbilityResponse();
+            createAbilityResponse.Id = ability.Id;
             createAbilityResponse.Name = ability.Name;
-            createAbilityResponse.Id = 4;
             createAbilityResponse.CreatedDate = ability.CreatedDate;
+            createAbilityResponse.IsActive = ability.IsActive;
 
             return createAbilityResponse;
         }
@@ -63,7 +70,7 @@ namespace NLayerBusiness.Concretes
             Ability ability = _abilityDal.Get(x => x.Id == id);
             getAllAbilityResponse.Id = ability.Id;
             getAllAbilityResponse.Name = ability.Name;
-            //getAllAbilityResponse.CreatedDate = ability.CreatedDate;
+            getAllAbilityResponse.CreatedDate = ability.CreatedDate;
             return getAllAbilityResponse;
         }
 
@@ -78,23 +85,11 @@ namespace NLayerBusiness.Concretes
                 GetAllAbilityResponse getAllAbilityResponse = new GetAllAbilityResponse();
                 getAllAbilityResponse.Id = ability.Id;
                 getAllAbilityResponse.Name = ability.Name;
-                //getAllAbilityResponse.CreatedDate = ability.CreatedDate;
+                getAllAbilityResponse.CreatedDate = ability.CreatedDate;
 
                 getAllAbilityResponses.Add(getAllAbilityResponse);
             }
-
             return getAllAbilityResponses;
         }
-
-        //public void Add(Ability ability)
-        //{
-        //    ValidationTool.Validate(new AbilityValidator(), ability);
-        //    _abilityDal.Add(ability);
-        //}
-
-        //public List<Ability> GetAll()
-        //{
-        //    return _abilityDal.GetAll();
-        //}
     }
 }

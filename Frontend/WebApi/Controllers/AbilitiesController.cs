@@ -15,11 +15,23 @@ namespace WebApi.Controllers
         {
             _abilityService = abilityService;
         }
+        //[HttpPost]
+        //public IActionResult Add(CreateAbilityRequest createdAbilityRequest)
+        //{
+        //    CreatedAbilityResponse createdAbilityResponse = _abilityService.Add(createdAbilityRequest);
+        //    return Ok(createdAbilityResponse);
+        //}
         [HttpPost]
-        public IActionResult Add(CreateAbilityRequest createdAbilityRequest)
+        public IActionResult Update(UpdateAbilityRequest updatedAbilityRequest)
         {
-            CreatedAbilityResponse createdAbilityResponse = _abilityService.Add(createdAbilityRequest);
-            return Ok(createdAbilityResponse);
+            UpdatedAbilityResponse updatedAbilityResponse = _abilityService.Update(updatedAbilityRequest);
+            return Ok(updatedAbilityResponse);
+        }
+        [HttpDelete]
+        public IActionResult Delete(DeleteAbilityRequest deleteAbilityRequest)
+        {
+            DeletedAbilityResponse deletedAbilityResponse = _abilityService.Delete(deleteAbilityRequest);
+            return Ok(deletedAbilityResponse);
         }
 
         [HttpGet]
