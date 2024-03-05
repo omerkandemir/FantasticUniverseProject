@@ -1,13 +1,12 @@
 ﻿using NLayer.Dto.Requests.Ability;
 using NLayer.Dto.Responses.Ability;
-using NLayerEntities.Concretes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NLayerBusiness.Abstracts
+namespace NLayer.Business.Abstracts
 {
     public interface IAbilityService
     {

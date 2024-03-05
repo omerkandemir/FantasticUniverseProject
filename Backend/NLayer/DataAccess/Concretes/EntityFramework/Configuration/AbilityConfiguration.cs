@@ -1,14 +1,14 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using NLayerCore.DataAccess.Concretes.EntityFramework.Configuration;
-using NLayerEntities.Concretes;
+using NLayer.Core.DataAccess.Concretes.EntityFramework.Configuration;
+using NLayer.Entities.Concretes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NLayerDataAccess.Concretes.EntityFramework.Configuration
+namespace NLayer.DataAccess.Concretes.EntityFramework.Configuration
 {
     public class AbilityConfiguration : BaseEntityConfiguration<Ability>
     {

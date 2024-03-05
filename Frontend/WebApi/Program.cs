@@ -1,8 +1,8 @@
-using NLayerBusiness.Abstracts;
-using NLayerBusiness.Concretes;
-using NLayerBusiness.Concretes.DependencyResolvers.ServiceCollections;
-using NLayerDataAccess.Abstracts;
-using NLayerDataAccess.Concretes.EntityFramework;
+using NLayer.Business.Abstracts;
+using NLayer.Business.Concretes;
+using NLayer.Business.Concretes.DependencyResolvers.ServiceCollections;
+using NLayer.DataAccess.Abstracts;
+using NLayer.DataAccess.Concretes.EntityFramework;
 
 var builder = WebApplication.CreateBuilder(args);
 

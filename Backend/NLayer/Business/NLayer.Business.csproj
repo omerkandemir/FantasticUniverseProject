@@ -7,7 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Entities\NLayerEntities.csproj" />
+    <ProjectReference Include="..\..\..\NLayer.Dto\NLayer.Dto.csproj" />
+    <ProjectReference Include="..\DataAccess\NLayer.DataAccess.csproj" />
   </ItemGroup>
 
 </Project>

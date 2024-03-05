@@ -5,7 +5,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NLayerCore.Entities.Abstract
+namespace NLayer.Core.Entities.Abstract
 {
     public interface IEntity
     {

@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\NLayer.Dto\NLayer.Dto.csproj" />
-    <ProjectReference Include="..\DataAccess\NLayerDataAccess.csproj" />
+    <Folder Include="Abstracts\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\NLayer.Core.csproj" />
   </ItemGroup>
 
 </Project>

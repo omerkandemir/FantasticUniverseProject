@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NLayer.Entities.Concretes
 {
-    public class Ability : BaseEntity<int>
+    public class Species : BaseEntity<int>
     {
         public string Name { get; set; }
         public ICollection<Character> Characters { get; set; }

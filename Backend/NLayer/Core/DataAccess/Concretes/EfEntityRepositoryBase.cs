@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NLayerCore.DataAccess.Abstracts;
-using NLayerCore.Entities.Abstract;
+using NLayer.Core.DataAccess.Abstracts;
+using NLayer.Core.Entities.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NLAyerCore.DataAccess.Concretes.EntityFramework
+namespace NLAyer.Core.DataAccess.Concretes.EntityFramework
 {
     public class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEntity>
         where TEntity : class, IEntity, new()

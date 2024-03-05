@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NLayerCore.Entities.Abstract;
-using NLayerCore.Entities.Concrete;
-using NLayerDataAccess.Concretes.EntityFramework.Configuration;
-using NLayerEntities.Concretes;
+using NLayer.Core.Entities.Abstract;
+using NLayer.Core.Entities.Concrete;
+using NLayer.DataAccess.Concretes.EntityFramework.Configuration;
+using NLayer.Entities.Concretes;
 
-namespace NLayerDataAccess.Concretes.EntityFramework
+namespace NLayer.DataAccess.Concretes.EntityFramework
 {
     public class FantasticUniverseProjectContext : DbContext
     {

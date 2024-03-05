@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NLayerCore.Business.Utilities
+namespace NLayer.Core.Business.Utilities
 {
     public static class ValidationTool
     {

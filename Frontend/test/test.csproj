@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Backend\NLayer\Business\NLayerBusiness.csproj" />
+    <ProjectReference Include="..\..\Backend\NLayer\Business\NLayer.Business.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,12 +1,12 @@
 ﻿using FluentValidation;
-using NLayerEntities.Concretes;
+using NLayer.Entities.Concretes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NLayerBusiness.Concretes.ValidationRules.FluentValidation
+namespace NLayer.Business.Concretes.ValidationRules.FluentValidation
 {
     public class AbilityValidator : AbstractValidator<Ability>
     {

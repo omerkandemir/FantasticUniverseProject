@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace NLayer.Entities.Concretes
 {
-    public class Ability : BaseEntity<int>
+    public class TimeLine : BaseEntity<int>
     {
-        public string Name { get; set; }
-        public ICollection<Character> Characters { get; set; }
+        public int StartingAdventureId { get; set; }
+        public Adventure Adventure { get; set; }
+        public ICollection<Universe> Universes { get; set; }
     }
 }

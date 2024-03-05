@@ -1,6 +1,6 @@
-using NLayerBusiness.Abstracts;
-using NLayerBusiness.DependencyResolvers.Ninject;
-using NLayerEntities.Concretes;
+using NLayer.Business.Abstracts;
+using NLayer.Business.DependencyResolvers.Ninject;
+using NLayer.Entities.Concretes;
 
 namespace test
 {

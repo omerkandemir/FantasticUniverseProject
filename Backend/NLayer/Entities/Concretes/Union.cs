@@ -7,9 +7,12 @@ using System.Threading.Tasks;
 
 namespace NLayer.Entities.Concretes
 {
-    public class Ability : BaseEntity<int>
+    public class Union : BaseEntity<int>
     {
         public string Name { get; set; }
-        public ICollection<Character> Characters { get; set; }
+        public string Target { get; set; }
+        public int? UnionLeaderId { get; set; }
+        public int UniverseId { get; set; }
+        public Universe Universe { get; set; }
     }
 }

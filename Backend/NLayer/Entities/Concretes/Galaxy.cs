@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 
 namespace NLayer.Entities.Concretes
 {
-    public class Ability : BaseEntity<int>
+    public class Galaxy : BaseEntity<int>
     {
+        public int UniverseId { get; set; }
+        public Universe Universe { get; set; }
         public string Name { get; set; }
-        public ICollection<Character> Characters { get; set; }
+        public ICollection<Star> Stars { get; set; }
     }
 }

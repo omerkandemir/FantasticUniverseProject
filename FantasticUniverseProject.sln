@@ -7,13 +7,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{C59B
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NLayer", "NLayer", "{EFD4CC4C-50D7-4D2F-9C7B-1B10C65BB4FE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLayerEntities", "Backend\NLayer\Entities\NLayerEntities.csproj", "{C5B59BAE-0190-4A92-B582-7A50B187B701}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLayer.Entities", "Backend\NLayer\Entities\NLayer.Entities.csproj", "{C5B59BAE-0190-4A92-B582-7A50B187B701}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLayerDataAccess", "Backend\NLayer\DataAccess\NLayerDataAccess.csproj", "{5225BE26-E0BD-415E-817C-D756F8C7C804}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLayer.DataAccess", "Backend\NLayer\DataAccess\NLayer.DataAccess.csproj", "{5225BE26-E0BD-415E-817C-D756F8C7C804}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLayerCore", "Backend\NLayer\Core\NLayerCore.csproj", "{01C53026-4727-46F7-92B5-FC0CFBC8EE6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLayer.Core", "Backend\NLayer\Core\NLayer.Core.csproj", "{01C53026-4727-46F7-92B5-FC0CFBC8EE6B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLayerBusiness", "Backend\NLayer\Business\NLayerBusiness.csproj", "{8DBF619E-D4DA-47B6-9059-76B4AD72E60F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLayer.Business", "Backend\NLayer\Business\NLayer.Business.csproj", "{8DBF619E-D4DA-47B6-9059-76B4AD72E60F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{8281868E-585B-424A-A950-9D42F876A2AD}"
 EndProject
@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "Frontend\WebApi\W
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "test", "Frontend\test\test.csproj", "{0A2F0CFE-0F8C-4C13-92DA-0DEC13A8EF68}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLayer.Dto", "NLayer.Dto\NLayer.Dto.csproj", "{978F9839-E1AE-4442-B988-1B04DD4BF0C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLayer.Dto", "NLayer.Dto\NLayer.Dto.csproj", "{978F9839-E1AE-4442-B988-1B04DD4BF0C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,17 +1,17 @@
 ﻿using NLayer.Dto.Requests.Ability;
 using NLayer.Dto.Responses.Ability;
-using NLayerBusiness.Abstracts;
-using NLayerBusiness.Concretes.ValidationRules.FluentValidation;
-using NLayerCore.Business.Utilities;
-using NLayerDataAccess.Abstracts;
-using NLayerEntities.Concretes;
+using NLayer.Business.Abstracts;
+using NLayer.Business.Concretes.ValidationRules.FluentValidation;
+using NLayer.Core.Business.Utilities;
+using NLayer.DataAccess.Abstracts;
+using NLayer.Entities.Concretes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NLayerBusiness.Concretes
+namespace NLayer.Business.Concretes
 {
     public class AbilityManager : IAbilityService
     {

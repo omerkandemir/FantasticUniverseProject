@@ -1,12 +1,12 @@
 ﻿using Ninject;
-using NLayerBusiness.Concretes.DependencyResolvers.Ninject;
+using NLayer.Business.Concretes.DependencyResolvers.Ninject;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NLayerBusiness.DependencyResolvers.Ninject
+namespace NLayer.Business.DependencyResolvers.Ninject
 {
     public class InstanceFactory
     {
