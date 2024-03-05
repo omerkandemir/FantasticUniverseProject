@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NLayerBusiness.Dtos.Requests
+namespace NLayer.Dto.Requests.Ability
 {
     public class CreateAbilityRequest
     {

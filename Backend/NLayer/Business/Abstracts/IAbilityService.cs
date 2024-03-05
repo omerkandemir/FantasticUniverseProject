@@ -1,5 +1,5 @@
-﻿using NLayerBusiness.Dtos.Requests;
-using NLayerBusiness.Dtos.Responses;
+﻿using NLayer.Dto.Requests.Ability;
+using NLayer.Dto.Responses.Ability;
 using NLayerEntities.Concretes;
 using System;
 using System.Collections.Generic;

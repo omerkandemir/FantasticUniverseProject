@@ -1,7 +1,7 @@
-﻿using NLayerBusiness.Abstracts;
+﻿using NLayer.Dto.Requests.Ability;
+using NLayer.Dto.Responses.Ability;
+using NLayerBusiness.Abstracts;
 using NLayerBusiness.Concretes.ValidationRules.FluentValidation;
-using NLayerBusiness.Dtos.Requests;
-using NLayerBusiness.Dtos.Responses;
 using NLayerCore.Business.Utilities;
 using NLayerDataAccess.Abstracts;
 using NLayerEntities.Concretes;

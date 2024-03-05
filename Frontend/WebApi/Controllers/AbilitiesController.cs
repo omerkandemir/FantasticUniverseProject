@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NLayer.Dto.Requests.Ability;
+using NLayer.Dto.Responses.Ability;
 using NLayerBusiness.Abstracts;
-using NLayerBusiness.Dtos.Requests;
-using NLayerBusiness.Dtos.Responses;
 
 namespace WebApi.Controllers
 {

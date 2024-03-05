@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NLayerBusiness.Dtos.Requests
+namespace NLayer.Dto.Responses.Ability
 {
-    public class DeleteAbilityRequest
+    public class GetAllAbilityResponse
     {
         public int Id { get; set; }
+        public string Name { get; set; }
+        public DateTime CreatedDate { get; set; }
     }
 }

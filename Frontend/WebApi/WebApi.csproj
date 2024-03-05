@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Backend\NLayer\Business\NLayerBusiness.csproj" />
+    <ProjectReference Include="..\..\NLayer.Dto\NLayer.Dto.csproj" />
   </ItemGroup>
 
 </Project>
