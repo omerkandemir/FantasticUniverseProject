@@ -24,6 +24,15 @@ namespace NLayer.DataAccess.Concretes.EntityFramework
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new AbilityConfiguration());
+            modelBuilder.ApplyConfiguration(new AdventureConfiguration());
+            modelBuilder.ApplyConfiguration(new CharacterConfiguration());
+            modelBuilder.ApplyConfiguration(new GalaxyConfiguration());
+            modelBuilder.ApplyConfiguration(new PlanetConfiguration());
+            modelBuilder.ApplyConfiguration(new SpeciesConfiguration());
+            modelBuilder.ApplyConfiguration(new StarConfiguration());
+            modelBuilder.ApplyConfiguration(new TimeLineConfiguration());
+            modelBuilder.ApplyConfiguration(new UnionConfiguration());
+            modelBuilder.ApplyConfiguration(new UniverseConfiguration());
         }
         public override int SaveChanges()
         {

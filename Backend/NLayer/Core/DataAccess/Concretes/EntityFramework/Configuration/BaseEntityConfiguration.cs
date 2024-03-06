@@ -15,9 +15,10 @@ namespace NLayer.Core.DataAccess.Concretes.EntityFramework.Configuration
         public virtual void Configure(EntityTypeBuilder<T> builder)
         {
             builder.Property<int>("Id").HasColumnName("Id");
+            builder.HasKey("Id");
             builder.Property(x => x.CreatedDate).HasColumnName("CreatedDate").ValueGeneratedOnAdd();
             builder.Property(x => x.IsActive).HasColumnName("IsActive").ValueGeneratedOnUpdate();
-            builder.Property(x => x.UpdatedDate).HasColumnName("UpdatedDate");
+            builder.Property(x => x.UpdatedDate).HasColumnName("UpdatedDate").ValueGeneratedOnUpdate(); ;
             builder.Property(x => x.DeletedDate).HasColumnName("DeletedDate");
         }
     }

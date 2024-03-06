@@ -14,7 +14,6 @@ namespace NLayer.Entities.Concretes
         public int? SpeciesId { get; set; }
         public Species Species { get; set; }
         public string Name { get; set; }
-        public int Age { get; set; }
         public DateTime BirthDate { get; set; }
         public DateTime? DeathDate { get; set; }
         public int UnionId { get; set; }
@@ -22,5 +21,6 @@ namespace NLayer.Entities.Concretes
         public int? MasterCharacterId { get; set; }
         public int? ApprenticeId { get; set; }
         public ICollection<Adventure> Adventures { get; set; }
+        public ICollection<Union> Unions { get; set; }
     }
 }
