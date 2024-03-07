@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Backend\NLayer\Core\NLayer.Core.csproj" />
+  </ItemGroup>
+
 </Project>
