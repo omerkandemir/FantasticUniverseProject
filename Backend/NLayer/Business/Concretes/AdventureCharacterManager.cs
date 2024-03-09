@@ -1,9 +1,6 @@
 ﻿using NLayer.Business.Abstracts;
 using NLayer.DataAccess.Abstracts;
-using NLayer.DataAccess.Concretes.EntityFramework;
-using NLayer.Dto.Requests.Ability;
 using NLayer.Dto.Requests.AdventureCharacter;
-using NLayer.Dto.Responses.Ability;
 using NLayer.Dto.Responses.AdventureCharacter;
 using NLayer.Entities.Concretes;
 

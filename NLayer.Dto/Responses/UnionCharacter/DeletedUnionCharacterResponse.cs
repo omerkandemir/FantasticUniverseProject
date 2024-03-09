@@ -1,14 +1,8 @@
 ﻿using NLayer.Core.Dto.Abstracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace NLayer.Dto.Responses.UnionCharacter
+namespace NLayer.Dto.Responses.UnionCharacter;
+
+public class DeletedUnionCharacterResponse : IDeletedResponse
 {
-    public class DeletedUnionCharacterResponse : IDeletedResponse
-    {
-        public int Id { get; set; }
-    }
+    public int Id { get; set; }
 }

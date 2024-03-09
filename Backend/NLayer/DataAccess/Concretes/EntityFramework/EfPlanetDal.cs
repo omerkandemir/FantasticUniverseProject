@@ -2,10 +2,9 @@
 using NLayer.Entities.Concretes;
 using NLAyer.Core.DataAccess.Concretes.EntityFramework;
 
-namespace NLayer.DataAccess.Concretes.EntityFramework
-{
-    public class EfPlanetDal : EfEntityRepositoryBase<Planet, FantasticUniverseProjectContext>, IPlanetDal
-    {
+namespace NLayer.DataAccess.Concretes.EntityFramework;
 
-    }
+public class EfPlanetDal : EfEntityRepositoryBase<Planet, FantasticUniverseProjectContext>, IPlanetDal
+{
+
 }

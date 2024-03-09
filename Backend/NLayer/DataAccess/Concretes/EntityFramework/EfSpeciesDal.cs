@@ -2,10 +2,9 @@
 using NLayer.Entities.Concretes;
 using NLAyer.Core.DataAccess.Concretes.EntityFramework;
 
-namespace NLayer.DataAccess.Concretes.EntityFramework
-{
-    public class EfSpeciesDal : EfEntityRepositoryBase<Species, FantasticUniverseProjectContext>, ISpeciesDal
-    {
+namespace NLayer.DataAccess.Concretes.EntityFramework;
 
-    }
+public class EfSpeciesDal : EfEntityRepositoryBase<Species, FantasticUniverseProjectContext>, ISpeciesDal
+{
+
 }

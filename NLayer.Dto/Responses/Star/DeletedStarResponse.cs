@@ -1,14 +1,8 @@
 ﻿using NLayer.Core.Dto.Abstracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace NLayer.Dto.Responses.Star
+namespace NLayer.Dto.Responses.Star;
+
+public class DeletedStarResponse : IDeletedResponse
 {
-    public class DeletedStarResponse : IDeletedResponse
-    {
-        public int Id { get; set; }
-    }
+    public int Id { get; set; }
 }

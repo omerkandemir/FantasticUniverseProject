@@ -1,19 +1,13 @@
 ﻿using Ninject;
 using NLayer.Business.Concretes.DependencyResolvers.Ninject;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace NLayer.Business.DependencyResolvers.Ninject
+namespace NLayer.Business.DependencyResolvers.Ninject;
+
+public class InstanceFactory
 {
-    public class InstanceFactory
+    public static T GetInstance<T>()
     {
-        public static T GetInstance<T>()
-        {
-            var kernel = new StandardKernel(new BusinessModule());
-            return kernel.Get<T>();
-        }
+        var kernel = new StandardKernel(new BusinessModule());
+        return kernel.Get<T>();
     }
 }

@@ -2,10 +2,9 @@
 using NLayer.Entities.Concretes;
 using NLAyer.Core.DataAccess.Concretes.EntityFramework;
 
-namespace NLayer.DataAccess.Concretes.EntityFramework
-{
-    public class EfStarDal : EfEntityRepositoryBase<Star, FantasticUniverseProjectContext>, IStarDal
-    {
+namespace NLayer.DataAccess.Concretes.EntityFramework;
 
-    }
+public class EfStarDal : EfEntityRepositoryBase<Star, FantasticUniverseProjectContext>, IStarDal
+{
+
 }

@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace NLayer.Core.Dto.Abstracts;
 
-namespace NLayer.Core.Dto.Abstracts
+public interface IDeleteRequest
 {
-    public interface IDeleteRequest
-    {
-        public int Id { get; set; }
-    }
+    public int Id { get; set; }
 }

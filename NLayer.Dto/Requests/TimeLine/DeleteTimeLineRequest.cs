@@ -1,14 +1,8 @@
 ﻿using NLayer.Core.Dto.Abstracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace NLayer.Dto.Requests.TimeLine
+namespace NLayer.Dto.Requests.TimeLine;
+
+public class DeleteTimeLineRequest : IDeleteRequest
 {
-    public class DeleteTimeLineRequest : IDeleteRequest
-    {
-        public int Id { get; set; }
-    }
+    public int Id { get; set; }
 }
