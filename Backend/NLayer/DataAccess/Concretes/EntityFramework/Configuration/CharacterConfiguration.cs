@@ -16,7 +16,6 @@ namespace NLayer.DataAccess.Concretes.EntityFramework.Configuration
             builder.Property(x => x.Name).HasColumnName("Name");
             builder.Property(x => x.BirthDate).HasColumnName("BirthDate");
             builder.Property(x => x.DeathDate).HasColumnName("DeathDate");
-            builder.Property(x => x.UnionId).HasColumnName("UnionId");
             builder.Property(x => x.MasterCharacterId).HasColumnName("MasterCharacterId");
             builder.Property(x => x.ApprenticeId).HasColumnName("ApprenticeId");
             //One to many
@@ -28,6 +27,10 @@ namespace NLayer.DataAccess.Concretes.EntityFramework.Configuration
                 HasMany(x=>x.Adventures).
                 WithOne(x=>x.Character)
                 .HasForeignKey(x=>x.CharacterId);
+            builder.
+                HasMany(x => x.UnionCharacters).
+                WithOne(x => x.Character).
+                HasForeignKey(x => x.CharacterId);
         }
     }
 }

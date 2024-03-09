@@ -12,11 +12,9 @@ namespace NLayer.DataAccess.Concretes.EntityFramework.Configuration
             base.Configure(builder);
             builder.ToTable("TimeLines");
             builder.Property(x => x.StartingAdventureId).HasColumnName("StartingAdventureId");
+            builder.Property(x => x.UniverseId).HasColumnName("UniverseId");
             //One to many
-            builder.
-                HasMany(x => x.Universes).
-                WithOne(x => x.TimeLine).
-                HasForeignKey(x => x.TimeLineId);
+
         }
     }
 }

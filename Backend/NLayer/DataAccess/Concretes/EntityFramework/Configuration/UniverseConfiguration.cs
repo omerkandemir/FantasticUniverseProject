@@ -12,7 +12,6 @@ namespace NLayer.DataAccess.Concretes.EntityFramework.Configuration
             base.Configure(builder);
             builder.ToTable("Universes");
             builder.Property(x => x.Name).HasColumnName("Name");
-            builder.Property(x => x.TimeLineId).HasColumnName("TimeLineId");
             
             //One to many
             builder.
@@ -21,6 +20,10 @@ namespace NLayer.DataAccess.Concretes.EntityFramework.Configuration
                 HasForeignKey(x => x.UniverseId);
             builder.
                 HasMany(x => x.Galaxies).
+                WithOne(x => x.Universe).
+                HasForeignKey(x => x.UniverseId);
+            builder.
+                HasMany(x => x.TimeLines).
                 WithOne(x => x.Universe).
                 HasForeignKey(x => x.UniverseId);
         }

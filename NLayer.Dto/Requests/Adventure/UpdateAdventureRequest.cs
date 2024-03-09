@@ -7,10 +7,9 @@ using System.Threading.Tasks;
 
 namespace NLayer.Dto.Requests.Adventure
 {
-    public class IUpdateAdventureRequest : IUpdateRequest
+    public class UpdateAdventureRequest : IUpdateRequest
     {
         public int Id { get; set; }
-        public DateTime UpdatedDate { get; set; }
         public int CharacterId { get; set; }
         public int PlanetId { get; set; }
         public string AdventureName { get; set; }

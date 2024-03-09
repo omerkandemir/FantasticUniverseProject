@@ -10,7 +10,6 @@ namespace NLayer.Dto.Requests.Union
     public class UpdateUnionRequest : IUpdateRequest
     {
         public int Id { get; set; }
-        public DateTime UpdatedDate { get; set; }
         public string Name { get; set; }
         public string Target { get; set; }
         public int? UnionLeaderId { get; set; }

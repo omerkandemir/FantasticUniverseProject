@@ -16,7 +16,6 @@ namespace NLayer.Dto.Responses.Character
         public string Name { get; set; }
         public DateTime BirthDate { get; set; }
         public DateTime? DeathDate { get; set; }
-        public int UnionId { get; set; }
         public int? MasterCharacterId { get; set; }
         public int? ApprenticeId { get; set; }
     }

@@ -9,6 +9,5 @@ namespace NLayer.Core.Dto.Abstracts
     public interface IUpdateRequest
     {
         public int Id { get; set; }
-        public DateTime UpdatedDate { get; set; }
     }
 }

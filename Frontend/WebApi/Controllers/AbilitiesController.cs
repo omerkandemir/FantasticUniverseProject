@@ -15,40 +15,35 @@ namespace WebApi.Controllers
         {
             _abilityService = abilityService;
         }
-        //[HttpPost]
-        //public IActionResult Add(CreateAbilityRequest createdAbilityRequest)
-        //{
-        //    CreatedAbilityResponse createdAbilityResponse = _abilityService.Add(createdAbilityRequest);
-        //    return Ok(createdAbilityResponse);
-        //}
-        [HttpPost]
+        [HttpPost("Ekle")]
+        public IActionResult Add(CreateAbilityRequest createdAbilityRequest)
+        {
+            CreatedAbilityResponse createdAbilityResponse = _abilityService.Add(createdAbilityRequest);
+            return Ok(createdAbilityResponse);
+        }
+        [HttpPost("Güncelle")]
         public IActionResult Update(UpdateAbilityRequest updatedAbilityRequest)
         {
             UpdatedAbilityResponse updatedAbilityResponse = _abilityService.Update(updatedAbilityRequest);
             return Ok(updatedAbilityResponse);
         }
-        [HttpDelete]
+        [HttpDelete("Sil")]
         public IActionResult Delete(DeleteAbilityRequest deleteAbilityRequest)
         {
             DeletedAbilityResponse deletedAbilityResponse = _abilityService.Delete(deleteAbilityRequest);
             return Ok(deletedAbilityResponse);
         }
 
-        [HttpGet]
+        [HttpGet("Listele")]
         public IActionResult GetAll()
         {
             return Ok(_abilityService.GetAll());
         }
-        //[HttpGet]
-        //public IActionResult Get(int Id = 1)
-        //{
-        //    return Ok(_abilityService.Get(Id));
-        //}
-        //[HttpPost]
-        //public IActionResult Update(UpdateAbilityRequest updateAbilityRequest)
-        //{
-        //    UpdatedAbilityResponse updatedAbilityResponse = _abilityService.Update(updateAbilityRequest);
-        //    return Ok(updatedAbilityResponse);
-        //}
+        [HttpGet("Getir")]
+        public IActionResult Get(int Id = 1)
+        {
+            return Ok(_abilityService.Get(Id));
+        }
+
     }
 }

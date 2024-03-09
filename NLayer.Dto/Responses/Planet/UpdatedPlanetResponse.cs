@@ -10,7 +10,7 @@ namespace NLayer.Dto.Responses.Planet
     public class UpdatedPlanetResponse : IUpdatedResponse
     {
         public int Id { get; set; }
-        public DateTime UpdatedDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
         public int StarId { get; set; }
         public string Name { get; set; }
         public int PlanetAge { get; set; }

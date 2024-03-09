@@ -20,9 +20,9 @@ namespace NLayer.Core.Business.Abstract
         where TDeleteRequest : class, IDeleteRequest,new()
         where TGet : class, new()
     {
-        TCreateResponse Add(TCreateRequest ability);
-        TUpdateResponse Update(TUpdateRequest ability);
-        TDeleteReponse Delete(TDeleteRequest Ability);
+        TCreateResponse Add(TCreateRequest createRequest);
+        TUpdateResponse Update(TUpdateRequest updateRequest);
+        TDeleteReponse Delete(TDeleteRequest deleteRequest);
         List<TGet> GetAll();
         TGet Get(int id);
     }

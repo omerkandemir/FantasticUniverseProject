@@ -17,7 +17,7 @@ namespace NLayer.DataAccess.Concretes.EntityFramework.Configuration
             builder.Property(x => x.UniverseId).HasColumnName("UniverseId");
             //One to many
             builder.
-                HasMany(x => x.Characters).
+                HasMany(x => x.UnionCharacters).
                 WithOne(x => x.Union).
                 HasForeignKey(x => x.UnionId);
         }

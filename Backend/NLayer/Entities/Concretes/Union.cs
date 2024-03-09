@@ -16,5 +16,6 @@ namespace NLayer.Entities.Concretes
         public int UniverseId { get; set; }
         public Universe Universe { get; set; }
         public ICollection<Character> Characters { get; set; }
+        public ICollection<UnionCharacter> UnionCharacters { get; set; }
     }
 }

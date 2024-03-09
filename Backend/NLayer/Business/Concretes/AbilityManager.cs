@@ -10,15 +10,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace NLayer.Business.Concretes
 {
     public class AbilityManager : IAbilityService
     {
         private readonly IAbilityDal _abilityDal;
-        public AbilityManager(IAbilityDal abilityDal)
+        private readonly IMapper _mapper;
+        public AbilityManager(IAbilityDal abilityDal, IMapper mapper)
         {
             _abilityDal = abilityDal;
+            _mapper = mapper;
         }
         public UpdatedAbilityResponse Update(UpdateAbilityRequest updateAbilityRequest)
         {
@@ -31,7 +34,7 @@ namespace NLayer.Business.Concretes
             UpdatedAbilityResponse updatedAbilityResponse = new UpdatedAbilityResponse();
             updatedAbilityResponse.Id = ability.Id;
             updatedAbilityResponse.Name = ability.Name;
-            updatedAbilityResponse.UpdatedDate = (DateTime)ability.UpdatedDate;
+            updatedAbilityResponse.UpdatedDate = ability.UpdatedDate;
             return updatedAbilityResponse;
         }
         public DeletedAbilityResponse Delete(DeleteAbilityRequest deleteAbilityRequest)

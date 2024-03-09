@@ -11,6 +11,16 @@ namespace NLayer.DataAccess.Concretes.EntityFramework
         //public DbSet<T> Entities { get; set; }
         //public int UserId { get; set; }
         public DbSet<Ability> Abilities { get; set; }
+        public DbSet<Adventure> Adventures { get; set; }
+        public DbSet<Character> Characters { get; set; }
+        public DbSet<Galaxy> Galaxies { get; set; }
+        public DbSet<Planet> Planets { get; set; }
+        public DbSet<Species> Species { get; set; }
+        public DbSet<Star> Stars { get; set; }
+        public DbSet<TimeLine> TimeLines { get; set; }
+        public DbSet<UnionCharacter> UnionCharacters { get; set; }
+        public DbSet<Union> Unions { get; set; }
+        public DbSet<Universe> Universes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -31,6 +41,7 @@ namespace NLayer.DataAccess.Concretes.EntityFramework
             modelBuilder.ApplyConfiguration(new SpeciesConfiguration());
             modelBuilder.ApplyConfiguration(new StarConfiguration());
             modelBuilder.ApplyConfiguration(new TimeLineConfiguration());
+            modelBuilder.ApplyConfiguration(new UnionCharacterConfiguration());
             modelBuilder.ApplyConfiguration(new UnionConfiguration());
             modelBuilder.ApplyConfiguration(new UniverseConfiguration());
         }
