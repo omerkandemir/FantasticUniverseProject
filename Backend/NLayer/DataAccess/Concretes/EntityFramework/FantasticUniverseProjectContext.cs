@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using NLayer.Core.Entities.Abstract;
 using NLayer.Core.Entities.Concrete;
 using NLayer.DataAccess.Concretes.EntityFramework.Configuration;
 using NLayer.Entities.Concretes;
+using System.Data;
 
 namespace NLayer.DataAccess.Concretes.EntityFramework
 {
@@ -62,7 +64,9 @@ namespace NLayer.DataAccess.Concretes.EntityFramework
                 if (entity is IEntity)
                 {
                     var track = entity as IEntity;
-                    track.CreatedDate = DateTime.Now;
+                    this.Entry(entity).Property(nameof(IEntity.UpdatedDate)).IsModified = false;
+                    this.Entry(entity).Property(nameof(IEntity.DeletedDate)).IsModified = false;
+                    track.CreatedDate = GetDbDateTime();
                     track.IsActive = true;
                     //track.CreatedBy = UserId;
                 }
@@ -77,12 +81,31 @@ namespace NLayer.DataAccess.Concretes.EntityFramework
                 if (entity is IEntity)
                 {
                     var track = entity as IEntity;
+                    this.Entry(entity).Property(nameof(IEntity.UpdatedDate)).IsModified = true;
                     this.Entry(entity).Property(nameof(IEntity.CreatedDate)).IsModified = false;
-                    track.UpdatedDate = DateTime.Now;
+                    track.UpdatedDate = GetDbDateTime();
                     track.IsActive = true;
                     //track.ModifiedBy = UserId;
                 }
             }
         }
+        private DateTime GetDbDateTime()
+        {
+            using (var context = new FantasticUniverseProjectContext())
+            {
+                using (var connection = context.Database.GetDbConnection())
+                {
+                    if (connection.State == ConnectionState.Closed)
+                    {
+                        connection.Open();
+                    }
+
+                    var command = connection.CreateCommand();
+                    command.CommandText = "select SYSDATETIME()";
+                    return (DateTime)command.ExecuteScalar();
+                }
+            }
+        }
+
     }
 }
