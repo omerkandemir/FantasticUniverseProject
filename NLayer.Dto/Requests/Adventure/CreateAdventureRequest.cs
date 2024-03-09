@@ -9,7 +9,6 @@ namespace NLayer.Dto.Requests.Adventure
 {
     public class CreateAdventureRequest : ICreateRequest
     {
-        public int CharacterId { get; set; }
         public int PlanetId { get; set; }
         public string AdventureName { get; set; }
         public string Occurrence { get; set; }

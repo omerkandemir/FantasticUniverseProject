@@ -42,7 +42,7 @@ namespace NLayer.Business.Concretes
             Ability ability = new() { Id = deleteAbilityRequest.Id };
             _abilityDal.Delete(ability);
             DeletedAbilityResponse deletedAbilityResponse = new DeletedAbilityResponse();
-            deleteAbilityRequest.Id = ability.Id;
+            deletedAbilityResponse.Id = ability.Id;
             return deletedAbilityResponse;
         }
         public CreatedAbilityResponse Add(CreateAbilityRequest createAbilityRequest)

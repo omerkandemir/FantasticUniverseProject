@@ -11,7 +11,6 @@ namespace NLayer.DataAccess.Concretes.EntityFramework.Configuration
         {
             base.Configure(builder);
             builder.ToTable("Adventures");
-            builder.Property(x => x.CharacterId).HasColumnName("CharacterId");
             builder.Property(x => x.PlanetId).HasColumnName("PlanetId");
             builder.Property(x => x.AdventureName).HasColumnName("AdventureName");
             builder.Property(x => x.Occurrence).HasColumnName("Occurrence");
@@ -22,6 +21,10 @@ namespace NLayer.DataAccess.Concretes.EntityFramework.Configuration
                 HasMany(x => x.TimeLines).
                 WithOne(x => x.Adventure).
                 HasForeignKey(x => x.StartingAdventureId);
+            builder.
+                HasMany(x => x.AdventureCharacters).
+                WithOne(x => x.Adventure).
+                HasForeignKey(x=>x.AdventureId);
         }
     }
 }

@@ -46,6 +46,9 @@ namespace NLayer.Business.Concretes.DependencyResolvers.ServiceCollections
 
             services.AddSingleton<IUniverseService, UniverseManager>();
             services.AddSingleton<IUniverseDal, EfUniverseDal>();
+
+            services.AddSingleton<IAdventureCharacterService, AdventureCharacterManager>();
+            services.AddSingleton<IAdventureCharacterDal, EfAdventureCharacterDal>();
         }
     }
 }

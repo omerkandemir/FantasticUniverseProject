@@ -13,6 +13,7 @@ namespace NLayer.DataAccess.Concretes.EntityFramework
         //public DbSet<T> Entities { get; set; }
         //public int UserId { get; set; }
         public DbSet<Ability> Abilities { get; set; }
+        public DbSet<AdventureCharacter> AdventureCharacters { get; set; }
         public DbSet<Adventure> Adventures { get; set; }
         public DbSet<Character> Characters { get; set; }
         public DbSet<Galaxy> Galaxies { get; set; }

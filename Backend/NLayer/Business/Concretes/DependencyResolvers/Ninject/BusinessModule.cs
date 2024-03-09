@@ -46,6 +46,9 @@ namespace NLayer.Business.Concretes.DependencyResolvers.Ninject
 
             Bind<IUniverseService>().To<UniverseManager>().InSingletonScope();
             Bind<IUniverseDal>().To<EfUniverseDal>().InSingletonScope();
+
+            Bind<IAdventureCharacterService>().To<AdventureCharacterManager>().InSingletonScope();
+            Bind<IAdventureCharacterDal>().To<EfAdventureCharacterDal>().InSingletonScope();
         }
     }
 }
