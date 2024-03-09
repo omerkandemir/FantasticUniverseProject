@@ -24,11 +24,11 @@ namespace NLayer.DataAccess.Concretes.EntityFramework.Configuration
                 WithOne(x => x.Character).
                 HasForeignKey(x => x.UnionLeaderId);
             builder.
-                HasMany(x=>x.Adventures).
-                WithOne(x=>x.Character)
-                .HasForeignKey(x=>x.CharacterId);
-            builder.
                 HasMany(x => x.UnionCharacters).
+                WithOne(x => x.Character).
+                HasForeignKey(x => x.CharacterId);
+            builder.
+                HasMany(x => x.AdventureCharacters).
                 WithOne(x => x.Character).
                 HasForeignKey(x => x.CharacterId);
         }

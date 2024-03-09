@@ -18,8 +18,8 @@ namespace NLayer.Entities.Concretes
         public DateTime? DeathDate { get; set; }
         public int? MasterCharacterId { get; set; }
         public int? ApprenticeId { get; set; }
-        public ICollection<Adventure> Adventures { get; set; }
         public ICollection<Union> Unions { get; set; }
         public ICollection<UnionCharacter> UnionCharacters { get; set; }
+        public ICollection<AdventureCharacter> AdventureCharacters { get; set; }
     }
 }

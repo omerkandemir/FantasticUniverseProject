@@ -31,7 +31,6 @@ namespace NLayer.Business.Concretes
         {
             Adventure adventure = new();
             adventure.AdventureName = createRequest.AdventureName;
-            adventure.CharacterId = createRequest.CharacterId;
             adventure.PlanetId = createRequest.PlanetId;
             adventure.Occurrence = createRequest.Occurrence;
             adventure.StartTime = createRequest.StartTime;
@@ -42,7 +41,6 @@ namespace NLayer.Business.Concretes
             CreatedAdventureResponse createAdventureResponse = new CreatedAdventureResponse();
             createAdventureResponse.Id = adventure.Id;
             createAdventureResponse.AdventureName = adventure.AdventureName;
-            createAdventureResponse.CharacterId = adventure.CharacterId;
             createAdventureResponse.PlanetId = adventure.PlanetId;
             createAdventureResponse.Occurrence = adventure.Occurrence;
             createAdventureResponse.StartTime = adventure.StartTime;
@@ -65,7 +63,6 @@ namespace NLayer.Business.Concretes
             Adventure adventure = new();
             adventure.Id = updateRequest.Id;
             adventure.AdventureName = updateRequest.AdventureName;
-            adventure.CharacterId = updateRequest.CharacterId;
             adventure.PlanetId = updateRequest.PlanetId;
             adventure.Occurrence = updateRequest.Occurrence;
             adventure.StartTime = updateRequest.StartTime;
@@ -76,7 +73,6 @@ namespace NLayer.Business.Concretes
             UpdatedAdventureResponse updatedAdventureResponse = new UpdatedAdventureResponse();
             updatedAdventureResponse.Id = adventure.Id;
             updatedAdventureResponse.AdventureName = adventure.AdventureName;
-            updatedAdventureResponse.CharacterId = adventure.CharacterId;
             updatedAdventureResponse.PlanetId = adventure.PlanetId;
             updatedAdventureResponse.Occurrence = adventure.Occurrence;
             updatedAdventureResponse.StartTime = adventure.StartTime;
@@ -91,7 +87,6 @@ namespace NLayer.Business.Concretes
             Adventure adventure = _adventureDal.Get(x => x.Id == id);
             getAllAdventureResponse.Id = adventure.Id;
             getAllAdventureResponse.AdventureName = adventure.AdventureName;
-            getAllAdventureResponse.CharacterId = adventure.CharacterId;
             getAllAdventureResponse.PlanetId = adventure.PlanetId;
             getAllAdventureResponse.Occurrence = adventure.Occurrence;
             getAllAdventureResponse.StartTime = adventure.StartTime;
@@ -111,7 +106,6 @@ namespace NLayer.Business.Concretes
                 GetAllAdventureResponse getAllAdventureResponse = new GetAllAdventureResponse();
                 getAllAdventureResponse.Id = adventure.Id;
             getAllAdventureResponse.AdventureName = adventure.AdventureName;
-            getAllAdventureResponse.CharacterId = adventure.CharacterId;
             getAllAdventureResponse.PlanetId = adventure.PlanetId;
             getAllAdventureResponse.Occurrence = adventure.Occurrence;
             getAllAdventureResponse.StartTime = adventure.StartTime;
