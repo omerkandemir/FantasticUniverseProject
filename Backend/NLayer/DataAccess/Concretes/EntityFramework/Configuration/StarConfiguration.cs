@@ -13,7 +13,6 @@ public class StarConfiguration : BaseEntityConfiguration<Star>
         builder.ToTable("Stars");
         builder.Property(x => x.GalaxyId).HasColumnName("GalaxyId");
         builder.Property(x => x.Name).HasColumnName("Name");
-        //One to many
         builder.
             HasMany(x => x.Planets).
             WithOne(x => x.Star).

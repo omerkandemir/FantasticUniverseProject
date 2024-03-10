@@ -15,7 +15,6 @@ public class UnionConfiguration : BaseEntityConfiguration<Union>
         builder.Property(x => x.Target).HasColumnName("Target");
         builder.Property(x => x.UnionLeaderId).HasColumnName("UnionLeaderId");
         builder.Property(x => x.UniverseId).HasColumnName("UniverseId");
-        //One to many
         builder.
             HasMany(x => x.UnionCharacters).
             WithOne(x => x.Union).
