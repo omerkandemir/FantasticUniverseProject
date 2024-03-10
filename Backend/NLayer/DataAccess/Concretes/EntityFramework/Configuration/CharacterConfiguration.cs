@@ -11,7 +11,6 @@ public class CharacterConfiguration : BaseEntityConfiguration<Character>
     {
         base.Configure(builder);
         builder.ToTable("Characters");
-        builder.Property(x => x.AbilityId).HasColumnName("AbilityId");
         builder.Property(x => x.SpeciesId).HasColumnName("SpeciesId");
         builder.Property(x => x.Name).HasColumnName("Name");
         builder.Property(x => x.BirthDate).HasColumnName("BirthDate");
@@ -24,6 +23,10 @@ public class CharacterConfiguration : BaseEntityConfiguration<Character>
             HasForeignKey(x => x.CharacterId);
         builder.
             HasMany(x => x.AdventureCharacters).
+            WithOne(x => x.Character).
+            HasForeignKey(x => x.CharacterId);
+        builder.
+            HasMany(x => x.AbilityCharacters).
             WithOne(x => x.Character).
             HasForeignKey(x => x.CharacterId);
     }

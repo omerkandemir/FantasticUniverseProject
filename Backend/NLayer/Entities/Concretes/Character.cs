@@ -4,8 +4,6 @@ namespace NLayer.Entities.Concretes;
 
 public class Character : BaseEntity<int>
 {
-    public int? AbilityId { get; set; }
-    public Ability Ability { get; set; }
     public int? SpeciesId { get; set; }
     public Species Species { get; set; }
     public string Name { get; set; }
@@ -15,4 +13,5 @@ public class Character : BaseEntity<int>
     public int? ApprenticeId { get; set; }
     public ICollection<UnionCharacter> UnionCharacters { get; set; }
     public ICollection<AdventureCharacter> AdventureCharacters { get; set; }
+    public ICollection<AbilityCharacter> AbilityCharacters { get; set; }
 }

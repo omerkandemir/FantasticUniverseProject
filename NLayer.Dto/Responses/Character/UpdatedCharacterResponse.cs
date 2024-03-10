@@ -6,7 +6,6 @@ public class UpdatedCharacterResponse : IUpdatedResponse
 {
     public int Id { get; set; }
     public DateTime? UpdatedDate { get; set; }
-    public int? AbilityId { get; set; }
     public int? SpeciesId { get; set; }
     public string Name { get; set; }
     public DateTime BirthDate { get; set; }

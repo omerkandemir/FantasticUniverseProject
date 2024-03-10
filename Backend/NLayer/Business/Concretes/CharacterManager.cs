@@ -16,7 +16,6 @@ public class CharacterManager : ICharacterService
     public CreatedCharacterResponse Add(CreateCharacterRequest createRequest)
     {
         Character character = new();
-        character.AbilityId = createRequest.AbilityId;
         character.SpeciesId = createRequest.SpeciesId;
         character.Name = createRequest.Name;
         character.BirthDate = createRequest.BirthDate;
@@ -28,7 +27,6 @@ public class CharacterManager : ICharacterService
 
         CreatedCharacterResponse createCharacterResponse = new CreatedCharacterResponse();
         createCharacterResponse.Id = character.Id;
-        createCharacterResponse.AbilityId = character.AbilityId;
         createCharacterResponse.SpeciesId = character.SpeciesId;
         createCharacterResponse.Name = character.Name;
         createCharacterResponse.BirthDate = character.BirthDate;
@@ -54,7 +52,6 @@ public class CharacterManager : ICharacterService
         GetAllCharacterResponse getAllCharacterResponse = new GetAllCharacterResponse();
         Character character = _characterDal.Get(x => x.Id == id);
         getAllCharacterResponse.Id = character.Id;
-        getAllCharacterResponse.AbilityId = character.AbilityId;
         getAllCharacterResponse.SpeciesId = character.SpeciesId;
         getAllCharacterResponse.Name = character.Name;
         getAllCharacterResponse.BirthDate = character.BirthDate;
@@ -75,7 +72,6 @@ public class CharacterManager : ICharacterService
         {
             GetAllCharacterResponse getAllCharacterResponse = new GetAllCharacterResponse();
             getAllCharacterResponse.Id = character.Id;
-            getAllCharacterResponse.AbilityId = character.AbilityId;
             getAllCharacterResponse.SpeciesId = character.SpeciesId;
             getAllCharacterResponse.Name = character.Name;
             getAllCharacterResponse.BirthDate = character.BirthDate;
@@ -93,7 +89,6 @@ public class CharacterManager : ICharacterService
     {
         Character character = new();
         character.Id = updateRequest.Id;
-        character.AbilityId = updateRequest.AbilityId;
         character.SpeciesId = updateRequest.SpeciesId;
         character.Name = updateRequest.Name;
         character.BirthDate = updateRequest.BirthDate;
@@ -105,7 +100,6 @@ public class CharacterManager : ICharacterService
 
         UpdatedCharacterResponse updatedCharacterResponse = new UpdatedCharacterResponse();
         updatedCharacterResponse.Id = character.Id;
-        updatedCharacterResponse.AbilityId = character.AbilityId;
         updatedCharacterResponse.SpeciesId = character.SpeciesId;
         updatedCharacterResponse.Name = character.Name;
         updatedCharacterResponse.BirthDate = character.BirthDate;

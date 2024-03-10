@@ -13,8 +13,8 @@ public class AbilityConfiguration : BaseEntityConfiguration<Ability>
         builder.ToTable("Abilities");
         builder.Property(x => x.Name).HasColumnName("Name");
         builder.
-            HasMany(x => x.Characters).
-            WithOne(x => x.Ability).
-            HasForeignKey(x => x.AbilityId);
+            HasMany(x=>x.AbilityCharacters).
+            WithOne(x=>x.Ability).
+            HasForeignKey(x=>x.AbilityId);
     }
 }
