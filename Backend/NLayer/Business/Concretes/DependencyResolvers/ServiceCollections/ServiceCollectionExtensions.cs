@@ -12,6 +12,9 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IAbilityService, AbilityManager>();
         services.AddSingleton<IAbilityDal, EfAbilityDal>();
 
+        services.AddSingleton<IAbilityCharacterService, AbilityCharacterManager>();
+        services.AddSingleton<IAbilityCharacterDal, EfAbilityCharacterDal>();
+
         services.AddSingleton<IAdventureService, AdventureManager>();
         services.AddSingleton<IAdventureDal, EfAdventureDal>();
 

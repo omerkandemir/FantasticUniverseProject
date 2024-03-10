@@ -12,6 +12,9 @@ public class BusinessModule : NinjectModule
         Bind<IAbilityService>().To<AbilityManager>().InSingletonScope();
         Bind<IAbilityDal>().To<EfAbilityDal>().InSingletonScope();
 
+        Bind<IAbilityCharacterService>().To<AbilityCharacterManager>().InSingletonScope();
+        Bind<IAbilityCharacterDal>().To<EfAbilityCharacterDal>().InSingletonScope();
+
         Bind<IAdventureService>().To<AdventureManager>().InSingletonScope();
         Bind<IAdventureDal>().To<EfAdventureDal>().InSingletonScope();
 

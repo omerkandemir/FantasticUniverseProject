@@ -11,6 +11,7 @@ public class FantasticUniverseProjectContext : DbContext
     //public DbSet<T> Entities { get; set; }
     //public int UserId { get; set; }
     public DbSet<Ability> Abilities { get; set; }
+    public DbSet<AbilityCharacter> AbilityCharacters { get; set; }
     public DbSet<AdventureCharacter> AdventureCharacters { get; set; }
     public DbSet<Adventure> Adventures { get; set; }
     public DbSet<Character> Characters { get; set; }
@@ -35,7 +36,9 @@ public class FantasticUniverseProjectContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new AbilityConfiguration());
+        modelBuilder.ApplyConfiguration(new AbilityCharacterConfiguration());
         modelBuilder.ApplyConfiguration(new AdventureConfiguration());
+        modelBuilder.ApplyConfiguration(new AdventureCharacterConfiguration());
         modelBuilder.ApplyConfiguration(new CharacterConfiguration());
         modelBuilder.ApplyConfiguration(new GalaxyConfiguration());
         modelBuilder.ApplyConfiguration(new PlanetConfiguration());
