@@ -16,7 +16,6 @@ public class PlanetConfiguration : BaseEntityConfiguration<Planet>
         builder.Property(x => x.PlanetAge).HasColumnName("PlanetAge");
         builder.Property(x => x.PlanetTemperature).HasColumnName("PlanetTemperature");
         builder.Property(x => x.PlanetMass).HasColumnName("PlanetMass");
-        //One to many
         builder.
             HasMany(x => x.Adventures).
             WithOne(x => x.Planet).

@@ -18,11 +18,6 @@ public class CharacterConfiguration : BaseEntityConfiguration<Character>
         builder.Property(x => x.DeathDate).HasColumnName("DeathDate");
         builder.Property(x => x.MasterCharacterId).HasColumnName("MasterCharacterId");
         builder.Property(x => x.ApprenticeId).HasColumnName("ApprenticeId");
-        //One to many
-        builder.
-            HasMany(x => x.Unions).
-            WithOne(x => x.Character).
-            HasForeignKey(x => x.UnionLeaderId);
         builder.
             HasMany(x => x.UnionCharacters).
             WithOne(x => x.Character).

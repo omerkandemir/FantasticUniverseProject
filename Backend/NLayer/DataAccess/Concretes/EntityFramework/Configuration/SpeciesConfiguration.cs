@@ -12,7 +12,6 @@ public class SpeciesConfiguration : BaseEntityConfiguration<Species>
         base.Configure(builder);
         builder.ToTable("Species");
         builder.Property(x => x.Name).HasColumnName("Name");
-        //One to many
         builder.
             HasMany(x => x.Characters).
             WithOne(x => x.Species).

@@ -16,7 +16,6 @@ public class AdventureConfiguration : BaseEntityConfiguration<Adventure>
         builder.Property(x => x.Occurrence).HasColumnName("Occurrence");
         builder.Property(x => x.StartTime).HasColumnName("StartTime");
         builder.Property(x => x.EndTime).HasColumnName("EndTime");
-        //One to many
         builder.
             HasMany(x => x.TimeLines).
             WithOne(x => x.Adventure).

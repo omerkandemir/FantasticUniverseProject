@@ -12,18 +12,12 @@ public class UniverseConfiguration : BaseEntityConfiguration<Universe>
         base.Configure(builder);
         builder.ToTable("Universes");
         builder.Property(x => x.Name).HasColumnName("Name");
-        
-        //One to many
         builder.
             HasMany(x => x.Unions).
             WithOne(x => x.Universe).
             HasForeignKey(x => x.UniverseId);
         builder.
             HasMany(x => x.Galaxies).
-            WithOne(x => x.Universe).
-            HasForeignKey(x => x.UniverseId);
-        builder.
-            HasMany(x => x.TimeLines).
             WithOne(x => x.Universe).
             HasForeignKey(x => x.UniverseId);
     }

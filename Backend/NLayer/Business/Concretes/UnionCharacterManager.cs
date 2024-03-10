@@ -78,10 +78,10 @@ public class UnionCharacterManager : IUnionCharacterService
         _unionCharacterDal.Update(unionCharacter);
 
         UpdatedUnionCharacterResponse updatedUnionCharacterResponse = new UpdatedUnionCharacterResponse();
-        updatedUnionCharacterResponse.Id = updatedUnionCharacterResponse.Id;
-        updatedUnionCharacterResponse.UnionId = updatedUnionCharacterResponse.UnionId;
-        updatedUnionCharacterResponse.CharacterId = updatedUnionCharacterResponse.CharacterId;
-        updatedUnionCharacterResponse.UpdatedDate = updatedUnionCharacterResponse.UpdatedDate;
+        updatedUnionCharacterResponse.Id = unionCharacter.Id;
+        updatedUnionCharacterResponse.UnionId = unionCharacter.UnionId;
+        updatedUnionCharacterResponse.CharacterId = unionCharacter.CharacterId;
+        updatedUnionCharacterResponse.UpdatedDate = unionCharacter.UpdatedDate;
         return updatedUnionCharacterResponse;
     }
 }

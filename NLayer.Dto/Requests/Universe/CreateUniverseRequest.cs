@@ -5,5 +5,4 @@ namespace NLayer.Dto.Requests.Universe;
 public class CreateUniverseRequest : ICreateRequest
 {
     public string Name { get; set; }
-    public int TimeLineId { get; set; }
 }

@@ -13,7 +13,5 @@ public class TimeLineConfiguration : BaseEntityConfiguration<TimeLine>
         builder.ToTable("TimeLines");
         builder.Property(x => x.StartingAdventureId).HasColumnName("StartingAdventureId");
         builder.Property(x => x.UniverseId).HasColumnName("UniverseId");
-        //One to many
-
     }
 }
