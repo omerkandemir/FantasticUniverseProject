@@ -2,7 +2,7 @@
 
 namespace NLayer.Dto.Responses.Union;
 
-public class GetAllUnionResponse : IGetAllResponse
+public class GetAllUnionResponse : IGetResponse
 {
     public int Id { get; set; }
     public DateTime CreatedDate { get; set; }

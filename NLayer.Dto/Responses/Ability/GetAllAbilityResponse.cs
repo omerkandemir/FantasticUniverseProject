@@ -2,7 +2,7 @@
 
 namespace NLayer.Dto.Responses.Ability;
 
-public class GetAllAbilityResponse : IGetAllResponse
+public class GetAllAbilityResponse : IGetResponse
 {
     public int Id { get; set; }
     public string Name { get; set; }

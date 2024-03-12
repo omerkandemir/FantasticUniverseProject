@@ -2,7 +2,7 @@
 
 namespace NLayer.Dto.Responses.Adventure;
 
-public class GetAllAdventureResponse : IGetAllResponse
+public class GetAllAdventureResponse : IGetResponse
 {
     public int Id { get; set; }
     public DateTime CreatedDate { get; set; }

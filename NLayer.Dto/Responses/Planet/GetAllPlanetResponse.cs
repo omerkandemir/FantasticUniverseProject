@@ -2,7 +2,7 @@
 
 namespace NLayer.Dto.Responses.Planet;
 
-public class GetAllPlanetResponse : IGetAllResponse
+public class GetAllPlanetResponse : IGetResponse
 {
     public int Id { get; set; }
     public DateTime CreatedDate { get; set; }

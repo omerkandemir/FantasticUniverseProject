@@ -1,13 +1,8 @@
 ﻿using NLayer.Core.Business.Abstract;
-using NLayer.Dto.Requests.Adventure;
-using NLayer.Dto.Responses.Adventure;
+using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Abstracts;
 
-public interface IAdventureService : IEntityServiceRepository<
-    CreatedAdventureResponse, CreateAdventureRequest,
-    UpdatedAdventureResponse, UpdateAdventureRequest,
-    DeletedAdventureResponse, DeleteAdventureRequest,
-    GetAllAdventureResponse>
+public interface IAdventureService : IEntityServiceRepository<Adventure>
 {
 }

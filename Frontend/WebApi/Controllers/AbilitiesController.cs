@@ -2,6 +2,8 @@
 using NLayer.Dto.Requests.Ability;
 using NLayer.Dto.Responses.Ability;
 using NLayer.Business.Abstracts;
+using NLayer.Entities.Concretes;
+using AutoMapper;
 
 namespace WebApi.Controllers;
 
@@ -10,38 +12,49 @@ namespace WebApi.Controllers;
 public class AbilitiesController : ControllerBase
 {
     private readonly IAbilityService _abilityService;
-    public AbilitiesController(IAbilityService abilityService)
+    private readonly IMapper _mapper;
+    public AbilitiesController(IAbilityService abilityService, IMapper mapper)
     {
         _abilityService = abilityService;
+        _mapper = mapper;
     }
     [HttpPost("Ekle")]
-    public IActionResult Add(CreateAbilityRequest createdAbilityRequest)
+    public IActionResult Add(CreateAbilityRequest createRequest)
     {
-        CreatedAbilityResponse createdAbilityResponse = _abilityService.Add(createdAbilityRequest);
-        return Ok(createdAbilityResponse);
+        var value = _mapper.Map<Ability>(createRequest);
+        _abilityService.Add(value);
+        var response = _mapper.Map<CreatedAbilityResponse>(value);
+        return Ok(response);
     }
     [HttpPost("Güncelle")]
-    public IActionResult Update(UpdateAbilityRequest updatedAbilityRequest)
+    public IActionResult Update(UpdateAbilityRequest updateRequest)
     {
-        UpdatedAbilityResponse updatedAbilityResponse = _abilityService.Update(updatedAbilityRequest);
-        return Ok(updatedAbilityResponse);
+        var value = _mapper.Map<Ability>(updateRequest);
+        _abilityService.Update(value);
+        var response = _mapper.Map<UpdatedAbilityResponse>(value);
+        return Ok(response);
     }
     [HttpDelete("Sil")]
-    public IActionResult Delete(DeleteAbilityRequest deleteAbilityRequest)
+    public IActionResult Delete(DeleteAbilityRequest deleteRequest)
     {
-        DeletedAbilityResponse deletedAbilityResponse = _abilityService.Delete(deleteAbilityRequest);
-        return Ok(deletedAbilityResponse);
+        var value = _mapper.Map<Ability>(deleteRequest);
+        _abilityService.Delete(value);
+        var response = _mapper.Map<DeletedAbilityResponse>(value);
+        return Ok(response);
     }
 
     [HttpGet("Listele")]
     public IActionResult GetAll()
     {
-        return Ok(_abilityService.GetAll());
+        var value = _abilityService.GetAll();
+        var response = _mapper.Map<List<GetAllAbilityResponse>>(value);
+        return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
-        return Ok(_abilityService.Get(Id));
+        var value = _abilityService.Get(Id);
+        var response = _mapper.Map<GetAllAbilityResponse>(value);
+        return Ok(response);
     }
-
 }

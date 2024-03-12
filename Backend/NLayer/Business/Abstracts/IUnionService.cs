@@ -1,13 +1,8 @@
 ﻿using NLayer.Core.Business.Abstract;
-using NLayer.Dto.Requests.Union;
-using NLayer.Dto.Responses.Union;
+using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Abstracts;
 
-public interface IUnionService : IEntityServiceRepository<
-    CreatedUnionResponse, CreateUnionRequest,
-    UpdatedUnionResponse, UpdateUnionRequest,
-    DeletedUnionResponse, DeleteUnionRequest,
-    GetAllUnionResponse>
+public interface IUnionService : IEntityServiceRepository<Union>
 {
 }

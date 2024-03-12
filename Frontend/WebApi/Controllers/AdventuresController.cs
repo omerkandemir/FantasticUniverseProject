@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using NLayer.Business.Abstracts;
 using NLayer.Dto.Requests.Adventure;
 using NLayer.Dto.Responses.Adventure;
+using NLayer.Entities.Concretes;
 
 namespace WebApi.Controllers;
 
@@ -9,38 +11,50 @@ namespace WebApi.Controllers;
 [ApiController]
 public class AdventuresController : ControllerBase
 {
-    IAdventureService _adventureService;
-    public AdventuresController(IAdventureService adventureService)
+    private readonly IAdventureService _adventureService;
+    private readonly IMapper _mapper;
+    public AdventuresController(IAdventureService adventureService, IMapper mapper)
     {
         _adventureService = adventureService;
+        _mapper = mapper;
     }
     [HttpPost("Ekle")]
-    public IActionResult Add(CreateAdventureRequest createAdventureRequest)
+    public IActionResult Add(CreateAdventureRequest createRequest)
     {
-        CreatedAdventureResponse createdAdventureResponse = _adventureService.Add(createAdventureRequest);
-        return Ok(createdAdventureResponse);
+        var value = _mapper.Map<Adventure>(createRequest);
+        _adventureService.Add(value);
+        var response = _mapper.Map<CreatedAdventureResponse>(value);
+        return Ok(response);
     }
     [HttpPost("Güncelle")]
-    public IActionResult Update(UpdateAdventureRequest updateAdventureRequest)
+    public IActionResult Update(UpdateAdventureRequest updateRequest)
     {
-        UpdatedAdventureResponse updatedAdventureResponse = _adventureService.Update(updateAdventureRequest);
-        return Ok(updatedAdventureResponse);
+        var value = _mapper.Map<Adventure>(updateRequest);
+        _adventureService.Update(value);
+        var response = _mapper.Map<UpdatedAdventureResponse>(value);
+        return Ok(response);
     }
     [HttpDelete("Sil")]
-    public IActionResult Delete(DeleteAdventureRequest deleteAdventureRequest)
+    public IActionResult Delete(DeleteAdventureRequest deleteRequest)
     {
-        DeletedAdventureResponse deletedAdventureResponse = _adventureService.Delete(deleteAdventureRequest);
-        return Ok(deletedAdventureResponse);
+        var value = _mapper.Map<Adventure>(deleteRequest);
+        _adventureService.Delete(value);
+        var response = _mapper.Map<DeletedAdventureResponse>(value);
+        return Ok(response);
     }
 
     [HttpGet("Listele")]
     public IActionResult GetAll()
     {
-        return Ok(_adventureService.GetAll());
+        var value = _adventureService.GetAll();
+        var response = _mapper.Map<List<GetAllAdventureResponse>>(value);
+        return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
-        return Ok(_adventureService.Get(Id));
+        var value = _adventureService.Get(Id);
+        var response = _mapper.Map<GetAllAdventureResponse>(value);
+        return Ok(response);
     }
 }

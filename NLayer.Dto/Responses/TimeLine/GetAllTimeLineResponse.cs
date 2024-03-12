@@ -2,7 +2,7 @@
 
 namespace NLayer.Dto.Responses.TimeLine;
 
-public class GetAllTimeLineResponse : IGetAllResponse
+public class GetAllTimeLineResponse : IGetResponse
 {
     public int Id { get; set; }
     public DateTime CreatedDate { get; set; }

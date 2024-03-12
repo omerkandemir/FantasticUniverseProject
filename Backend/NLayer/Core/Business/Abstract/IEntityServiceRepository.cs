@@ -1,23 +1,14 @@
 ﻿using NLayer.Core.Dto.Abstracts;
+using NLayer.Core.Entities.Abstract;
 
 namespace NLayer.Core.Business.Abstract;
 
-public interface IEntityServiceRepository<
-    TCreateResponse,TCreateRequest,
-    TUpdateResponse,TUpdateRequest,
-    TDeleteReponse,TDeleteRequest,
-    TGet>
-    where TCreateResponse : class, ICreatedResponse, new()
-    where TCreateRequest : class, ICreateRequest,new()
-    where TUpdateResponse : class, IUpdatedResponse,new()
-    where TUpdateRequest : class, IUpdateRequest,new()
-    where TDeleteReponse : class, IDeletedResponse,new()
-    where TDeleteRequest : class, IDeleteRequest,new()
-    where TGet : class, new()
+public interface IEntityServiceRepository<T>
+    where T : class, IEntity, new()
 {
-    TCreateResponse Add(TCreateRequest createRequest);
-    TUpdateResponse Update(TUpdateRequest updateRequest);
-    TDeleteReponse Delete(TDeleteRequest deleteRequest);
-    List<TGet> GetAll();
-    TGet Get(int id);
+    void Add(T entity);
+    void Update(T entity);
+    void Delete(T entity);
+    List<T> GetAll();
+    T Get(int id);
 }

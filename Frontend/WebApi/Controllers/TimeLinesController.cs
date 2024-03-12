@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using NLayer.Business.Abstracts;
 using NLayer.Dto.Requests.TimeLine;
 using NLayer.Dto.Responses.TimeLine;
+using NLayer.Entities.Concretes;
 
 namespace WebApi.Controllers;
 
@@ -9,39 +11,51 @@ namespace WebApi.Controllers;
 [ApiController]
 public class TimeLinesController : ControllerBase
 {
-    ITimeLineService _timeLineService;
-    public TimeLinesController(ITimeLineService timeLineService)
+    private readonly ITimeLineService _timeLineService;
+    private readonly IMapper _mapper;
+    public TimeLinesController(ITimeLineService timeLineService, IMapper mapper)
     {
         _timeLineService = timeLineService;
+        _mapper = mapper;
     }
     [HttpPost("Ekle")]
-    public IActionResult Add(CreateTimeLineRequest createdRequest)
+    public IActionResult Add(CreateTimeLineRequest createRequest)
     {
-        CreatedTimeLineResponse createdResponse = _timeLineService.Add(createdRequest);
-        return Ok(createdResponse);
+        var value = _mapper.Map<TimeLine>(createRequest);
+        _timeLineService.Add(value);
+        var response = _mapper.Map<CreatedTimeLineResponse>(value);
+        return Ok(response);
     }
 
     [HttpPost("Güncelle")]
-    public IActionResult Update(UpdateTimeLineRequest updatedRequest)
+    public IActionResult Update(UpdateTimeLineRequest updateRequest)
     {
-        UpdatedTimeLineResponse updatedResponse = _timeLineService.Update(updatedRequest);
-        return Ok(updatedResponse);
+        var value = _mapper.Map<TimeLine>(updateRequest);
+        _timeLineService.Update(value);
+        var response = _mapper.Map<UpdatedTimeLineResponse>(value);
+        return Ok(response);
     }
     [HttpDelete("Sil")]
     public IActionResult Delete(DeleteTimeLineRequest deleteRequest)
     {
-        DeletedTimeLineResponse deletedResponse = _timeLineService.Delete(deleteRequest);
-        return Ok(deletedResponse);
+        var value = _mapper.Map<TimeLine>(deleteRequest);
+        _timeLineService.Delete(value);
+        var response = _mapper.Map<DeletedTimeLineResponse>(value);
+        return Ok(response);
     }
 
     [HttpGet("Listele")]
     public IActionResult GetAll()
     {
-        return Ok(_timeLineService.GetAll());
+        var value = _timeLineService.GetAll();
+        var response = _mapper.Map<List<GetAllTimeLineResponse>>(value);
+        return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
-        return Ok(_timeLineService.Get(Id));
+        var value = _timeLineService.Get(Id);
+        var response = _mapper.Map<GetAllTimeLineResponse>(value);
+        return Ok(response);
     }
 }

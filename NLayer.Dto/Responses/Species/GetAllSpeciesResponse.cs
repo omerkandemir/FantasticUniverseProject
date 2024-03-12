@@ -2,7 +2,7 @@
 
 namespace NLayer.Dto.Responses.Species;
 
-public class GetAllSpeciesResponse : IGetAllResponse
+public class GetAllSpeciesResponse : IGetResponse
 {
     public int Id { get; set; }
     public DateTime CreatedDate { get; set; }

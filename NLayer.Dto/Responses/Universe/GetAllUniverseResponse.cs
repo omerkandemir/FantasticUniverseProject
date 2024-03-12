@@ -2,7 +2,7 @@
 
 namespace NLayer.Dto.Responses.Universe;
 
-public class GetAllUniverseResponse : IGetAllResponse
+public class GetAllUniverseResponse : IGetResponse
 {
     public int Id { get; set; }
     public DateTime CreatedDate { get; set; }

@@ -2,7 +2,7 @@
 
 namespace NLayer.Dto.Responses.Character;
 
-public class GetAllCharacterResponse : IGetAllResponse
+public class GetAllCharacterResponse : IGetResponse
 {
     public int Id { get; set; }
     public DateTime CreatedDate { get; set; }

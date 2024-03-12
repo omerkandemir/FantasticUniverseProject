@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using NLayer.Business.Abstracts;
 using NLayer.Dto.Requests.Star;
 using NLayer.Dto.Responses.Star;
+using NLayer.Entities.Concretes;
 
 namespace WebApi.Controllers;
 
@@ -9,39 +11,51 @@ namespace WebApi.Controllers;
 [ApiController]
 public class StarsController : ControllerBase
 {
-    IStarService _starService;
-    public StarsController(IStarService starService)
+    private readonly IStarService _starService;
+    private readonly IMapper _mapper;
+    public StarsController(IStarService starService, IMapper mapper)
     {
-            _starService = starService;
+        _starService = starService;
+        _mapper = mapper;
     }
     [HttpPost("Ekle")]
-    public IActionResult Add(CreateStarRequest createdRequest)
+    public IActionResult Add(CreateStarRequest createRequest)
     {
-        CreatedStarResponse createdResponse = _starService.Add(createdRequest);
-        return Ok(createdResponse);
+        var value = _mapper.Map<Star>(createRequest);
+        _starService.Add(value);
+        var response = _mapper.Map<CreatedStarResponse>(value);
+        return Ok(response);
     }
 
     [HttpPost("Güncelle")]
-    public IActionResult Update(UpdateStarRequest updatedRequest)
+    public IActionResult Update(UpdateStarRequest updateRequest)
     {
-        UpdatedStarResponse updatedResponse = _starService.Update(updatedRequest);
-        return Ok(updatedResponse);
+        var value = _mapper.Map<Star>(updateRequest);
+        _starService.Update(value);
+        var response = _mapper.Map<UpdatedStarResponse>(value);
+        return Ok(response);
     }
     [HttpDelete("Sil")]
     public IActionResult Delete(DeleteStarRequest deleteRequest)
     {
-        DeletedStarResponse deletedResponse = _starService.Delete(deleteRequest);
-        return Ok(deletedResponse);
+        var value = _mapper.Map<Star>(deleteRequest);
+        _starService.Delete(value);
+        var response = _mapper.Map<DeletedStarResponse>(value);
+        return Ok(response);
     }
 
     [HttpGet("Listele")]
     public IActionResult GetAll()
     {
-        return Ok(_starService.GetAll());
+        var value = _starService.GetAll();
+        var response = _mapper.Map<List<GetAllStarResponse>>(value);
+        return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
-        return Ok(_starService.Get(Id));
+        var value = _starService.Get(Id);
+        var response = _mapper.Map<GetAllStarResponse>(value);
+        return Ok(response);
     }
 }

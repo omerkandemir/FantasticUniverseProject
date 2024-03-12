@@ -1,13 +1,8 @@
 ﻿using NLayer.Core.Business.Abstract;
-using NLayer.Dto.Requests.Star;
-using NLayer.Dto.Responses.Star;
+using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Abstracts;
 
-public interface IStarService : IEntityServiceRepository<
-    CreatedStarResponse, CreateStarRequest,
-    UpdatedStarResponse, UpdateStarRequest,
-    DeletedStarResponse, DeleteStarRequest,
-    GetAllStarResponse>
+public interface IStarService : IEntityServiceRepository<Star>
 {
 }

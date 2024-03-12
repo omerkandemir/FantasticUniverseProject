@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using NLayer.Business.Abstracts;
 using NLayer.Dto.Requests.Character;
 using NLayer.Dto.Responses.Character;
+using NLayer.Entities.Concretes;
 
 namespace WebApi.Controllers;
 
@@ -10,39 +12,51 @@ namespace WebApi.Controllers;
 public class CharactersController : ControllerBase
 {
     private readonly ICharacterService _characterService;
-    public CharactersController(ICharacterService characterService)
+    private readonly IMapper _mapper;
+    public CharactersController(ICharacterService characterService, IMapper mapper)
     {
         _characterService = characterService;
+        _mapper = mapper;
     }
 
     [HttpPost("Ekle")]
-    public IActionResult Add(CreateCharacterRequest createdRequest)
+    public IActionResult Add(CreateCharacterRequest createRequest)
     {
-        CreatedCharacterResponse createdResponse = _characterService.Add(createdRequest);
-        return Ok(createdResponse);
+        var value = _mapper.Map<Character>(createRequest);
+        _characterService.Add(value);
+        var response = _mapper.Map<CreatedCharacterResponse>(value);
+        return Ok(response);
     }
 
     [HttpPost("Güncelle")]
-    public IActionResult Update(UpdateCharacterRequest updatedRequest)
+    public IActionResult Update(UpdateCharacterRequest updateRequest)
     {
-        UpdatedCharacterResponse updatedResponse = _characterService.Update(updatedRequest);
-        return Ok(updatedResponse);
+        var value = _mapper.Map<Character>(updateRequest);
+        _characterService.Update(value);
+        var response = _mapper.Map<UpdatedCharacterResponse>(value);
+        return Ok(response);
     }
     [HttpDelete("Sil")]
     public IActionResult Delete(DeleteCharacterRequest deleteRequest)
     {
-        DeletedCharacterResponse deletedResponse = _characterService.Delete(deleteRequest);
-        return Ok(deletedResponse);
+        var value = _mapper.Map<Character>(deleteRequest);
+        _characterService.Delete(value);
+        var response = _mapper.Map<DeletedCharacterResponse>(value);
+        return Ok(response);
     }
 
     [HttpGet("Listele")]
     public IActionResult GetAll()
     {
-        return Ok(_characterService.GetAll());
+        var value = _characterService.GetAll();
+        var response = _mapper.Map<List<GetAllCharacterResponse>>(value);
+        return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
-        return Ok(_characterService.Get(Id));
+        var value = _characterService.Get(Id);
+        var response = _mapper.Map<GetAllCharacterResponse>(value);
+        return Ok(response);
     }
 }

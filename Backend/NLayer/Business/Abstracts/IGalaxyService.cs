@@ -1,13 +1,8 @@
 ﻿using NLayer.Core.Business.Abstract;
-using NLayer.Dto.Requests.Galaxy;
-using NLayer.Dto.Responses.Galaxy;
+using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Abstracts;
 
-public interface IGalaxyService : IEntityServiceRepository<
-    CreatedGalaxyResponse, CreateGalaxyRequest,
-    UpdatedGalaxyResponse, UpdateGalaxyRequest,
-    DeletedGalaxyResponse, DeleteGalaxyRequest,
-    GetAllGalaxyResponse>
+public interface IGalaxyService : IEntityServiceRepository<Galaxy>
 {
 }

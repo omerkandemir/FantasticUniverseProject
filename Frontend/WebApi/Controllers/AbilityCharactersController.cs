@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using NLayer.Business.Abstracts;
 using NLayer.Dto.Requests.AbilityCharacter;
 using NLayer.Dto.Responses.AbilityCharacter;
+using NLayer.Entities.Concretes;
 
 namespace WebApi.Controllers
 {
@@ -9,40 +11,52 @@ namespace WebApi.Controllers
     [ApiController]
     public class AbilityCharactersController : ControllerBase
     {
-        IAbilityCharacterService _abilityCharacterService;
-        public AbilityCharactersController(IAbilityCharacterService abilityCharacterService)
+        private readonly IAbilityCharacterService _abilityCharacterService;
+        private readonly IMapper _mapper;
+        public AbilityCharactersController(IAbilityCharacterService abilityCharacterService, IMapper mapper)
         {
             _abilityCharacterService = abilityCharacterService;
+            _mapper = mapper;
         }
         [HttpPost("Ekle")]
-        public IActionResult Add(CreateAbilityCharacterRequest createdRequest)
+        public IActionResult Add(CreateAbilityCharacterRequest createRequest)
         {
-            CreatedAbilityCharacterResponse createdResponse = _abilityCharacterService.Add(createdRequest);
-            return Ok(createdResponse);
+            var value = _mapper.Map<AbilityCharacter>(createRequest);
+            _abilityCharacterService.Add(value);
+            var response = _mapper.Map<CreatedAbilityCharacterResponse>(value);
+            return Ok(response);
         }
 
         [HttpPost("Güncelle")]
-        public IActionResult Update(UpdateAbilityCharacterRequest updatedRequest)
+        public IActionResult Update(UpdateAbilityCharacterRequest updateRequest)
         {
-            UpdatedAbilityCharacterResponse updatedResponse = _abilityCharacterService.Update(updatedRequest);
-            return Ok(updatedResponse);
+            var value = _mapper.Map<AbilityCharacter>(updateRequest);
+            _abilityCharacterService.Update(value);
+            var response = _mapper.Map<UpdatedAbilityCharacterResponse>(value);
+            return Ok(response);
         }
         [HttpDelete("Sil")]
         public IActionResult Delete(DeleteAbilityCharacterRequest deleteRequest)
         {
-            DeletedAbilityCharacterResponse deletedResponse = _abilityCharacterService.Delete(deleteRequest);
-            return Ok(deletedResponse);
+            var value = _mapper.Map<AbilityCharacter>(deleteRequest);
+            _abilityCharacterService.Delete(value);
+            var response = _mapper.Map<DeletedAbilityCharacterResponse>(value);
+            return Ok(response);
         }
 
         [HttpGet("Listele")]
         public IActionResult GetAll()
         {
-            return Ok(_abilityCharacterService.GetAll());
+            var value = _abilityCharacterService.GetAll();
+            var response = _mapper.Map<List<GetAllAbilityCharacterResponse>>(value);
+            return Ok(response);
         }
         [HttpGet("Getir")]
         public IActionResult Get(int Id = 1)
         {
-            return Ok(_abilityCharacterService.Get(Id));
+            var value = _abilityCharacterService.Get(Id);
+            var response = _mapper.Map<GetAllAbilityCharacterResponse>(value);
+            return Ok(response);
         }
     }
 }

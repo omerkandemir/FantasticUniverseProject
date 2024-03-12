@@ -1,14 +1,8 @@
 ﻿using NLayer.Core.Business.Abstract;
-using NLayer.Dto.Requests.Ability;
-using NLayer.Dto.Responses.Ability;
+using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Abstracts;
 
-public interface IAbilityService : IEntityServiceRepository<
-    CreatedAbilityResponse,CreateAbilityRequest,
-    UpdatedAbilityResponse,UpdateAbilityRequest,
-    DeletedAbilityResponse,DeleteAbilityRequest,
-    GetAllAbilityResponse>
+public interface IAbilityService : IEntityServiceRepository<Ability>
 {
-
 }

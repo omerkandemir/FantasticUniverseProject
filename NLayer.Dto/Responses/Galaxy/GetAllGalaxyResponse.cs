@@ -2,7 +2,7 @@
 
 namespace NLayer.Dto.Responses.Galaxy;
 
-public class GetAllGalaxyResponse : IGetAllResponse
+public class GetAllGalaxyResponse : IGetResponse
 {
     public int Id { get; set; }
     public DateTime CreatedDate { get; set; }
