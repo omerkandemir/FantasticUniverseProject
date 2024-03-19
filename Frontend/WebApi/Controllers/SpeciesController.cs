@@ -48,14 +48,14 @@ public class SpeciesController : ControllerBase
     public IActionResult GetAll()
     {
         var value = _speciesService.GetAll();
-        var response = _mapper.Map<List<GetAllSpeciesResponse>>(value);
+        var response = _mapper.Map<List<GetAllSpeciesResponse>>(value.Data);
         return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
         var value = _speciesService.Get(Id);
-        var response = _mapper.Map<GetAllSpeciesResponse>(value);
+        var response = _mapper.Map<GetAllSpeciesResponse>(value.Data);
         return Ok(response);
     }
 }

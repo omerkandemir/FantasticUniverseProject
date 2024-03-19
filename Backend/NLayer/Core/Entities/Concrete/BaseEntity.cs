@@ -5,6 +5,7 @@ namespace NLayer.Core.Entities.Concrete;
 public class BaseEntity<TId> : IEntity
 {
     public TId Id { get; set; }
+    object IEntity.Id { get { return Id; } set { Id = (TId)value; } }
     public DateTime CreatedDate { get; set; }
     public DateTime? UpdatedDate { get; set; }
     public bool IsActive { get; set; }

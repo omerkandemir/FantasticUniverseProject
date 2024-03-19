@@ -4,33 +4,9 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes;
 
-public class AbilityManager : IAbilityService
+public class AbilityManager : BaseManager<Ability,IAbilityDal>, IAbilityService
 {
-    private readonly IAbilityDal _abilityDal;
-    public AbilityManager(IAbilityDal abilityDal)
+    public AbilityManager(IAbilityDal tdal) : base(tdal)
     {
-        _abilityDal = abilityDal;
     }
-    public void Add(Ability ability)
-    {
-        _abilityDal.Add(ability);
-    }
-    public void Update(Ability ability)
-    {
-        _abilityDal.Update(ability);
-    }
-    public void Delete(Ability ability)
-    {
-        _abilityDal.Delete(ability);
-    }
-    public Ability Get(int id)
-    {
-       return _abilityDal.Get(x => x.Id == id);
-    }
-    public List<Ability> GetAll()
-    {
-        return _abilityDal.GetAll();
-    }
-
-
 }

@@ -46,14 +46,14 @@ public class AdventureCharactersController : ControllerBase
     public IActionResult GetAll()
     {
         var value = _adventureCharacterService.GetAll();
-        var response = _mapper.Map<List<GetAllAdventureCharacterResponse>>(value);
+        var response = _mapper.Map<List<GetAllAdventureCharacterResponse>>(value.Data);
         return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
         var value = _adventureCharacterService.Get(Id);
-        var response = _mapper.Map<GetAllAdventureCharacterResponse>(value);
+        var response = _mapper.Map<GetAllAdventureCharacterResponse>(value.Data);
         return Ok(response);
     }
 }

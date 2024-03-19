@@ -4,32 +4,9 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes;
 
-public class AdventureManager : IAdventureService
+public class AdventureManager : BaseManager<Adventure, IAdventureDal>, IAdventureService
 {
-    private readonly IAdventureDal _adventureDal;
-    public AdventureManager(IAdventureDal adventureDal)
+    public AdventureManager(IAdventureDal tdal) : base(tdal)
     {
-        _adventureDal = adventureDal;
-    }
-
-    public void Add(Adventure adventure)
-    {
-        _adventureDal.Add(adventure);
-    }
-    public void Update(Adventure adventure)
-    {
-        _adventureDal.Update(adventure);
-    }
-    public void Delete(Adventure adventure)
-    {
-        _adventureDal.Delete(adventure);
-    }
-    public Adventure Get(int id)
-    {
-        return _adventureDal.Get(x => x.Id == id);
-    }
-    public List<Adventure> GetAll()
-    {
-        return _adventureDal.GetAll();
     }
 }

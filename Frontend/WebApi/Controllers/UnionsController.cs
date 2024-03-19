@@ -48,14 +48,14 @@ public class UnionsController : ControllerBase
     public IActionResult GetAll()
     {
         var value = _unionService.GetAll();
-        var response = _mapper.Map<List<GetAllUnionResponse>>(value);
+        var response = _mapper.Map<List<GetAllUnionResponse>>(value.Data);
         return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
         var value = _unionService.Get(Id);
-        var response = _mapper.Map<GetAllUnionResponse>(value);
+        var response = _mapper.Map<GetAllUnionResponse>(value.Data);
         return Ok(response);
     }
 }

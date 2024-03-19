@@ -48,14 +48,14 @@ public class UnionCharactersController : ControllerBase
     public IActionResult GetAll()
     {
         var value = _unionCharacterService.GetAll();
-        var response = _mapper.Map<List<GetAllUnionCharacterResponse>>(value);
+        var response = _mapper.Map<List<GetAllUnionCharacterResponse>>(value.Data);
         return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
         var value = _unionCharacterService.Get(Id);
-        var response = _mapper.Map<GetAllUnionCharacterResponse>(value);
+        var response = _mapper.Map<GetAllUnionCharacterResponse>(value.Data);
         return Ok(response);
     }
 }

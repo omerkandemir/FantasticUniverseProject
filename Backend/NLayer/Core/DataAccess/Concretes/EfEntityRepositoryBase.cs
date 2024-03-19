@@ -11,50 +11,17 @@ public class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEnti
 {
     public void Add(TEntity entity)
     {
-        try
-        {
-            Crud(entity,EntityState.Added);
-        }
-        catch 
-        {
-            throw new Exception("Ekleme gerçekleşemedi");
-        }
+        CrudOperation(entity, EntityState.Added);
     }
+    
     public void Update(TEntity entity)
     {
-        try
-        {
-            Crud(entity, EntityState.Modified);
-        }
-        catch
-        {
-            throw new Exception("Güncelleme gerçekleşemedi");
-        }
+        CrudOperation(entity, EntityState.Modified);
     }
     public void Delete(TEntity entity)
     {
-        try
-        {
-            Crud(entity,EntityState.Deleted);
-        }
-        catch 
-        {
-            throw new Exception("Silme gerçekleşemedi");
-        }
-        
+        CrudOperation(entity, EntityState.Deleted);
     }
-
-    private static void Crud(TEntity entity, EntityState entityState)
-    {
-        using (TContext context = new TContext())
-        {
-            var crudEntity = context.Entry(entity);
-            crudEntity.State = entityState;
-            context.SaveChanges();
-        }
-    }
-    
-
     public TEntity Get(Expression<Func<TEntity, bool>> filter)
     {
         using (TContext context = new TContext())
@@ -71,5 +38,32 @@ public class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEnti
             return filter == null ? context.Set<TEntity>().ToList() : context.Set<TEntity>().Where(filter).ToList();
         }
     }
+    private void CrudOperation(TEntity entity, EntityState entityState)
+    {
+        try
+        {
+            switch (entityState)
+            {
+                case EntityState.Added: Crud(entity, EntityState.Added); break;
+                case EntityState.Deleted: Crud(entity, EntityState.Deleted); break;
+                case EntityState.Modified: Crud(entity, EntityState.Modified); break;
+                default:
+                    break;
+            }
+        }
+        catch (Exception ex)
+        {
 
+            throw new Exception(ex.Message);
+        }
+    }
+    private static void Crud(TEntity entity, EntityState entityState)
+    {
+        using (TContext context = new TContext())
+        {
+            var crudEntity = context.Entry(entity);
+            crudEntity.State = entityState;
+            context.SaveChanges();
+        }
+    }
 }

@@ -48,14 +48,14 @@ public class GalaxiesController : ControllerBase
     public IActionResult GetAll()
     {
         var value = _galaxyService.GetAll();
-        var response = _mapper.Map<List<GetAllGalaxyResponse>>(value);
+        var response = _mapper.Map<List<GetAllGalaxyResponse>>(value.Data);
         return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
         var value = _galaxyService.Get(Id);
-        var response = _mapper.Map<GetAllGalaxyResponse>(value);
+        var response = _mapper.Map<GetAllGalaxyResponse>(value.Data);
         return Ok(response);
     }
 }

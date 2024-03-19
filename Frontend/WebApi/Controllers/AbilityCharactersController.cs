@@ -48,14 +48,14 @@ namespace WebApi.Controllers
         public IActionResult GetAll()
         {
             var value = _abilityCharacterService.GetAll();
-            var response = _mapper.Map<List<GetAllAbilityCharacterResponse>>(value);
+            var response = _mapper.Map<List<GetAllAbilityCharacterResponse>>(value.Data);
             return Ok(response);
         }
         [HttpGet("Getir")]
         public IActionResult Get(int Id = 1)
         {
             var value = _abilityCharacterService.Get(Id);
-            var response = _mapper.Map<GetAllAbilityCharacterResponse>(value);
+            var response = _mapper.Map<GetAllAbilityCharacterResponse>(value.Data);
             return Ok(response);
         }
     }

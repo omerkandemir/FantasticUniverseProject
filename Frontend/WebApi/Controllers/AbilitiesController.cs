@@ -47,14 +47,14 @@ public class AbilitiesController : ControllerBase
     public IActionResult GetAll()
     {
         var value = _abilityService.GetAll();
-        var response = _mapper.Map<List<GetAllAbilityResponse>>(value);
+        var response = _mapper.Map<List<GetAllAbilityResponse>>(value.Data);
         return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
         var value = _abilityService.Get(Id);
-        var response = _mapper.Map<GetAllAbilityResponse>(value);
+        var response = _mapper.Map<GetAllAbilityResponse>(value.Data);
         return Ok(response);
     }
 }

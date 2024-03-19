@@ -1,14 +1,14 @@
-﻿using NLayer.Core.Dto.Abstracts;
-using NLayer.Core.Entities.Abstract;
+﻿using NLayer.Core.Entities.Abstract;
+using NLayer.Core.Utilities.ReturnTypes;
 
 namespace NLayer.Core.Business.Abstract;
 
 public interface IEntityServiceRepository<T>
     where T : class, IEntity, new()
 {
-    void Add(T entity);
-    void Update(T entity);
-    void Delete(T entity);
-    List<T> GetAll();
-    T Get(int id);
+    IReturnType Add(T entity);
+    IReturnType Update(T entity);
+    IReturnType Delete(T entity);
+    IDataReturnType<List<T>> GetAll();
+    IDataReturnType<T> Get(object id);
 }
