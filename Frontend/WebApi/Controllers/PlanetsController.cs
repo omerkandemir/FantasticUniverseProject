@@ -49,14 +49,14 @@ public class PlanetsController : ControllerBase
     public IActionResult GetAll()
     {
         var value = _planetService.GetAll();
-        var response = _mapper.Map<List<GetAllPlanetResponse>>(value);
+        var response = _mapper.Map<List<GetAllPlanetResponse>>(value.Data);
         return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
         var value = _planetService.Get(Id);
-        var response = _mapper.Map<GetAllPlanetResponse>(value);
+        var response = _mapper.Map<GetAllPlanetResponse>(value.Data);
         return Ok(response);
     }
 }

@@ -48,14 +48,14 @@ public class TimeLinesController : ControllerBase
     public IActionResult GetAll()
     {
         var value = _timeLineService.GetAll();
-        var response = _mapper.Map<List<GetAllTimeLineResponse>>(value);
+        var response = _mapper.Map<List<GetAllTimeLineResponse>>(value.Data);
         return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
         var value = _timeLineService.Get(Id);
-        var response = _mapper.Map<GetAllTimeLineResponse>(value);
+        var response = _mapper.Map<GetAllTimeLineResponse>(value.Data);
         return Ok(response);
     }
 }

@@ -48,14 +48,14 @@ public class UniversesController : ControllerBase
     public IActionResult GetAll()
     {
         var value = _universeService.GetAll();
-        var response = _mapper.Map<List<GetAllUniverseResponse>>(value);
+        var response = _mapper.Map<List<GetAllUniverseResponse>>(value.Data);
         return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
         var value = _universeService.Get(Id);
-        var response = _mapper.Map<GetAllUniverseResponse>(value);
+        var response = _mapper.Map<GetAllUniverseResponse>(value.Data);
         return Ok(response);
     }
 }

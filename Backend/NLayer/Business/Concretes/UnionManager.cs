@@ -5,31 +5,9 @@ using NLayer.Entities.Concretes;
 namespace NLayer.Business.Concretes;
 
 //Eğer veri yoksa ilk eklenen veriyi UnionLeader yapmayı düşün
-public class UnionManager : IUnionService
+public class UnionManager : BaseManager<Union, IUnionDal>, IUnionService
 {
-    private readonly IUnionDal _unionDal;
-    public UnionManager(IUnionDal unionDal)
+    public UnionManager(IUnionDal tdal) : base(tdal)
     {
-        _unionDal = unionDal;
-    }
-    public void Add(Union union)
-    {
-        _unionDal.Add(union);
-    }
-    public void Update(Union union)
-    {
-        _unionDal.Update(union);
-    }
-    public void Delete(Union union)
-    {
-        _unionDal.Delete(union);
-    }
-    public Union Get(int id)
-    {
-        return _unionDal.Get(x => x.Id == id);
-    }
-    public List<Union> GetAll()
-    {
-        return _unionDal.GetAll();
     }
 }

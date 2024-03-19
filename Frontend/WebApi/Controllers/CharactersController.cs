@@ -49,14 +49,14 @@ public class CharactersController : ControllerBase
     public IActionResult GetAll()
     {
         var value = _characterService.GetAll();
-        var response = _mapper.Map<List<GetAllCharacterResponse>>(value);
+        var response = _mapper.Map<List<GetAllCharacterResponse>>(value.Data);
         return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
         var value = _characterService.Get(Id);
-        var response = _mapper.Map<GetAllCharacterResponse>(value);
+        var response = _mapper.Map<GetAllCharacterResponse>(value.Data);
         return Ok(response);
     }
 }

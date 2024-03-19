@@ -48,14 +48,14 @@ public class StarsController : ControllerBase
     public IActionResult GetAll()
     {
         var value = _starService.GetAll();
-        var response = _mapper.Map<List<GetAllStarResponse>>(value);
+        var response = _mapper.Map<List<GetAllStarResponse>>(value.Data);
         return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
         var value = _starService.Get(Id);
-        var response = _mapper.Map<GetAllStarResponse>(value);
+        var response = _mapper.Map<GetAllStarResponse>(value.Data);
         return Ok(response);
     }
 }
