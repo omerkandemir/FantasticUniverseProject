@@ -11,8 +11,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\NLayer.Dto\NLayer.Dto.csproj" />
     <ProjectReference Include="..\DataAccess\NLayer.DataAccess.csproj" />
+    <ProjectReference Include="..\NLayer.Dto\NLayer.Dto.csproj" />
   </ItemGroup>
 
 </Project>
