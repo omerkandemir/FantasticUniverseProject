@@ -1,5 +1,6 @@
 ﻿using Ninject.Modules;
 using NLayer.Business.Abstracts;
+using NLayer.Business.Concretes.Managers;
 using NLayer.DataAccess.Abstracts;
 using NLayer.DataAccess.Concretes.EntityFramework;
 

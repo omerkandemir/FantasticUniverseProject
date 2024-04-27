@@ -2,7 +2,7 @@
 using NLayer.DataAccess.Abstracts;
 using NLayer.Entities.Concretes;
 
-namespace NLayer.Business.Concretes;
+namespace NLayer.Business.Concretes.Managers;
 
 public class TimeLineManager : BaseManager<TimeLine, ITimeLineDal>, ITimeLineService
 {
