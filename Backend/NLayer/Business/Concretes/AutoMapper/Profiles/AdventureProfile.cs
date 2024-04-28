@@ -3,18 +3,18 @@ using NLayer.Dto.Requests.Adventure;
 using NLayer.Dto.Responses.Adventure;
 using NLayer.Entities.Concretes;
 
-namespace WebApi.Mapping;
+namespace NLayer.Business.Concretes.AutoMapper.Profiles;
 
-public class AdventureMapping : Profile
+public class AdventureProfile : Profile
 {
-    public AdventureMapping()
+    public AdventureProfile()
     {
         CreateMap<Adventure, CreateAdventureRequest>().ReverseMap();
-        CreateMap<CreatedAdventureResponse, Adventure>().ReverseMap();
+        CreateMap<Adventure, CreatedAdventureResponse>().ReverseMap();
         CreateMap<Adventure, UpdateAdventureRequest>().ReverseMap();
-        CreateMap<UpdatedAdventureResponse, Adventure>().ReverseMap();
+        CreateMap<Adventure, UpdatedAdventureResponse>().ReverseMap();
         CreateMap<Adventure, DeleteAdventureRequest>().ReverseMap();
-        CreateMap<DeletedAdventureResponse, Adventure>().ReverseMap();
+        CreateMap<Adventure, DeletedAdventureResponse>().ReverseMap();
         CreateMap<Adventure, GetAllAdventureResponse>().ReverseMap();
     }
 }

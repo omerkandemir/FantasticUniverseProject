@@ -3,18 +3,18 @@ using NLayer.Dto.Requests.Ability;
 using NLayer.Dto.Responses.Ability;
 using NLayer.Entities.Concretes;
 
-namespace WebApi.Mapping;
+namespace NLayer.Business.Concretes.AutoMapper.Profiles;
 
-public class AbilityMapping : Profile
+public class AbilityProfile : Profile
 {
-    public AbilityMapping()
+    public AbilityProfile()
     {
         CreateMap<Ability, CreateAbilityRequest>().ReverseMap();
-        CreateMap<CreatedAbilityResponse, Ability>().ReverseMap();
+        CreateMap<Ability, CreatedAbilityResponse>().ReverseMap();
         CreateMap<Ability, UpdateAbilityRequest>().ReverseMap();
-        CreateMap<UpdatedAbilityResponse, Ability>().ReverseMap();
+        CreateMap<Ability, UpdatedAbilityResponse>().ReverseMap();
         CreateMap<Ability, DeleteAbilityRequest>().ReverseMap();
-        CreateMap<DeletedAbilityResponse, Ability>().ReverseMap();
+        CreateMap<Ability, DeletedAbilityResponse>().ReverseMap();
         CreateMap<Ability, GetAllAbilityResponse>().ReverseMap();
     }
 }

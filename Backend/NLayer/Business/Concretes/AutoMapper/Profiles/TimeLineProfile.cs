@@ -3,18 +3,18 @@ using NLayer.Dto.Requests.TimeLine;
 using NLayer.Dto.Responses.TimeLine;
 using NLayer.Entities.Concretes;
 
-namespace WebApi.Mapping;
+namespace NLayer.Business.Concretes.AutoMapper.Profiles;
 
-public class TimeLineMapping : Profile
+public class TimeLineProfile : Profile
 {
-    public TimeLineMapping()
+    public TimeLineProfile()
     {
         CreateMap<TimeLine, CreateTimeLineRequest>().ReverseMap();
-        CreateMap<CreatedTimeLineResponse, TimeLine>().ReverseMap();
+        CreateMap<TimeLine, CreatedTimeLineResponse>().ReverseMap();
         CreateMap<TimeLine, UpdateTimeLineRequest>().ReverseMap();
-        CreateMap<UpdatedTimeLineResponse, TimeLine>().ReverseMap();
+        CreateMap<TimeLine, UpdatedTimeLineResponse>().ReverseMap();
         CreateMap<TimeLine, DeleteTimeLineRequest>().ReverseMap();
-        CreateMap<DeletedTimeLineResponse, TimeLine>().ReverseMap();
+        CreateMap<TimeLine, DeletedTimeLineResponse>().ReverseMap();
         CreateMap<TimeLine, GetAllTimeLineResponse>().ReverseMap();
     }
 }

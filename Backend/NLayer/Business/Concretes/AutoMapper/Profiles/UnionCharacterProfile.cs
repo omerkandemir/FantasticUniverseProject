@@ -3,18 +3,18 @@ using NLayer.Dto.Requests.UnionCharacter;
 using NLayer.Dto.Responses.UnionCharacter;
 using NLayer.Entities.Concretes;
 
-namespace WebApi.Mapping;
+namespace NLayer.Business.Concretes.AutoMapper.Profiles;
 
-public class UnionCharacterMapping : Profile
+public class UnionCharacterProfile : Profile
 {
-    public UnionCharacterMapping()
+    public UnionCharacterProfile()
     {
         CreateMap<UnionCharacter, CreateUnionCharacterRequest>().ReverseMap();
-        CreateMap<CreatedUnionCharacterResponse, UnionCharacter>().ReverseMap();
+        CreateMap<UnionCharacter, CreatedUnionCharacterResponse>().ReverseMap();
         CreateMap<UnionCharacter, UpdateUnionCharacterRequest>().ReverseMap();
-        CreateMap<UpdatedUnionCharacterResponse, UnionCharacter>().ReverseMap();
+        CreateMap<UnionCharacter, UpdatedUnionCharacterResponse>().ReverseMap();
         CreateMap<UnionCharacter, DeleteUnionCharacterRequest>().ReverseMap();
-        CreateMap<DeletedUnionCharacterResponse, UnionCharacter>().ReverseMap();
+        CreateMap<UnionCharacter, DeletedUnionCharacterResponse>().ReverseMap();
         CreateMap<UnionCharacter, GetAllUnionCharacterResponse>().ReverseMap();
     }
 }

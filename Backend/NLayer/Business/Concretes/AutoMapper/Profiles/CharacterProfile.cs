@@ -3,18 +3,18 @@ using NLayer.Dto.Requests.Character;
 using NLayer.Dto.Responses.Character;
 using NLayer.Entities.Concretes;
 
-namespace WebApi.Mapping;
+namespace NLayer.Business.Concretes.AutoMapper.Profiles;
 
-public class CharacterMapping : Profile
+public class CharacterProfile : Profile
 {
-    public CharacterMapping()
+    public CharacterProfile()
     {
         CreateMap<Character, CreateCharacterRequest>().ReverseMap();
-        CreateMap<CreatedCharacterResponse, Character>().ReverseMap();
+        CreateMap<Character, CreatedCharacterResponse>().ReverseMap();
         CreateMap<Character, UpdateCharacterRequest>().ReverseMap();
-        CreateMap<UpdatedCharacterResponse, Character>().ReverseMap();
+        CreateMap<Character, UpdatedCharacterResponse>().ReverseMap();
         CreateMap<Character, DeleteCharacterRequest>().ReverseMap();
-        CreateMap<DeletedCharacterResponse, Character>().ReverseMap();
+        CreateMap<Character, DeletedCharacterResponse>().ReverseMap();
         CreateMap<Character, GetAllCharacterResponse>().ReverseMap();
     }
 }

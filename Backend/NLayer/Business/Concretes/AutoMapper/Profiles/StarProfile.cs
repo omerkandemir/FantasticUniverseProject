@@ -3,18 +3,18 @@ using NLayer.Dto.Requests.Star;
 using NLayer.Dto.Responses.Star;
 using NLayer.Entities.Concretes;
 
-namespace WebApi.Mapping;
+namespace NLayer.Business.Concretes.AutoMapper.Profiles;
 
-public class StarMapping : Profile
+public class StarProfile : Profile
 {
-    public StarMapping()
+    public StarProfile()
     {
         CreateMap<Star, CreateStarRequest>().ReverseMap();
-        CreateMap<CreatedStarResponse, Star>().ReverseMap();
+        CreateMap<Star, CreatedStarResponse>().ReverseMap();
         CreateMap<Star, UpdateStarRequest>().ReverseMap();
-        CreateMap<UpdatedStarResponse, Star>().ReverseMap();
+        CreateMap<Star, UpdatedStarResponse>().ReverseMap();
         CreateMap<Star, DeleteStarRequest>().ReverseMap();
-        CreateMap<DeletedStarResponse, Star>().ReverseMap();
+        CreateMap<Star, DeletedStarResponse>().ReverseMap();
         CreateMap<Star, GetAllStarResponse>().ReverseMap();
     }
 }

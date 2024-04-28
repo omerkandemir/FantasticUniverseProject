@@ -3,18 +3,18 @@ using NLayer.Dto.Requests.Planet;
 using NLayer.Dto.Responses.Planet;
 using NLayer.Entities.Concretes;
 
-namespace WebApi.Mapping;
+namespace NLayer.Business.Concretes.AutoMapper.Profiles;
 
-public class PlanetMapping : Profile
+public class PlanetProfile : Profile
 {
-    public PlanetMapping()
+    public PlanetProfile()
     {
         CreateMap<Planet, CreatePlanetRequest>().ReverseMap();
-        CreateMap<CreatedPlanetResponse, Planet>().ReverseMap();
+        CreateMap<Planet, CreatedPlanetResponse>().ReverseMap();
         CreateMap<Planet, UpdatePlanetRequest>().ReverseMap();
-        CreateMap<UpdatedPlanetResponse, Planet>().ReverseMap();
+        CreateMap<Planet, UpdatedPlanetResponse>().ReverseMap();
         CreateMap<Planet, DeletePlanetRequest>().ReverseMap();
-        CreateMap<DeletedPlanetResponse, Planet>().ReverseMap();
+        CreateMap<Planet, DeletedPlanetResponse>().ReverseMap();
         CreateMap<Planet, GetAllPlanetResponse>().ReverseMap();
     }
 }

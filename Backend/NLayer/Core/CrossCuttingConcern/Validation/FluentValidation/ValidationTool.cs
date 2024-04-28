@@ -1,12 +1,14 @@
 ﻿using FluentValidation;
 
 namespace NLayer.Core.CrossCuttingConcern.Validation.FluentValidation;
-public class ValidationTool
+
+public static class ValidationTool
 {
-    public static void FluentValidate(IValidator validator, object entity)
+    public static void Validate(IValidator validator, object entity)
     {
-        var result = validator.Validate((IValidationContext)entity);
-        if (result.Errors.Count>0)
+        var context = new ValidationContext<object>(entity);
+        var result = validator.Validate(context);
+        if (result.Errors.Count > 0)
         {
             throw new ValidationException(result.Errors);
         }

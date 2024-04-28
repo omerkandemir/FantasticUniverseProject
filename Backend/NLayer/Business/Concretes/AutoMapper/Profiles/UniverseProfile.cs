@@ -3,18 +3,18 @@ using NLayer.Dto.Requests.Universe;
 using NLayer.Dto.Responses.Universe;
 using NLayer.Entities.Concretes;
 
-namespace WebApi.Mapping;
+namespace NLayer.Business.Concretes.AutoMapper.Profiles;
 
-public class UniverseMapping : Profile
+public class UniverseProfile : Profile
 {
-    public UniverseMapping()
+    public UniverseProfile()
     {
         CreateMap<Universe, CreateUniverseRequest>().ReverseMap();
-        CreateMap<CreatedUniverseResponse, Universe>().ReverseMap();
+        CreateMap<Universe, CreatedUniverseResponse>().ReverseMap();
         CreateMap<Universe, UpdateUniverseRequest>().ReverseMap();
-        CreateMap<UpdatedUniverseResponse, Universe>().ReverseMap();
+        CreateMap<Universe, UpdatedUniverseResponse>().ReverseMap();
         CreateMap<Universe, DeleteUniverseRequest>().ReverseMap();
-        CreateMap<DeletedUniverseResponse, Universe>().ReverseMap();
+        CreateMap<Universe, DeletedUniverseResponse>().ReverseMap();
         CreateMap<Universe, GetAllUniverseResponse>().ReverseMap();
     }
 }

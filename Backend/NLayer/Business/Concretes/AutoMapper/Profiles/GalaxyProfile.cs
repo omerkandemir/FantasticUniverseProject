@@ -3,18 +3,18 @@ using NLayer.Dto.Requests.Galaxy;
 using NLayer.Dto.Responses.Galaxy;
 using NLayer.Entities.Concretes;
 
-namespace WebApi.Mapping;
+namespace NLayer.Business.Concretes.AutoMapper.Profiles;
 
-public class GalaxyMapping : Profile
+public class GalaxyProfile : Profile
 {
-    public GalaxyMapping()
+    public GalaxyProfile()
     {
         CreateMap<Galaxy, CreateGalaxyRequest>().ReverseMap();
-        CreateMap<CreatedGalaxyResponse, Galaxy>().ReverseMap();
+        CreateMap<Galaxy, CreatedGalaxyResponse>().ReverseMap();
         CreateMap<Galaxy, UpdateGalaxyRequest>().ReverseMap();
-        CreateMap<UpdatedGalaxyResponse, Galaxy>().ReverseMap();
+        CreateMap<Galaxy, UpdatedGalaxyResponse>().ReverseMap();
         CreateMap<Galaxy, DeleteGalaxyRequest>().ReverseMap();
-        CreateMap<DeletedGalaxyResponse, Galaxy>().ReverseMap();
+        CreateMap<Galaxy, DeletedGalaxyResponse>().ReverseMap();
         CreateMap<Galaxy, GetAllGalaxyResponse>().ReverseMap();
     }
 }

@@ -3,18 +3,18 @@ using NLayer.Dto.Requests.Species;
 using NLayer.Dto.Responses.Species;
 using NLayer.Entities.Concretes;
 
-namespace WebApi.Mapping;
+namespace NLayer.Business.Concretes.AutoMapper.Profiles;
 
-public class SpeciesMapping : Profile
+public class SpeciesProfile : Profile
 {
-    public SpeciesMapping()
+    public SpeciesProfile()
     {
         CreateMap<Species, CreateSpeciesRequest>().ReverseMap();
-        CreateMap<CreatedSpeciesResponse, Species>().ReverseMap();
+        CreateMap<Species, CreatedSpeciesResponse>().ReverseMap();
         CreateMap<Species, UpdateSpeciesRequest>().ReverseMap();
-        CreateMap<UpdatedSpeciesResponse, Species>().ReverseMap();
+        CreateMap<Species, UpdatedSpeciesResponse>().ReverseMap();
         CreateMap<Species, DeleteSpeciesRequest>().ReverseMap();
-        CreateMap<DeletedSpeciesResponse, Species>().ReverseMap();
+        CreateMap<Species, DeletedSpeciesResponse>().ReverseMap();
         CreateMap<Species, GetAllSpeciesResponse>().ReverseMap();
     }
 }
