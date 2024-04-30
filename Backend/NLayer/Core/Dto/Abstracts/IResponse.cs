@@ -1,5 +1,5 @@
 ﻿namespace NLayer.Core.Dto.Abstracts;
 
-public interface ICreateRequest : IRequest
+public interface IResponse
 {
 }

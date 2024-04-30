@@ -3,7 +3,7 @@ using NLayer.Dto.Requests.Union;
 using NLayer.Dto.Responses.Union;
 using NLayer.Entities.Concretes;
 
-namespace NLayer.Business.Concretes.AutoMapper.Profiles;
+namespace NLayer.Dto.AutoMapper.Profiles;
 
 public class UnionProfile : Profile
 {

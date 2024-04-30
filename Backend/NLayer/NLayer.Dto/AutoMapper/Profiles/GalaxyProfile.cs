@@ -3,7 +3,7 @@ using NLayer.Dto.Requests.Galaxy;
 using NLayer.Dto.Responses.Galaxy;
 using NLayer.Entities.Concretes;
 
-namespace NLayer.Business.Concretes.AutoMapper.Profiles;
+namespace NLayer.Dto.AutoMapper.Profiles;
 
 public class GalaxyProfile : Profile
 {

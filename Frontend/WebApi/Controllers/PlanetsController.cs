@@ -1,9 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using NLayer.Business.Abstracts;
+﻿using Microsoft.AspNetCore.Mvc;
+using NLayer.Dto.Managers.Abstract;
 using NLayer.Dto.Requests.Planet;
-using NLayer.Dto.Responses.Planet;
-using NLayer.Entities.Concretes;
 
 namespace WebApi.Controllers;
 
@@ -11,52 +8,42 @@ namespace WebApi.Controllers;
 [ApiController]
 public class PlanetsController : ControllerBase
 {
-    private readonly IPlanetService _planetService;
-    private readonly IMapper _mapper;
-    public PlanetsController(IPlanetService planetService,IMapper mapper)
+    private readonly IPlanetDto _planetDto;
+    public PlanetsController(IPlanetDto planetDto)
     {
-        _planetService = planetService;
-        _mapper = mapper;
+        _planetDto = planetDto;
     }
 
     [HttpPost("Ekle")]
     public IActionResult Add(CreatePlanetRequest createRequest)
     {
-        var value = _mapper.Map<Planet>(createRequest);
-        _planetService.Add(value);
-        var response = _mapper.Map<CreatedPlanetResponse>(value);
+        var response = _planetDto.Add(createRequest);
         return Ok(response);
     }
 
     [HttpPost("Güncelle")]
     public IActionResult Update(UpdatePlanetRequest updateRequest)
     {
-        var value = _mapper.Map<Planet>(updateRequest);
-        _planetService.Update(value);
-        var response = _mapper.Map<UpdatedPlanetResponse>(value);
+        var response = _planetDto.Update(updateRequest);
         return Ok(response);
     }
     [HttpDelete("Sil")]
     public IActionResult Delete(DeletePlanetRequest deleteRequest)
     {
-        var value = _mapper.Map<Planet>(deleteRequest);
-        _planetService.Delete(value);
-        var response = _mapper.Map<DeletedPlanetResponse>(value);
+        var response = _planetDto.Delete(deleteRequest);
         return Ok(response);
     }
 
     [HttpGet("Listele")]
     public IActionResult GetAll()
     {
-        var value = _planetService.GetAll();
-        var response = _mapper.Map<List<GetAllPlanetResponse>>(value.Data);
+        var response = _planetDto.GetAll();
         return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
-        var value = _planetService.Get(Id);
-        var response = _mapper.Map<GetAllPlanetResponse>(value.Data);
+        var response = _planetDto.Get(Id);
         return Ok(response);
     }
 }

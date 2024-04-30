@@ -1,9 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using NLayer.Business.Abstracts;
+﻿using Microsoft.AspNetCore.Mvc;
+using NLayer.Dto.Managers.Abstract;
 using NLayer.Dto.Requests.UnionCharacter;
-using NLayer.Dto.Responses.UnionCharacter;
-using NLayer.Entities.Concretes;
 
 namespace WebApi.Controllers;
 
@@ -11,51 +8,41 @@ namespace WebApi.Controllers;
 [ApiController]
 public class UnionCharactersController : ControllerBase
 {
-    private readonly IUnionCharacterService _unionCharacterService;
-    private readonly IMapper _mapper;
-    public UnionCharactersController(IUnionCharacterService unionCharacterService, IMapper mapper)
+    private readonly IUnionCharacterDto _unionCharacterDto;
+    public UnionCharactersController(IUnionCharacterDto unionCharacterDto)
     {
-        _unionCharacterService = unionCharacterService;
-        _mapper = mapper;
+        _unionCharacterDto = unionCharacterDto;
     }
     [HttpPost("Ekle")]
     public IActionResult Add(CreateUnionCharacterRequest createRequest)
     {
-        var value = _mapper.Map<UnionCharacter>(createRequest);
-        _unionCharacterService.Add(value);
-        var response = _mapper.Map<CreatedUnionCharacterResponse>(value);
+        var response = _unionCharacterDto.Add(createRequest);
         return Ok(response);
     }
 
     [HttpPost("Güncelle")]
     public IActionResult Update(UpdateUnionCharacterRequest updateRequest)
     {
-        var value = _mapper.Map<UnionCharacter>(updateRequest);
-        _unionCharacterService.Update(value);
-        var response = _mapper.Map<UpdatedUnionCharacterResponse>(value);
+        var response = _unionCharacterDto.Update(updateRequest);
         return Ok(response);
     }
     [HttpDelete("Sil")]
     public IActionResult Delete(DeleteUnionCharacterRequest deleteRequest)
     {
-        var value = _mapper.Map<UnionCharacter>(deleteRequest);
-        _unionCharacterService.Delete(value);
-        var response = _mapper.Map<DeletedUnionCharacterResponse>(value);
+        var response = _unionCharacterDto.Delete(deleteRequest);
         return Ok(response);
     }
 
     [HttpGet("Listele")]
     public IActionResult GetAll()
     {
-        var value = _unionCharacterService.GetAll();
-        var response = _mapper.Map<List<GetAllUnionCharacterResponse>>(value.Data);
+        var response = _unionCharacterDto.GetAll();
         return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
-        var value = _unionCharacterService.Get(Id);
-        var response = _mapper.Map<GetAllUnionCharacterResponse>(value.Data);
+        var response = _unionCharacterDto.Get(Id);
         return Ok(response);
     }
 }

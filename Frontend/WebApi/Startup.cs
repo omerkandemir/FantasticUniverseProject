@@ -1,47 +1,69 @@
 ﻿using Autofac;
-using Microsoft.EntityFrameworkCore;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using NLayer.Business.Abstracts;
-using NLayer.Business.Concretes.Managers;
-using NLayer.DataAccess.Abstracts;
-using NLayer.DataAccess.Concretes.EntityFramework;
+using NLayer.Business.Concretes.DependencyResolvers.Autofac;
+using NLayer.Dto.Managers.Abstract;
+using NLayer.Dto.Managers.Concrete;
 
-namespace WebApi
+namespace WebApi;
+
+public class Startup
 {
-    public class Startup
+    public Startup(IConfiguration configuration)
     {
-        public Startup(IConfiguration configuration)
+        Configuration = configuration;
+    }
+    public IConfiguration Configuration { get; }
+    public void ConfigureServices(IServiceCollection services)
+    {
+
+        services.AddControllers();
+        services.AddSwaggerGen(c =>
         {
-            Configuration = configuration;
-        }
-        public IConfiguration Configuration { get; }
-        public void ConfigureServices(IServiceCollection services)
+            c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPI", Version = "v1" });
+        });
+
+        var builder = new ContainerBuilder();
+        builder.Populate(services); // .NET Core servislerini Autofac'e kopyala
+        builder.RegisterModule<AutofacBusinessModule>(); // AutoMapper modülünü kaydet
+        var container = builder.Build();
+        var serviceProvider = new AutofacServiceProvider(container);
+
+        // Servis sağlayıcısını ayarla
+        services.AddAutofac();
+
+
+        services.AddSingleton<IAbilityDto, AbilityDto>();
+        services.AddSingleton<IAbilityCharacterDto, AbilityCharacterDto>();
+        services.AddSingleton<IAdventureCharacterDto, AdventureCharacterDto>();
+        services.AddSingleton<IAdventureDto, AdventureDto>();
+        services.AddSingleton<ICharacterDto, CharacterDto>();
+        services.AddSingleton<IGalaxyDto, GalaxyDto>();
+        services.AddSingleton<IPlanetDto, PlanetDto>();
+        services.AddSingleton<ISpeciesDto, SpeciesDto>();
+        services.AddSingleton<IStarDto, StarDto>();
+        services.AddSingleton<ITimeLineDto, TimeLineDto>();
+        services.AddSingleton<IUnionCharacterDto, UnionCharacterDto>();
+        services.AddSingleton<IUnionDto, UnionDto>();
+        services.AddSingleton<IUniverseDto, UniverseDto>();
+    }
+
+    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+    {
+        if (env.IsDevelopment())
         {
-
-            services.AddControllers();
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebAPI", Version = "v1" });
-            });
+            app.UseDeveloperExceptionPage();
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1"));
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        app.UseRouting();
+
+        app.UseAuthorization();
+
+        app.UseEndpoints(endpoints =>
         {
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPI v1"));
-            }
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-        }
+            endpoints.MapControllers();
+        });
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace NLayer.Core.Dto.Abstracts;
 
-public interface IUpdatedResponse
+public interface IUpdatedResponse : IResponse
 {
     public int Id { get; set; }
     public DateTime? UpdatedDate { get; set; }

@@ -1,9 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using NLayer.Business.Abstracts;
+﻿using Microsoft.AspNetCore.Mvc;
+using NLayer.Dto.Managers.Abstract;
 using NLayer.Dto.Requests.AdventureCharacter;
-using NLayer.Dto.Responses.AdventureCharacter;
-using NLayer.Entities.Concretes;
 
 namespace WebApi.Controllers;
 
@@ -11,49 +8,39 @@ namespace WebApi.Controllers;
 [ApiController]
 public class AdventureCharactersController : ControllerBase
 {
-    private readonly IAdventureCharacterService _adventureCharacterService;
-    private readonly IMapper _mapper;
-    public AdventureCharactersController(IAdventureCharacterService adventureCharacterService, IMapper mapper)
+    private readonly IAdventureCharacterDto _adventureCharacterDto;
+    public AdventureCharactersController(IAdventureCharacterDto adventureCharacterDto)
     {
-        _adventureCharacterService = adventureCharacterService;
-        _mapper = mapper;
+        _adventureCharacterDto = adventureCharacterDto;
     }
     [HttpPost("Ekle")]
     public IActionResult Add(CreateAdventureCharacterRequest createRequest)
     {
-        var value = _mapper.Map<AdventureCharacter>(createRequest);
-        _adventureCharacterService.Add(value);
-        var response = _mapper.Map<CreatedAdventureCharacterResponse>(value);
+        var response = _adventureCharacterDto.Add(createRequest);
         return Ok(response);
     }
     [HttpPost("Güncelle")]
     public IActionResult Update(UpdateAdventureCharacterRequest updateRequest)
     {
-        var value = _mapper.Map<AdventureCharacter>(updateRequest);
-        _adventureCharacterService.Update(value);
-        var response = _mapper.Map<UpdatedAdventureCharacterResponse>(value);
+        var response = _adventureCharacterDto.Update(updateRequest);
         return Ok(response);
     }
     [HttpDelete("Sil")]
     public IActionResult Delete(DeleteAdventureCharacterRequest deleteRequest)
     {
-        var value = _mapper.Map<AdventureCharacter>(deleteRequest);
-        _adventureCharacterService.Delete(value);
-        var response = _mapper.Map<DeletedAdventureCharacterResponse>(value);
+        var response = _adventureCharacterDto.Delete(deleteRequest);
         return Ok(response);
     }
     [HttpGet("Listele")]
     public IActionResult GetAll()
     {
-        var value = _adventureCharacterService.GetAll();
-        var response = _mapper.Map<List<GetAllAdventureCharacterResponse>>(value.Data);
+        var response = _adventureCharacterDto.GetAll();
         return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
-        var value = _adventureCharacterService.Get(Id);
-        var response = _mapper.Map<GetAllAdventureCharacterResponse>(value.Data);
+        var response = _adventureCharacterDto.Get(Id);
         return Ok(response);
     }
 }

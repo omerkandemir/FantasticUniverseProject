@@ -1,9 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using NLayer.Business.Abstracts;
+﻿using Microsoft.AspNetCore.Mvc;
+using NLayer.Dto.Managers.Abstract;
 using NLayer.Dto.Requests.Union;
-using NLayer.Dto.Responses.Union;
-using NLayer.Entities.Concretes;
 
 namespace WebApi.Controllers;
 
@@ -11,51 +8,41 @@ namespace WebApi.Controllers;
 [ApiController]
 public class UnionsController : ControllerBase
 {
-    private readonly IUnionService _unionService;
-    private readonly IMapper _mapper;
-    public UnionsController(IUnionService unionService, IMapper mapper)
+    private readonly IUnionDto _unionDto;
+    public UnionsController(IUnionDto unionDto)
     {
-        _unionService = unionService;
-        _mapper = mapper;
+        _unionDto = unionDto;
     }
     [HttpPost("Ekle")]
     public IActionResult Add(CreateUnionRequest createRequest)
     {
-        var value = _mapper.Map<Union>(createRequest);
-        _unionService.Add(value);
-        var response = _mapper.Map<CreatedUnionResponse>(value);
+        var response = _unionDto.Add(createRequest);
         return Ok(response);
     }
 
     [HttpPost("Güncelle")]
     public IActionResult Update(UpdateUnionRequest updateRequest)
     {
-        var value = _mapper.Map<Union>(updateRequest);
-        _unionService.Update(value);
-        var response = _mapper.Map<UpdatedUnionResponse>(value);
+        var response = _unionDto.Update(updateRequest);
         return Ok(response);
     }
     [HttpDelete("Sil")]
     public IActionResult Delete(DeleteUnionRequest deleteRequest)
     {
-        var value = _mapper.Map<Union>(deleteRequest);
-        _unionService.Delete(value);
-        var response = _mapper.Map<DeletedUnionResponse>(value);
+        var response = _unionDto.Delete(deleteRequest);
         return Ok(response);
     }
 
     [HttpGet("Listele")]
     public IActionResult GetAll()
     {
-        var value = _unionService.GetAll();
-        var response = _mapper.Map<List<GetAllUnionResponse>>(value.Data);
+        var response = _unionDto.GetAll();
         return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
-        var value = _unionService.Get(Id);
-        var response = _mapper.Map<GetAllUnionResponse>(value.Data);
+        var response = _unionDto.Get(Id);
         return Ok(response);
     }
 }

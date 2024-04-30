@@ -3,7 +3,7 @@ using NLayer.Dto.Requests.Character;
 using NLayer.Dto.Responses.Character;
 using NLayer.Entities.Concretes;
 
-namespace NLayer.Business.Concretes.AutoMapper.Profiles;
+namespace NLayer.Dto.AutoMapper.Profiles;
 
 public class CharacterProfile : Profile
 {

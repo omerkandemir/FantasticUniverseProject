@@ -1,9 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using NLayer.Business.Abstracts;
+﻿using Microsoft.AspNetCore.Mvc;
+using NLayer.Dto.Managers.Abstract;
 using NLayer.Dto.Requests.Adventure;
-using NLayer.Dto.Responses.Adventure;
-using NLayer.Entities.Concretes;
 
 namespace WebApi.Controllers;
 
@@ -11,50 +8,40 @@ namespace WebApi.Controllers;
 [ApiController]
 public class AdventuresController : ControllerBase
 {
-    private readonly IAdventureService _adventureService;
-    private readonly IMapper _mapper;
-    public AdventuresController(IAdventureService adventureService, IMapper mapper)
+    private readonly IAdventureDto _adventureDto;
+    public AdventuresController(IAdventureDto adventureDto)
     {
-        _adventureService = adventureService;
-        _mapper = mapper;
+        _adventureDto = adventureDto;
     }
     [HttpPost("Ekle")]
     public IActionResult Add(CreateAdventureRequest createRequest)
     {
-        var value = _mapper.Map<Adventure>(createRequest);
-        _adventureService.Add(value);
-        var response = _mapper.Map<CreatedAdventureResponse>(value);
+        var response = _adventureDto.Add(createRequest);
         return Ok(response);
     }
     [HttpPost("Güncelle")]
     public IActionResult Update(UpdateAdventureRequest updateRequest)
     {
-        var value = _mapper.Map<Adventure>(updateRequest);
-        _adventureService.Update(value);
-        var response = _mapper.Map<UpdatedAdventureResponse>(value);
+        var response = _adventureDto.Update(updateRequest);
         return Ok(response);
     }
     [HttpDelete("Sil")]
     public IActionResult Delete(DeleteAdventureRequest deleteRequest)
     {
-        var value = _mapper.Map<Adventure>(deleteRequest);
-        _adventureService.Delete(value);
-        var response = _mapper.Map<DeletedAdventureResponse>(value);
+        var response = _adventureDto.Delete(deleteRequest);
         return Ok(response);
     }
 
     [HttpGet("Listele")]
     public IActionResult GetAll()
     {
-        var value = _adventureService.GetAll();
-        var response = _mapper.Map<List<GetAllAdventureResponse>>(value.Data);
+        var response = _adventureDto.GetAll();
         return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
-        var value = _adventureService.Get(Id);
-        var response = _mapper.Map<GetAllAdventureResponse>(value.Data);
+        var response = _adventureDto.Get(Id);
         return Ok(response);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using NLayer.Dto.Requests.Ability;
 using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation;

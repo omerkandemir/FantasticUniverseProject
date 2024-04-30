@@ -1,9 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using NLayer.Business.Abstracts;
+﻿using Microsoft.AspNetCore.Mvc;
+using NLayer.Dto.Managers.Abstract;
 using NLayer.Dto.Requests.Galaxy;
-using NLayer.Dto.Responses.Galaxy;
-using NLayer.Entities.Concretes;
 
 namespace WebApi.Controllers;
 
@@ -11,51 +8,41 @@ namespace WebApi.Controllers;
 [ApiController]
 public class GalaxiesController : ControllerBase
 {
-   private readonly IGalaxyService _galaxyService;
-   private readonly IMapper _mapper;
-    public GalaxiesController(IGalaxyService galaxyService, IMapper mapper)
+    private readonly IGalaxyDto _galaxyDto;
+    public GalaxiesController(IGalaxyDto galaxyDto)
     {
-        _galaxyService = galaxyService;
-        _mapper = mapper;
+        _galaxyDto = galaxyDto;
     }
     [HttpPost("Ekle")]
     public IActionResult Add(CreateGalaxyRequest createRequest)
     {
-        var value = _mapper.Map<Galaxy>(createRequest);
-        _galaxyService.Add(value);
-        var response = _mapper.Map<CreatedGalaxyResponse>(value);
+        var response = _galaxyDto.Add(createRequest);
         return Ok(response);
     }
 
     [HttpPost("Güncelle")]
     public IActionResult Update(UpdateGalaxyRequest updateRequest)
     {
-        var value = _mapper.Map<Galaxy>(updateRequest);
-        _galaxyService.Update(value);
-        var response = _mapper.Map<UpdatedGalaxyResponse>(value);
+        var response = _galaxyDto.Update(updateRequest);
         return Ok(response);
     }
     [HttpDelete("Sil")]
     public IActionResult Delete(DeleteGalaxyRequest deleteRequest)
     {
-        var value = _mapper.Map<Galaxy>(deleteRequest);
-        _galaxyService.Delete(value);
-        var response = _mapper.Map<DeletedGalaxyResponse>(value);
+        var response = _galaxyDto.Delete(deleteRequest);
         return Ok(response);
     }
 
     [HttpGet("Listele")]
     public IActionResult GetAll()
     {
-        var value = _galaxyService.GetAll();
-        var response = _mapper.Map<List<GetAllGalaxyResponse>>(value.Data);
+        var response = _galaxyDto.GetAll();
         return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
-        var value = _galaxyService.Get(Id);
-        var response = _mapper.Map<GetAllGalaxyResponse>(value.Data);
+        var response = _galaxyDto.Get(Id);
         return Ok(response);
     }
 }

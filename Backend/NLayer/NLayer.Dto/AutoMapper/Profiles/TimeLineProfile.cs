@@ -3,7 +3,7 @@ using NLayer.Dto.Requests.TimeLine;
 using NLayer.Dto.Responses.TimeLine;
 using NLayer.Entities.Concretes;
 
-namespace NLayer.Business.Concretes.AutoMapper.Profiles;
+namespace NLayer.Dto.AutoMapper.Profiles;
 
 public class TimeLineProfile : Profile
 {

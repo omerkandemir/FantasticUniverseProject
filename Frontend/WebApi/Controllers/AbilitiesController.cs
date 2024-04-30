@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NLayer.Dto.Requests.Ability;
-using NLayer.Dto.Responses.Ability;
-using NLayer.Business.Abstracts;
-using NLayer.Entities.Concretes;
-using AutoMapper;
+using NLayer.Dto.Managers.Abstract;
 
 namespace WebApi.Controllers;
 
@@ -11,50 +8,40 @@ namespace WebApi.Controllers;
 [ApiController]
 public class AbilitiesController : ControllerBase
 {
-    private readonly IAbilityService _abilityService;
-    private readonly IMapper _mapper;
-    public AbilitiesController(IAbilityService abilityService, IMapper mapper)
+    private readonly IAbilityDto _abilityDto;
+    public AbilitiesController(IAbilityDto abilityDto)
     {
-        _abilityService = abilityService;
-        _mapper = mapper;
+        _abilityDto = abilityDto;
     }
     [HttpPost("Ekle")]
     public IActionResult Add(CreateAbilityRequest createRequest)
     {
-        var value = _mapper.Map<Ability>(createRequest);
-        _abilityService.Add(value);
-        var response = _mapper.Map<CreatedAbilityResponse>(value);
+        var response = _abilityDto.Add(createRequest);
         return Ok(response);
     }
     [HttpPost("Güncelle")]
     public IActionResult Update(UpdateAbilityRequest updateRequest)
     {
-        var value = _mapper.Map<Ability>(updateRequest);
-        _abilityService.Update(value);
-        var response = _mapper.Map<UpdatedAbilityResponse>(value);
+        var response = _abilityDto.Update(updateRequest);
         return Ok(response);
     }
     [HttpDelete("Sil")]
     public IActionResult Delete(DeleteAbilityRequest deleteRequest)
     {
-        var value = _mapper.Map<Ability>(deleteRequest);
-        _abilityService.Delete(value);
-        var response = _mapper.Map<DeletedAbilityResponse>(value);
+        var response = _abilityDto.Delete(deleteRequest);
         return Ok(response);
     }
 
     [HttpGet("Listele")]
     public IActionResult GetAll()
     {
-        var value = _abilityService.GetAll();
-        var response = _mapper.Map<List<GetAllAbilityResponse>>(value.Data);
+        var response = _abilityDto.GetAll();    
         return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
-        var value = _abilityService.Get(Id);
-        var response = _mapper.Map<GetAllAbilityResponse>(value.Data);
+        var response = _abilityDto.Get(Id);
         return Ok(response);
     }
 }

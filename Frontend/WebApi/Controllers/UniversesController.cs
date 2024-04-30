@@ -1,9 +1,6 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using NLayer.Business.Abstracts;
+﻿using Microsoft.AspNetCore.Mvc;
+using NLayer.Dto.Managers.Abstract;
 using NLayer.Dto.Requests.Universe;
-using NLayer.Dto.Responses.Universe;
-using NLayer.Entities.Concretes;
 
 namespace WebApi.Controllers;
 
@@ -11,51 +8,41 @@ namespace WebApi.Controllers;
 [ApiController]
 public class UniversesController : ControllerBase
 {
-    private readonly IUniverseService _universeService;
-    private readonly IMapper _mapper;
-    public UniversesController(IUniverseService universeService, IMapper mapper)
+    private readonly IUniverseDto _universeDto;
+    public UniversesController(IUniverseDto universeDto)
     {
-        _universeService = universeService;
-        _mapper = mapper;
+        _universeDto = universeDto;
     }
     [HttpPost("Ekle")]
     public IActionResult Add(CreateUniverseRequest createRequest)
     {
-        var value = _mapper.Map<Universe>(createRequest);
-        _universeService.Add(value);
-        var response = _mapper.Map<CreatedUniverseResponse>(value);
+        var response = _universeDto.Add(createRequest);
         return Ok(response);
     }
 
     [HttpPost("Güncelle")]
     public IActionResult Update(UpdateUniverseRequest updateRequest)
     {
-        var value = _mapper.Map<Universe>(updateRequest);
-        _universeService.Update(value);
-        var response = _mapper.Map<UpdatedUniverseResponse>(value);
+        var response = _universeDto.Update(updateRequest);
         return Ok(response);
     }
     [HttpDelete("Sil")]
     public IActionResult Delete(DeleteUniverseRequest deleteRequest)
     {
-        var value = _mapper.Map<Universe>(deleteRequest);
-        _universeService.Delete(value);
-        var response = _mapper.Map<DeletedUniverseResponse>(value);
+        var response = _universeDto.Delete(deleteRequest);
         return Ok(response);
     }
 
     [HttpGet("Listele")]
     public IActionResult GetAll()
     {
-        var value = _universeService.GetAll();
-        var response = _mapper.Map<List<GetAllUniverseResponse>>(value.Data);
+        var response = _universeDto.GetAll();
         return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
-        var value = _universeService.Get(Id);
-        var response = _mapper.Map<GetAllUniverseResponse>(value.Data);
+        var response = _universeDto.Get(Id);
         return Ok(response);
     }
 }

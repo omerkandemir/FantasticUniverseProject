@@ -3,7 +3,6 @@ using Autofac.Extras.DynamicProxy;
 using AutoMapper;
 using Castle.DynamicProxy;
 using NLayer.Business.Abstracts;
-using NLayer.Business.Concretes.AutoMapper.Profiles;
 using NLayer.Business.Concretes.Managers;
 using NLayer.Core.Utilities.Interceptors;
 using NLayer.DataAccess.Abstracts;
@@ -62,28 +61,21 @@ public class AutofacBusinessModule : Module
                 Selector = new AspectInterceptorSelector()
             }).SingleInstance();
 
-
-        builder.Register(context =>
+        var config = new MapperConfiguration(cfg =>
         {
-            var config = new MapperConfiguration(cfg =>
+            // Tüm derlemeleri yükle
+            var assemblies = System.Reflection.Assembly.GetEntryAssembly().GetReferencedAssemblies();
+
+            // Her bir derlemeyi yükle ve içindeki tüm türleri tarayarak AutoMapper profillerini bul
+            foreach (var assemblyName in assemblies)
             {
+                var assembly = System.Reflection.Assembly.Load(assemblyName);
                 cfg.AddMaps(assembly);
-                cfg.AddProfile<AbilityCharacterProfile>();
-                cfg.AddProfile<AbilityProfile>();
-                cfg.AddProfile<AdventureCharacterProfile>();
-                cfg.AddProfile<AdventureProfile>();
-                cfg.AddProfile<CharacterProfile>();
-                cfg.AddProfile<GalaxyProfile>();
-                cfg.AddProfile<PlanetProfile>();
-                cfg.AddProfile<SpeciesProfile>();
-                cfg.AddProfile<StarProfile>();
-                cfg.AddProfile<TimeLineProfile>();
-                cfg.AddProfile<UnionCharacterProfile>();
-                cfg.AddProfile<UnionProfile>();
-                cfg.AddProfile<UniverseProfile>();
-            });
-            return config.CreateMapper();
-        }).As<IMapper>().SingleInstance();
+            }
+        });
+        builder.RegisterInstance(config.CreateMapper())
+            .As<IMapper>()
+            .SingleInstance();
     }
 }
 

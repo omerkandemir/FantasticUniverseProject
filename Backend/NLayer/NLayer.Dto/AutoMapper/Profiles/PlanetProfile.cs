@@ -3,7 +3,7 @@ using NLayer.Dto.Requests.Planet;
 using NLayer.Dto.Responses.Planet;
 using NLayer.Entities.Concretes;
 
-namespace NLayer.Business.Concretes.AutoMapper.Profiles;
+namespace NLayer.Dto.AutoMapper.Profiles;
 
 public class PlanetProfile : Profile
 {

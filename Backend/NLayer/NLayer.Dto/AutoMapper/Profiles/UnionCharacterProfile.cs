@@ -3,7 +3,7 @@ using NLayer.Dto.Requests.UnionCharacter;
 using NLayer.Dto.Responses.UnionCharacter;
 using NLayer.Entities.Concretes;
 
-namespace NLayer.Business.Concretes.AutoMapper.Profiles;
+namespace NLayer.Dto.AutoMapper.Profiles;
 
 public class UnionCharacterProfile : Profile
 {

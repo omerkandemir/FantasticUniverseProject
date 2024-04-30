@@ -1,5 +1,4 @@
 ﻿using NLayer.Core.Dto.Abstracts;
-
 namespace NLayer.Dto.Responses.UnionCharacter;
 
 public class GetAllUnionCharacterResponse : IGetResponse
