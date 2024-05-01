@@ -1,6 +1,7 @@
 using Autofac.Extensions.DependencyInjection;
 using Autofac;
-using NLayer.Business.Concretes.DependencyResolvers.Autofac;using WebApi;
+using WebApi;
+using NLayer.Dto.Autofac;
 
 internal class Program
 {
@@ -13,7 +14,7 @@ internal class Program
            .UseServiceProviderFactory(new AutofacServiceProviderFactory()).
             ConfigureContainer<ContainerBuilder>(builder =>
             {
-                builder.RegisterModule(new AutofacBusinessModule());
+                builder.RegisterModule(new AutofacDtoMudule());
             })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

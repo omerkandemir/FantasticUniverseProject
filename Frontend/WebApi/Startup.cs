@@ -1,9 +1,7 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
-using NLayer.Business.Concretes.DependencyResolvers.Autofac;
-using NLayer.Dto.Managers.Abstract;
-using NLayer.Dto.Managers.Concrete;
+using NLayer.Dto.Autofac;
 
 namespace WebApi;
 
@@ -25,7 +23,7 @@ public class Startup
 
         var builder = new ContainerBuilder();
         builder.Populate(services); // .NET Core servislerini Autofac'e kopyala
-        builder.RegisterModule<AutofacBusinessModule>(); // AutoMapper modülünü kaydet
+        builder.RegisterModule<AutofacDtoMudule>(); // AutoMapper modülünü kaydet
         var container = builder.Build();
         var serviceProvider = new AutofacServiceProvider(container);
 
@@ -33,19 +31,19 @@ public class Startup
         services.AddAutofac();
 
 
-        services.AddSingleton<IAbilityDto, AbilityDto>();
-        services.AddSingleton<IAbilityCharacterDto, AbilityCharacterDto>();
-        services.AddSingleton<IAdventureCharacterDto, AdventureCharacterDto>();
-        services.AddSingleton<IAdventureDto, AdventureDto>();
-        services.AddSingleton<ICharacterDto, CharacterDto>();
-        services.AddSingleton<IGalaxyDto, GalaxyDto>();
-        services.AddSingleton<IPlanetDto, PlanetDto>();
-        services.AddSingleton<ISpeciesDto, SpeciesDto>();
-        services.AddSingleton<IStarDto, StarDto>();
-        services.AddSingleton<ITimeLineDto, TimeLineDto>();
-        services.AddSingleton<IUnionCharacterDto, UnionCharacterDto>();
-        services.AddSingleton<IUnionDto, UnionDto>();
-        services.AddSingleton<IUniverseDto, UniverseDto>();
+        //services.AddSingleton<IAbilityDto, AbilityDto>();
+        //services.AddSingleton<IAbilityCharacterDto, AbilityCharacterDto>();
+        //services.AddSingleton<IAdventureCharacterDto, AdventureCharacterDto>();
+        //services.AddSingleton<IAdventureDto, AdventureDto>();
+        //services.AddSingleton<ICharacterDto, CharacterDto>();
+        //services.AddSingleton<IGalaxyDto, GalaxyDto>();
+        //services.AddSingleton<IPlanetDto, PlanetDto>();
+        //services.AddSingleton<ISpeciesDto, SpeciesDto>();
+        //services.AddSingleton<IStarDto, StarDto>();
+        //services.AddSingleton<ITimeLineDto, TimeLineDto>();
+        //services.AddSingleton<IUnionCharacterDto, UnionCharacterDto>();
+        //services.AddSingleton<IUnionDto, UnionDto>();
+        //services.AddSingleton<IUniverseDto, UniverseDto>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
