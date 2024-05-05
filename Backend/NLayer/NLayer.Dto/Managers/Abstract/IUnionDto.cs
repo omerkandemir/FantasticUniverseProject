@@ -1,6 +1,6 @@
 ﻿using NLayer.Core.Dto.Abstracts;
-using NLayer.Dto.Requests.Union;
-using NLayer.Dto.Responses.Union;
+using NLayer.Mapper.Requests.Union;
+using NLayer.Mapper.Responses.Union;
 
 namespace NLayer.Dto.Managers.Abstract;
 

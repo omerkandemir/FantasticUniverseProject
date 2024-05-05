@@ -1,6 +1,6 @@
 ﻿using NLayer.Core.Dto.Abstracts;
-using NLayer.Dto.Requests.Universe;
-using NLayer.Dto.Responses.Universe;
+using NLayer.Mapper.Requests.Universe;
+using NLayer.Mapper.Responses.Universe;
 
 namespace NLayer.Dto.Managers.Abstract;
 

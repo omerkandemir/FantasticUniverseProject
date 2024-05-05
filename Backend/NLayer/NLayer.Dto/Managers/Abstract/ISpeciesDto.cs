@@ -1,6 +1,6 @@
 ﻿using NLayer.Core.Dto.Abstracts;
-using NLayer.Dto.Requests.Species;
-using NLayer.Dto.Responses.Species;
+using NLayer.Mapper.Requests.Species;
+using NLayer.Mapper.Responses.Species;
 
 namespace NLayer.Dto.Managers.Abstract;
 

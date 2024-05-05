@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NLayer.Dto.Requests.Ability;
 using NLayer.Dto.Managers.Abstract;
+using NLayer.Mapper.Requests.Ability;
 
 namespace WebApi.Controllers;
 

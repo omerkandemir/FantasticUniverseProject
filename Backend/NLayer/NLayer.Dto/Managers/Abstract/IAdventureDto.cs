@@ -1,6 +1,6 @@
 ﻿using NLayer.Core.Dto.Abstracts;
-using NLayer.Dto.Requests.Adventure;
-using NLayer.Dto.Responses.Adventure;
+using NLayer.Mapper.Requests.Adventure;
+using NLayer.Mapper.Responses.Adventure;
 
 namespace NLayer.Dto.Managers.Abstract
 {

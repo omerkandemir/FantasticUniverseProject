@@ -2,9 +2,9 @@
 using NLayer.Business.Abstracts;
 using NLayer.Core.Dto.Abstracts;
 using NLayer.Dto.Managers.Abstract;
-using NLayer.Dto.Requests.Species;
-using NLayer.Dto.Responses.Species;
 using NLayer.Entities.Concretes;
+using NLayer.Mapper.Requests.Species;
+using NLayer.Mapper.Responses.Species;
 
 namespace NLayer.Dto.Managers.Concrete;
 

@@ -52,7 +52,7 @@ public class AutofacBusinessModule : Module
 
         builder.RegisterType<AdventureCharacterManager>().As<IAdventureCharacterService>().SingleInstance();
         builder.RegisterType<EfAdventureCharacterDal>().As<IAdventureCharacterDal>().SingleInstance();
-
+ 
         var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
         builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces()

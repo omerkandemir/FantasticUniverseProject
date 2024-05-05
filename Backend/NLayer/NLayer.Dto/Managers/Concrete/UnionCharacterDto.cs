@@ -2,9 +2,9 @@
 using NLayer.Business.Abstracts;
 using NLayer.Core.Dto.Abstracts;
 using NLayer.Dto.Managers.Abstract;
-using NLayer.Dto.Requests.UnionCharacter;
-using NLayer.Dto.Responses.UnionCharacter;
 using NLayer.Entities.Concretes;
+using NLayer.Mapper.Requests.UnionCharacter;
+using NLayer.Mapper.Responses.UnionCharacter;
 
 namespace NLayer.Dto.Managers.Concrete;
 

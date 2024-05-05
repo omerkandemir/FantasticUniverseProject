@@ -1,6 +1,6 @@
 ﻿using NLayer.Core.Dto.Abstracts;
-using NLayer.Dto.Requests.TimeLine;
-using NLayer.Dto.Responses.TimeLine;
+using NLayer.Mapper.Requests.TimeLine;
+using NLayer.Mapper.Responses.TimeLine;
 
 namespace NLayer.Dto.Managers.Abstract;
 

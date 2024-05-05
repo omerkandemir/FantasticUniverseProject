@@ -1,6 +1,6 @@
 ﻿using NLayer.Core.Dto.Abstracts;
-using NLayer.Dto.Requests.Star;
-using NLayer.Dto.Responses.Star;
+using NLayer.Mapper.Requests.Star;
+using NLayer.Mapper.Responses.Star;
 
 namespace NLayer.Dto.Managers.Abstract;
 

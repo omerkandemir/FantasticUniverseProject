@@ -2,9 +2,9 @@
 using NLayer.Business.Abstracts;
 using NLayer.Core.Dto.Abstracts;
 using NLayer.Dto.Managers.Abstract;
-using NLayer.Dto.Requests.Union;
-using NLayer.Dto.Responses.Union;
 using NLayer.Entities.Concretes;
+using NLayer.Mapper.Requests.Union;
+using NLayer.Mapper.Responses.Union;
 
 namespace NLayer.Dto.Managers.Concrete;
 

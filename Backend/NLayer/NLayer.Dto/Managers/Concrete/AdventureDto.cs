@@ -2,9 +2,9 @@
 using NLayer.Business.Abstracts;
 using NLayer.Core.Dto.Abstracts;
 using NLayer.Dto.Managers.Abstract;
-using NLayer.Dto.Requests.Adventure;
-using NLayer.Dto.Responses.Adventure;
 using NLayer.Entities.Concretes;
+using NLayer.Mapper.Requests.Adventure;
+using NLayer.Mapper.Responses.Adventure;
 
 namespace NLayer.Dto.Managers.Concrete;
 

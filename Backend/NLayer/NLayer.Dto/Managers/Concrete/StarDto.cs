@@ -2,9 +2,9 @@
 using NLayer.Business.Abstracts;
 using NLayer.Core.Dto.Abstracts;
 using NLayer.Dto.Managers.Abstract;
-using NLayer.Dto.Requests.Star;
-using NLayer.Dto.Responses.Star;
 using NLayer.Entities.Concretes;
+using NLayer.Mapper.Requests.Star;
+using NLayer.Mapper.Responses.Star;
 
 namespace NLayer.Dto.Managers.Concrete;
 

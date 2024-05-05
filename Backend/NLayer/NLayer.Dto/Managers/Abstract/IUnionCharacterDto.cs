@@ -1,6 +1,6 @@
 ﻿using NLayer.Core.Dto.Abstracts;
-using NLayer.Dto.Requests.UnionCharacter;
-using NLayer.Dto.Responses.UnionCharacter;
+using NLayer.Mapper.Requests.UnionCharacter;
+using NLayer.Mapper.Responses.UnionCharacter;
 
 namespace NLayer.Dto.Managers.Abstract;
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NLayer.Dto.Managers.Abstract;
-using NLayer.Dto.Requests.Character;
+using NLayer.Mapper.Requests.Character;
 
 namespace WebApi.Controllers;
 

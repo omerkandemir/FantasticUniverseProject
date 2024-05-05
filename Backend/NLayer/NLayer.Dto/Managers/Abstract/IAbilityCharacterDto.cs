@@ -1,6 +1,6 @@
 ﻿using NLayer.Core.Dto.Abstracts;
-using NLayer.Dto.Requests.AbilityCharacter;
-using NLayer.Dto.Responses.AbilityCharacter;
+using NLayer.Mapper.Requests.AbilityCharacter;
+using NLayer.Mapper.Responses.AbilityCharacter;
 
 namespace NLayer.Dto.Managers.Abstract;
 

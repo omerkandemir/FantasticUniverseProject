@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DataAccess\NLayer.DataAccess.csproj" />
+    <ProjectReference Include="..\NLayer.Mapper\NLayer.Mapper.csproj" />
   </ItemGroup>
 
 </Project>

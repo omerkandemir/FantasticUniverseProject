@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NLayer.Dto.Managers.Abstract;
-using NLayer.Dto.Requests.Union;
+using NLayer.Mapper.Requests.Union;
 
 namespace WebApi.Controllers;
 

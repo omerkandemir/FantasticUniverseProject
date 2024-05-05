@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NLayer.Dto.Managers.Abstract;
-using NLayer.Dto.Requests.TimeLine;
+using NLayer.Mapper.Requests.TimeLine;
 
 namespace WebApi.Controllers;
 

@@ -2,9 +2,9 @@
 using NLayer.Business.Abstracts;
 using NLayer.Core.Dto.Abstracts;
 using NLayer.Dto.Managers.Abstract;
-using NLayer.Dto.Requests.TimeLine;
-using NLayer.Dto.Responses.TimeLine;
 using NLayer.Entities.Concretes;
+using NLayer.Mapper.Requests.TimeLine;
+using NLayer.Mapper.Responses.TimeLine;
 
 namespace NLayer.Dto.Managers.Concrete;
 

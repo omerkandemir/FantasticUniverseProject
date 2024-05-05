@@ -1,6 +1,6 @@
 ﻿using NLayer.Core.Dto.Abstracts;
-using NLayer.Dto.Requests.Galaxy;
-using NLayer.Dto.Responses.Galaxy;
+using NLayer.Mapper.Requests.Galaxy;
+using NLayer.Mapper.Responses.Galaxy;
 
 namespace NLayer.Dto.Managers.Abstract;
 
