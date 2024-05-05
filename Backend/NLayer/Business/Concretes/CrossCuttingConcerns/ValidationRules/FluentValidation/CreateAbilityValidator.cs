@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
-using NLayer.Entities.Concretes;
+using NLayer.Mapper.Requests.Ability;
 
 namespace NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation;
 
-public class AbilityValidator : AbstractValidator<Ability>
+public class CreateAbilityValidator : AbstractValidator<CreateAbilityRequest>
 {
-    public AbilityValidator()
+    public CreateAbilityValidator()
     {
         RuleFor(x => x.Name).NotEmpty().WithMessage("Yetenek adı boş olamaz");
         RuleFor(x => x.Name).Must(StartWithA).WithMessage("A ile başlamalıdır.");

@@ -12,7 +12,7 @@ public class AbilityManager : BaseManager<Ability, IAbilityDal>, IAbilityService
     public AbilityManager(IAbilityDal tdal) : base(tdal)
     {
     }
-    [ValidationAspect(typeof(AbilityValidator), Priority = 1)]
+    [ValidationAspect(typeof(CreateAbilityValidator), Priority = 1)]
     public override IReturnType Add(Ability Value)
     {
         return base.Add(Value);

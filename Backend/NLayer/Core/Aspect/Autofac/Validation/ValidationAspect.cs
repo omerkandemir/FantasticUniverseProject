@@ -1,4 +1,5 @@
-﻿using Castle.DynamicProxy;
+﻿using AutoMapper;
+using Castle.DynamicProxy;
 using FluentValidation;
 using NLayer.Core.CrossCuttingConcern.Validation.FluentValidation;
 using NLayer.Core.Utilities.Interceptors;
@@ -21,11 +22,17 @@ public class ValidationAspect : MethodInterception
     }
     protected override void OnBefore(IInvocation invocation)
     {
-        var validator = (IValidator)Activator.CreateInstance(_validatorType);
-        var entityType = _validatorType.BaseType.GetGenericArguments()[0];
-        var entities = invocation.Arguments.Where(t => t.GetType() == entityType);
-        foreach (var entity in entities)
+        var config = new MapperConfiguration(cfg =>
         {
+            cfg.CreateMap(invocation.Arguments[0].GetType(), _validatorType.BaseType.GetGenericArguments()[0]);
+        });
+
+        var mapper = config.CreateMapper();
+        var validator = (IValidator)Activator.CreateInstance(_validatorType);
+
+        foreach (var argument in invocation.Arguments)
+        {
+            var entity = mapper.Map(argument, argument.GetType(), _validatorType.BaseType.GetGenericArguments()[0]);
             ValidationTool.Validate(validator, entity);
         }
     }
