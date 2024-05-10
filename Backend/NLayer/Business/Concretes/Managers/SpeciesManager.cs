@@ -1,4 +1,9 @@
 ﻿using NLayer.Business.Abstracts;
+using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.SpeciesValidation.Create;
+using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.SpeciesValidation.Delete;
+using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.SpeciesValidation.Update;
+using NLayer.Core.Aspect.Autofac.Validation;
+using NLayer.Core.Utilities.ReturnTypes;
 using NLayer.DataAccess.Abstracts;
 using NLayer.Entities.Concretes;
 
@@ -8,5 +13,20 @@ public class SpeciesManager : BaseManager<Species, ISpeciesDal>, ISpeciesService
 {
     public SpeciesManager(ISpeciesDal tdal) : base(tdal)
     {
+    }
+    [ValidationAspect(typeof(CreateSpeciesValidator), Priority = 1)]
+    public override IReturnType Add(Species Value)
+    {
+        return base.Add(Value);
+    }
+    [ValidationAspect(typeof(UpdateSpeciesValidator), Priority = 1)]
+    public override IReturnType Update(Species Value)
+    {
+        return base.Update(Value);
+    }
+    [ValidationAspect(typeof(DeleteSpeciesValidator), Priority = 1)]
+    public override IReturnType Delete(Species Value)
+    {
+        return base.Delete(Value);
     }
 }

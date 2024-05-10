@@ -13,7 +13,7 @@ public class AdventureConfiguration : BaseEntityConfiguration<Adventure>
         builder.ToTable("Adventures");
         builder.Property(x => x.PlanetId).HasColumnName("PlanetId");
         builder.Property(x => x.AdventureName).HasColumnName("AdventureName");
-        builder.Property(x => x.Occurrence).HasColumnName("Occurrence");
+        builder.Property(x => x.AdventureContent).HasColumnName("AdventureContent");
         builder.Property(x => x.StartTime).HasColumnName("StartTime");
         builder.Property(x => x.EndTime).HasColumnName("EndTime");
         builder.

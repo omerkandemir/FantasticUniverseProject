@@ -2,17 +2,53 @@
 using Autofac.Extras.DynamicProxy;
 using AutoMapper;
 using Castle.DynamicProxy;
+using FluentValidation;
 using NLayer.Business.Abstracts;
+using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.AbilityCharacterValidation.Create;
 using NLayer.Business.Concretes.Managers;
 using NLayer.Core.Utilities.Interceptors;
 using NLayer.DataAccess.Abstracts;
 using NLayer.DataAccess.Concretes.EntityFramework;
+using NLayer.Mapper.Requests.AbilityCharacter;
 
 namespace NLayer.Business.Concretes.DependencyResolvers.Autofac;
 
 public class AutofacBusinessModule : Module
 {
     protected override void Load(ContainerBuilder builder)
+    {
+        RegisterServices(builder);
+        ConfigureContainer(builder);
+    }
+
+    private void ConfigureContainer(ContainerBuilder builder)
+    {
+        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+
+        builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces()
+            .EnableInterfaceInterceptors(new ProxyGenerationOptions()
+            {
+                Selector = new AspectInterceptorSelector()
+            }).SingleInstance();
+
+        var config = new MapperConfiguration(cfg =>
+        {
+            // Tüm derlemeleri yükle
+            var assemblies = System.Reflection.Assembly.GetEntryAssembly().GetReferencedAssemblies();
+
+            // Her bir derlemeyi yükle ve içindeki tüm türleri tarayarak AutoMapper profillerini bul
+            foreach (var assemblyName in assemblies)
+            {
+                var assembly = System.Reflection.Assembly.Load(assemblyName);
+                cfg.AddMaps(assembly);
+            }
+        });
+        builder.RegisterInstance(config.CreateMapper())
+            .As<IMapper>()
+            .SingleInstance();
+    }
+
+    private void RegisterServices(ContainerBuilder builder)
     {
         builder.RegisterType<AbilityManager>().As<IAbilityService>().SingleInstance();
         builder.RegisterType<EfAbilityDal>().As<IAbilityDal>().SingleInstance();
@@ -52,30 +88,8 @@ public class AutofacBusinessModule : Module
 
         builder.RegisterType<AdventureCharacterManager>().As<IAdventureCharacterService>().SingleInstance();
         builder.RegisterType<EfAdventureCharacterDal>().As<IAdventureCharacterDal>().SingleInstance();
- 
-        var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
-        builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces()
-            .EnableInterfaceInterceptors(new ProxyGenerationOptions()
-            {
-                Selector = new AspectInterceptorSelector()
-            }).SingleInstance();
-
-        var config = new MapperConfiguration(cfg =>
-        {
-            // Tüm derlemeleri yükle
-            var assemblies = System.Reflection.Assembly.GetEntryAssembly().GetReferencedAssemblies();
-
-            // Her bir derlemeyi yükle ve içindeki tüm türleri tarayarak AutoMapper profillerini bul
-            foreach (var assemblyName in assemblies)
-            {
-                var assembly = System.Reflection.Assembly.Load(assemblyName);
-                cfg.AddMaps(assembly);
-            }
-        });
-        builder.RegisterInstance(config.CreateMapper())
-            .As<IMapper>()
-            .SingleInstance();
+        builder.RegisterType<CreateAbilityCharacterValidator>().As<IValidator<CreateAbilityCharacterRequest>>();
     }
 }
 

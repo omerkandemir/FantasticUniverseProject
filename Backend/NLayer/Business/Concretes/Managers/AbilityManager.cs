@@ -1,5 +1,7 @@
 ﻿using NLayer.Business.Abstracts;
-using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation;
+using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.AbilityValidation.Create;
+using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.AbilityValidation.Delete;
+using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.AbilityValidation.Update;
 using NLayer.Core.Aspect.Autofac.Validation;
 using NLayer.Core.Utilities.ReturnTypes;
 using NLayer.DataAccess.Abstracts;
@@ -16,5 +18,15 @@ public class AbilityManager : BaseManager<Ability, IAbilityDal>, IAbilityService
     public override IReturnType Add(Ability Value)
     {
         return base.Add(Value);
+    }
+    [ValidationAspect(typeof(UpdateAbilityValidator), Priority = 1)]
+    public override IReturnType Update(Ability Value)
+    {
+        return base.Update(Value);
+    }
+    [ValidationAspect(typeof(DeleteAbilityValidator), Priority = 1)]
+    public override IReturnType Delete(Ability Value)
+    {
+        return base.Delete(Value);
     }
 }

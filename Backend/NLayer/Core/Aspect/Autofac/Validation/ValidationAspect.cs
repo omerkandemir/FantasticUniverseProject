@@ -10,14 +10,13 @@ namespace NLayer.Core.Aspect.Autofac.Validation;
 [Serializable]
 public class ValidationAspect : MethodInterception
 {
-    private Type _validatorType;
+    private readonly Type _validatorType;
     public ValidationAspect(Type validatorType)
     {
         if (!typeof(IValidator).IsAssignableFrom(validatorType))
         {
             throw new System.Exception(AspectMessages.WrongValidationType);
         }
-
         _validatorType = validatorType;
     }
     protected override void OnBefore(IInvocation invocation)
@@ -26,7 +25,6 @@ public class ValidationAspect : MethodInterception
         {
             cfg.CreateMap(invocation.Arguments[0].GetType(), _validatorType.BaseType.GetGenericArguments()[0]);
         });
-
         var mapper = config.CreateMapper();
         var validator = (IValidator)Activator.CreateInstance(_validatorType);
 

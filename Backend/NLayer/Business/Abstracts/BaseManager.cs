@@ -9,7 +9,7 @@ public abstract class BaseManager<T, Tdal>
     where T : class, IEntity, new()
     where Tdal : IEntityRepository<T>
 {
-    private readonly Tdal _tdal;
+    protected readonly Tdal _tdal;
     protected BaseManager(Tdal tdal)
     {
         _tdal = tdal;

@@ -19,6 +19,9 @@ public class BusinessModule : NinjectModule
         Bind<IAdventureService>().To<AdventureManager>().InSingletonScope();
         Bind<IAdventureDal>().To<EfAdventureDal>().InSingletonScope();
 
+        Bind<IAdventureCharacterService>().To<AdventureCharacterManager>().InSingletonScope();
+        Bind<IAdventureCharacterDal>().To<EfAdventureCharacterDal>().InSingletonScope();
+
         Bind<ICharacterService>().To<CharacterManager>().InSingletonScope();
         Bind<ICharacterDal>().To<EfCharacterDal>().InSingletonScope();
 
@@ -45,8 +48,5 @@ public class BusinessModule : NinjectModule
 
         Bind<IUniverseService>().To<UniverseManager>().InSingletonScope();
         Bind<IUniverseDal>().To<EfUniverseDal>().InSingletonScope();
-
-        Bind<IAdventureCharacterService>().To<AdventureCharacterManager>().InSingletonScope();
-        Bind<IAdventureCharacterDal>().To<EfAdventureCharacterDal>().InSingletonScope();
     }
 }
