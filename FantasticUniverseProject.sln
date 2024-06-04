@@ -23,7 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "test", "Frontend\test\test.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLayer.Dto", "Backend\NLayer\NLayer.Dto\NLayer.Dto.csproj", "{90D0CAB3-7DC0-4123-AE04-6C2C87D07DC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NLayer.Mapper", "Backend\NLayer\NLayer.Mapper\NLayer.Mapper.csproj", "{387EB60B-6D1B-4222-AFA1-922A5DB8FCF3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NLayer.Mapper", "Backend\NLayer\NLayer.Mapper\NLayer.Mapper.csproj", "{387EB60B-6D1B-4222-AFA1-922A5DB8FCF3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.PresentationLayer", "Test.PresentationLayer\Test.PresentationLayer.csproj", "{447ACCFE-67D1-40B3-B6A4-0F39D0EA84DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{387EB60B-6D1B-4222-AFA1-922A5DB8FCF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{387EB60B-6D1B-4222-AFA1-922A5DB8FCF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{387EB60B-6D1B-4222-AFA1-922A5DB8FCF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{447ACCFE-67D1-40B3-B6A4-0F39D0EA84DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{447ACCFE-67D1-40B3-B6A4-0F39D0EA84DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{447ACCFE-67D1-40B3-B6A4-0F39D0EA84DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{447ACCFE-67D1-40B3-B6A4-0F39D0EA84DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -77,6 +83,7 @@ Global
 		{0A2F0CFE-0F8C-4C13-92DA-0DEC13A8EF68} = {8281868E-585B-424A-A950-9D42F876A2AD}
 		{90D0CAB3-7DC0-4123-AE04-6C2C87D07DC0} = {EFD4CC4C-50D7-4D2F-9C7B-1B10C65BB4FE}
 		{387EB60B-6D1B-4222-AFA1-922A5DB8FCF3} = {EFD4CC4C-50D7-4D2F-9C7B-1B10C65BB4FE}
+		{447ACCFE-67D1-40B3-B6A4-0F39D0EA84DA} = {8281868E-585B-424A-A950-9D42F876A2AD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F23CF6DC-7BF5-4311-AB9C-C302560D539C}

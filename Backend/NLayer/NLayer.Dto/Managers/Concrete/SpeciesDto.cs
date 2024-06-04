@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using NLayer.Business.Abstracts;
 using NLayer.Core.Dto.Abstracts;
+using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Entities.Concretes;
 using NLayer.Mapper.Requests.Species;
@@ -17,26 +18,47 @@ public class SpeciesDto : ISpeciesDto
         _speciesService = speciesService;
         _mapper = mapper;
     }
-    public ICreatedResponse Add(CreateSpeciesRequest request)
+    public IErrorResponse Add(CreateSpeciesRequest request)
     {
         var value = _mapper.Map<Species>(request);
-        _speciesService.Add(value);
+        var result = _speciesService.Add(value);
         var response = _mapper.Map<CreatedSpeciesResponse>(value);
-        return response;
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessResponse(response);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
     }
-    public IUpdatedResponse Update(UpdateSpeciesRequest request)
+    public IErrorResponse Update(UpdateSpeciesRequest request)
     {
         var value = _mapper.Map<Species>(request);
-        _speciesService.Update(value);
+        var result = _speciesService.Update(value);
         var response = _mapper.Map<UpdatedSpeciesResponse>(value);
-        return response;
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessResponse(response);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
     }
-    public IDeletedResponse Delete(DeleteSpeciesRequest request)
+    public IErrorResponse Delete(DeleteSpeciesRequest request)
     {
         var value = _mapper.Map<Species>(request);
-        _speciesService.Delete(value);
+        var result = _speciesService.Delete(value);
         var response = _mapper.Map<DeletedSpeciesResponse>(value);
-        return response;
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessResponse(response);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
     }
 
     public IGetResponse Get(object id)

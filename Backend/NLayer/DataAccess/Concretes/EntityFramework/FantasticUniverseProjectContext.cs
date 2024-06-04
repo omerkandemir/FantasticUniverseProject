@@ -1,15 +1,15 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using NLayer.Core.Entities.Abstract;
+using NLayer.Core.Entities.Authentication;
 using NLayer.DataAccess.Concretes.EntityFramework.Configuration;
 using NLayer.Entities.Concretes;
 using System.Data;
 
 namespace NLayer.DataAccess.Concretes.EntityFramework;
 
-public class FantasticUniverseProjectContext : DbContext
+public class FantasticUniverseProjectContext : IdentityDbContext<AppUser, AppRole, int> // IdentityDbContext, DbContext sınıfından miras alır
 {
-    //public DbSet<T> Entities { get; set; }
-    //public int UserId { get; set; }
     public DbSet<Ability> Abilities { get; set; }
     public DbSet<AbilityCharacter> AbilityCharacters { get; set; }
     public DbSet<AdventureCharacter> AdventureCharacters { get; set; }
@@ -28,9 +28,8 @@ public class FantasticUniverseProjectContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer(@"Data Source=(localdb)\Omer; Initial Catalog = EnochDb;");
+            optionsBuilder.UseSqlServer(@"Data Source=(localdb)\Omer; Initial Catalog = FantasticUniverseProjectDb;");
         }
-        // base.OnConfiguring(optionsBuilder);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -48,6 +47,7 @@ public class FantasticUniverseProjectContext : DbContext
         modelBuilder.ApplyConfiguration(new UnionCharacterConfiguration());
         modelBuilder.ApplyConfiguration(new UnionConfiguration());
         modelBuilder.ApplyConfiguration(new UniverseConfiguration());
+        base.OnModelCreating(modelBuilder);
     }
     public override int SaveChanges()
     {

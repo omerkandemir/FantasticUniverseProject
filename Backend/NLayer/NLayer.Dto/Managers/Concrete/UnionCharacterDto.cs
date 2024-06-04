@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using NLayer.Business.Abstracts;
 using NLayer.Core.Dto.Abstracts;
+using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Entities.Concretes;
 using NLayer.Mapper.Requests.UnionCharacter;
@@ -17,26 +18,47 @@ public class UnionCharacterDto : IUnionCharacterDto
         _unionCharacterService = unionCharacterService;
         _mapper = mapper;
     }
-    public ICreatedResponse Add(CreateUnionCharacterRequest request)
+    public IErrorResponse Add(CreateUnionCharacterRequest request)
     {
         var value = _mapper.Map<UnionCharacter>(request);
-        _unionCharacterService.Add(value);
+        var result = _unionCharacterService.Add(value);
         var response = _mapper.Map<CreatedUnionCharacterResponse>(value);
-        return response;
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessResponse(response);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
     }
-    public IUpdatedResponse Update(UpdateUnionCharacterRequest request)
+    public IErrorResponse Update(UpdateUnionCharacterRequest request)
     {
         var value = _mapper.Map<UnionCharacter>(request);
-        _unionCharacterService.Update(value);
+        var result = _unionCharacterService.Update(value);
         var response = _mapper.Map<UpdatedUnionCharacterResponse>(value);
-        return response;
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessResponse(response);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
     }
-    public IDeletedResponse Delete(DeleteUnionCharacterRequest request)
+    public IErrorResponse Delete(DeleteUnionCharacterRequest request)
     {
         var value = _mapper.Map<UnionCharacter>(request);
-        _unionCharacterService.Delete(value);
+        var result = _unionCharacterService.Delete(value);
         var response = _mapper.Map<DeletedUnionCharacterResponse>(value);
-        return response;
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessResponse(response);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
     }
 
     public IGetResponse Get(object id)

@@ -22,6 +22,7 @@ public class AutofacDtoMudule : Module
         builder.RegisterType<UnionCharacterDto>().As<IUnionCharacterDto>().SingleInstance();
         builder.RegisterType<UnionDto>().As<IUnionDto>().SingleInstance();
         builder.RegisterType<UniverseDto>().As<IUniverseDto>().SingleInstance();
+        builder.RegisterType<AppUserDto>().As<IAppUserDto>().SingleInstance();
         builder.RegisterModule<AutofacBusinessModule>(); // AutofacModule'ü yükle
     }
 }

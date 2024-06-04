@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using NLayer.Business.Abstracts;
 using NLayer.Core.Dto.Abstracts;
+using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Entities.Concretes;
 using NLayer.Mapper.Requests.AbilityCharacter;
@@ -17,26 +18,47 @@ public class AbilityCharacterDto : IAbilityCharacterDto
         _abilityCharacterService = abilityCharacterService;
         _mapper = mapper;
     }
-    public ICreatedResponse Add(CreateAbilityCharacterRequest request)
+    public IErrorResponse Add(CreateAbilityCharacterRequest request)
     {
         var value = _mapper.Map<AbilityCharacter>(request);
-        _abilityCharacterService.Add(value);
+        var result = _abilityCharacterService.Add(value);
         var response = _mapper.Map<CreatedAbilityCharacterResponse>(value);
-        return response;
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessResponse(response);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
     }
-    public IUpdatedResponse Update(UpdateAbilityCharacterRequest request)
+    public IErrorResponse Update(UpdateAbilityCharacterRequest request)
     {
         var value = _mapper.Map<AbilityCharacter>(request);
-        _abilityCharacterService.Update(value);
+        var result = _abilityCharacterService.Update(value);
         var response = _mapper.Map<UpdatedAbilityCharacterResponse>(value);
-        return response;
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessResponse(response);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
     }
-    public IDeletedResponse Delete(DeleteAbilityCharacterRequest request)
+    public IErrorResponse Delete(DeleteAbilityCharacterRequest request)
     {
         var value = _mapper.Map<AbilityCharacter>(request);
-        _abilityCharacterService.Delete(value);
+        var result = _abilityCharacterService.Delete(value);
         var response = _mapper.Map<DeletedAbilityCharacterResponse>(value);
-        return response;
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessResponse(response);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
     }
 
     public IGetResponse Get(object id)

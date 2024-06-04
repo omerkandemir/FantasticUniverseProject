@@ -1,19 +1,21 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using NLayer.Core.DataAccess.Abstracts;
 using NLayer.Core.Entities.Abstract;
+using NLayer.Core.Entities.Authentication;
 using System.Linq.Expressions;
 
 namespace NLAyer.Core.DataAccess.Concretes.EntityFramework;
 
 public class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEntity>
     where TEntity : class, IEntity, new()
-    where TContext : DbContext, new()
+    where TContext : IdentityDbContext<AppUser, AppRole, int>, new() 
 {
     public void Add(TEntity entity)
     {
         CrudOperation(entity, EntityState.Added);
     }
-    
+
     public void Update(TEntity entity)
     {
         CrudOperation(entity, EntityState.Modified);

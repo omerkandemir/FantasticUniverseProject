@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using NLayer.Business.Abstracts;
 using NLayer.Core.Dto.Abstracts;
+using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Entities.Concretes;
 using NLayer.Mapper.Requests.Adventure;
@@ -17,26 +18,47 @@ public class AdventureDto : IAdventureDto
         _adventureService = adventureService;
         _mapper = mapper;
     }
-    public ICreatedResponse Add(CreateAdventureRequest request)
+    public IErrorResponse Add(CreateAdventureRequest request)
     {
         var value = _mapper.Map<Adventure>(request);
-        _adventureService.Add(value);
+        var result = _adventureService.Add(value);
         var response = _mapper.Map<CreatedAdventureResponse>(value);
-        return response;
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessResponse(response);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
     }
-    public IUpdatedResponse Update(UpdateAdventureRequest request)
+    public IErrorResponse Update(UpdateAdventureRequest request)
     {
         var value = _mapper.Map<Adventure>(request);
-        _adventureService.Update(value);
+        var result = _adventureService.Update(value);
         var response = _mapper.Map<UpdatedAdventureResponse>(value);
-        return response;
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessResponse(response);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
     }
-    public IDeletedResponse Delete(DeleteAdventureRequest request)
+    public IErrorResponse Delete(DeleteAdventureRequest request)
     {
         var value = _mapper.Map<Adventure>(request);
-        _adventureService.Delete(value);
+        var result = _adventureService.Delete(value);
         var response = _mapper.Map<DeletedAdventureResponse>(value);
-        return response;
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessResponse(response);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
     }
 
     public IGetResponse Get(object id)

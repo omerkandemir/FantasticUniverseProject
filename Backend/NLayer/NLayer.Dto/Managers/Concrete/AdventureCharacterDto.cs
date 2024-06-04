@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using NLayer.Business.Abstracts;
 using NLayer.Core.Dto.Abstracts;
+using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Entities.Concretes;
 using NLayer.Mapper.Requests.AdventureCharacter;
@@ -17,26 +18,47 @@ public class AdventureCharacterDto : IAdventureCharacterDto
         _adventureCharacterService = adventureCharacterService;
         _mapper = mapper;
     }
-    public ICreatedResponse Add(CreateAdventureCharacterRequest request)
+    public IErrorResponse Add(CreateAdventureCharacterRequest request)
     {
         var value = _mapper.Map<AdventureCharacter>(request);
-        _adventureCharacterService.Add(value);
+        var result = _adventureCharacterService.Add(value);
         var response = _mapper.Map<CreatedAdventureCharacterResponse>(value);
-        return response;
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessResponse(response);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
     }
-    public IUpdatedResponse Update(UpdateAdventureCharacterRequest request)
+    public IErrorResponse Update(UpdateAdventureCharacterRequest request)
     {
         var value = _mapper.Map<AdventureCharacter>(request);
-        _adventureCharacterService.Update(value);
+        var result = _adventureCharacterService.Update(value);
         var response = _mapper.Map<UpdatedAdventureCharacterResponse>(value);
-        return response;
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessResponse(response);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
     }
-    public IDeletedResponse Delete(DeleteAdventureCharacterRequest request)
+    public IErrorResponse Delete(DeleteAdventureCharacterRequest request)
     {
         var value = _mapper.Map<AdventureCharacter>(request);
-        _adventureCharacterService.Delete(value);
+        var result = _adventureCharacterService.Delete(value);
         var response = _mapper.Map<DeletedAdventureCharacterResponse>(value);
-        return response;
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessResponse(response);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
     }
 
     public IGetResponse Get(object id)

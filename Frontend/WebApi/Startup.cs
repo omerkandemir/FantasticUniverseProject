@@ -1,6 +1,9 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.AppUserValidation;
+using NLayer.Core.Entities.Authentication;
+using NLayer.DataAccess.Concretes.EntityFramework;
 using NLayer.Dto.Autofac;
 
 namespace WebApi;
@@ -14,6 +17,10 @@ public class Startup
     public IConfiguration Configuration { get; }
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddDbContext<FantasticUniverseProjectContext>();
+        services.AddIdentity<AppUser, AppRole>()
+                .AddEntityFrameworkStores<FantasticUniverseProjectContext>()
+                .AddErrorDescriber<CustomIdentityValidator>(); ;
 
         services.AddControllers();
         services.AddSwaggerGen(c =>
@@ -42,6 +49,7 @@ public class Startup
 
         app.UseRouting();
 
+        app.UseAuthentication();
         app.UseAuthorization();
 
         app.UseEndpoints(endpoints =>
