@@ -1,21 +1,27 @@
-﻿@model CreateAppUserRequest
+﻿@model UpdateAppUserRequest
 @{
-    Layout = null;
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<!DOCTYPE html>
-<html lang="en">
+
+<html lang="tr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yeni Kullanıcı</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link href="~/css/registerform.css" rel="stylesheet" />
+    <title>Kullanıcı Bilgileri</title>
+    <link href="~/css/UpdateUserForm.css" rel="stylesheet" />
 </head>
 <body>
     <div class="form-container">
-        <h2>Yeni Kullanıcı</h2>
+        <h2>Kullanıcı Bilgileri</h2>
         <br />
         <div asp-validation-summary="ModelOnly" class="validation-summary-errors"></div>
+        @if (ViewBag.SuccessMessage != null)
+        {
+            <div class="success-message">
+                @ViewBag.SuccessMessage
+            </div>
+        }
         <br />
         <form method="post">
             <div class="form-row">
@@ -36,18 +42,10 @@
                     <input type="text" asp-for="Username" class="form-control" placeholder="Username" required />
                     <span asp-validation-for="Username" class="text-danger"></span>
                 </div>
-                @* <div class="form-group col-md-6">
+                <div class="form-group col-md-6">
                     <label asp-for="ImageUrl"></label>
                     <input type="text" asp-for="ImageUrl" class="form-control" placeholder="Image" required />
                     <span asp-validation-for="ImageUrl" class="text-danger"></span>
-                </div> *@
-                <div class="form-group col-md-6">
-                    <label asp-for="ImageUrl"></label>
-                    <select asp-for="ImageUrl" class="form-control" onchange="updateImagePreview()">
-                        <option value="">Select an image</option>
-                    </select>
-                    <span asp-validation-for="ImageUrl" class="text-danger"></span>
-                    <img id="image-preview" src="" alt="Image Preview">
                 </div>
             </div>
             <div class="form-row">
@@ -67,32 +65,12 @@
                 <input type="email" asp-for="Email" class="form-control" placeholder="E-Mail" required />
                 <span asp-validation-for="Email" class="text-danger"></span>
             </div>
-            <div class="form-row">
-                <div class="form-group col-md-6">
-                    <label asp-for="Password"></label>
-                    <input type="password" asp-for="Password" class="form-control" placeholder="Password" required />
-                    <span asp-validation-for="Password" class="text-danger"></span>
-                </div>
-                <div class="form-group col-md-6">
-                    <label asp-for="ConfirmPassword"></label>
-                    <input type="password" asp-for="ConfirmPassword" class="form-control" placeholder="Repeat Password" required />
-                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="form-group form-check">
-                <input type="checkbox" class="form-check-input" id="rememberMe" value="true" />
-                <label class="form-check-label" for="rememberMe">Remember Me</label>
-            </div>
             <div class="form-group">
-                <button type="submit" class="btn btn-primary">Save</button>
+                <button type="submit" class="btn btn-primary">Güncelle</button>
             </div>
         </form>
     </div>
-
     
-
-    </script>
-
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>

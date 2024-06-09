@@ -10,4 +10,6 @@ public class BaseEntity<TId> : IEntity
     public DateTime? UpdatedDate { get; set; }
     public bool IsActive { get; set; }
     public DateTime? DeletedDate { get; set; }
+    public int CreatedBy { get; set; }
+    public int? ModifiedBy { get; set; }
 }

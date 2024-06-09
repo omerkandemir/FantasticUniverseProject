@@ -1,0 +1,19 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+<header>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a href="#" class="logo">Fantastik Evren</a>
+        </div>
+        <ul class="navbar-nav">
+            <li><a href="/MainPage/Index">Anasayfa</a></li>
+            <li><a href="#">Önerilen Serüvenler</a></li>
+            <li><a href="#">Takip Ettiğim Evrenler</a></li>
+            <li><a href="/MyProfile/Index">Profilim</a></li>
+        </ul>
+        <div class="navbar-user">
+            <img src="test" alt="Kullanıcı Resmi" class="user-img">
+            <span class="username">@HttpContextAccessor.HttpContext.Session.GetString("UserName")</span>
+        </div>
+    </nav>
+</header>

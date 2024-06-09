@@ -18,6 +18,16 @@ public class Startup
 
     public void ConfigureServices(IServiceCollection services)
     {
+        //// Session servisini ekleme
+        services.AddSession(options =>
+        {
+            options.IdleTimeout = TimeSpan.FromMinutes(30); // Set the session timeout duration
+            options.Cookie.HttpOnly = true; // Make the session cookie HTTP-only
+            options.Cookie.IsEssential = true; // Make the session cookie essential
+        });
+
+        services.AddHttpContextAccessor();
+
         services.AddControllersWithViews();
 
         // Database context ve Identity configurasyonu
@@ -48,11 +58,14 @@ public class Startup
             app.UseExceptionHandler("/Home/Error");
             app.UseHsts();
         }
+        app.UseMiddleware<UserContextMiddleware>();
 
         app.UseHttpsRedirection();
         app.UseStaticFiles();
 
         app.UseRouting();
+
+        app.UseSession();
 
         app.UseAuthentication();
         app.UseAuthorization();
@@ -61,7 +74,7 @@ public class Startup
         {
             endpoints.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Register}/{action=Index}/{id?}");
+                pattern: "{controller=Login}/{action=Index}/{id?}");
         });
     }
 }

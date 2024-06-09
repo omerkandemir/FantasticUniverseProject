@@ -14,5 +14,7 @@ public class BaseEntityConfiguration<T> : IEntityTypeConfiguration<T> where T : 
         builder.Property(x => x.IsActive).HasColumnName("IsActive");
         builder.Property(x => x.UpdatedDate).HasColumnName("UpdatedDate").HasDefaultValueSql("getDate()");
         builder.Property(x => x.DeletedDate).HasColumnName("DeletedDate");
+        builder.Property(x => x.CreatedBy).HasColumnName("CreatedBy");
+        builder.Property(x => x.ModifiedBy).HasColumnName("ModifiedBy");
     }
 }

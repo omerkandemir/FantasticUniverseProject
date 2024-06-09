@@ -45,8 +45,6 @@ public class AppUserDto : IAppUserDto
         }
     }
 
-   
-
     public IErrorResponse Update(UpdateAppUserRequest request)
     {
         throw new NotImplementedException();

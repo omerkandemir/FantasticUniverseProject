@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using NLayer.Core.Entities.Abstract;
 using NLayer.Core.Entities.Authentication;
 using NLayer.DataAccess.Concretes.EntityFramework.Configuration;
@@ -10,6 +12,8 @@ namespace NLayer.DataAccess.Concretes.EntityFramework;
 
 public class FantasticUniverseProjectContext : IdentityDbContext<AppUser, AppRole, int> // IdentityDbContext, DbContext sınıfından miras alır
 {
+    
+    private int _userId;
     public DbSet<Ability> Abilities { get; set; }
     public DbSet<AbilityCharacter> AbilityCharacters { get; set; }
     public DbSet<AdventureCharacter> AdventureCharacters { get; set; }
@@ -51,8 +55,16 @@ public class FantasticUniverseProjectContext : IdentityDbContext<AppUser, AppRol
     }
     public override int SaveChanges()
     {
+        var httpContext = GetHttpContext();
+        _userId = Convert.ToInt32(httpContext?.Items["UserId"]);
         OnBeforeSaving();
         return base.SaveChanges();
+    }
+    private HttpContext GetHttpContext()
+    {
+        var serviceProvider = this.GetInfrastructure();
+        var httpContextAccessor = serviceProvider.GetService(typeof(IHttpContextAccessor)) as IHttpContextAccessor;
+        return httpContextAccessor?.HttpContext;
     }
     protected virtual void OnBeforeSaving()
     {
@@ -70,7 +82,7 @@ public class FantasticUniverseProjectContext : IdentityDbContext<AppUser, AppRol
                 this.Entry(entity).Property(nameof(IEntity.DeletedDate)).IsModified = false;
                 track.CreatedDate = GetDbDateTime();
                 track.IsActive = true;
-                //track.CreatedBy = UserId;
+                track.CreatedBy = _userId;
             }
         }
         var modified = this.ChangeTracker.Entries()
@@ -87,7 +99,7 @@ public class FantasticUniverseProjectContext : IdentityDbContext<AppUser, AppRol
                 this.Entry(entity).Property(nameof(IEntity.CreatedDate)).IsModified = false;
                 track.UpdatedDate = GetDbDateTime();
                 track.IsActive = true;
-                //track.ModifiedBy = UserId;
+                track.ModifiedBy = _userId;
             }
         }
     }

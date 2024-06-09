@@ -17,6 +17,9 @@ public class Startup
     public IConfiguration Configuration { get; }
     public void ConfigureServices(IServiceCollection services)
     {
+        services.AddHttpContextAccessor();
+        //CheckUserLoginAspect.SetHttpContextAccessor(services.BuildServiceProvider().GetService<IHttpContextAccessor>());
+
         services.AddDbContext<FantasticUniverseProjectContext>();
         services.AddIdentity<AppUser, AppRole>()
                 .AddEntityFrameworkStores<FantasticUniverseProjectContext>()
@@ -40,6 +43,9 @@ public class Startup
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
     {
+        app.UseMiddleware<UserContextMiddleware>();
+
+
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
