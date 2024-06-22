@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using NLayer.Core.Entities.Abstract;
 using NLayer.Core.Entities.Authentication;
+using NLayer.Core.Entities.Concrete;
+using NLayer.Core.Utilities.UserOperations;
 using NLayer.DataAccess.Concretes.EntityFramework.Configuration;
 using NLayer.Entities.Concretes;
 using System.Data;
@@ -11,9 +11,7 @@ using System.Data;
 namespace NLayer.DataAccess.Concretes.EntityFramework;
 
 public class FantasticUniverseProjectContext : IdentityDbContext<AppUser, AppRole, int> // IdentityDbContext, DbContext sınıfından miras alır
-{
-    
-    private int _userId;
+{    
     public DbSet<Ability> Abilities { get; set; }
     public DbSet<AbilityCharacter> AbilityCharacters { get; set; }
     public DbSet<AdventureCharacter> AdventureCharacters { get; set; }
@@ -27,6 +25,8 @@ public class FantasticUniverseProjectContext : IdentityDbContext<AppUser, AppRol
     public DbSet<UnionCharacter> UnionCharacters { get; set; }
     public DbSet<Union> Unions { get; set; }
     public DbSet<Universe> Universes { get; set; }
+    public DbSet<UniverseImage> UniverseImages { get; set; }
+    public DbSet<UserImage> UserImages { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -51,22 +51,17 @@ public class FantasticUniverseProjectContext : IdentityDbContext<AppUser, AppRol
         modelBuilder.ApplyConfiguration(new UnionCharacterConfiguration());
         modelBuilder.ApplyConfiguration(new UnionConfiguration());
         modelBuilder.ApplyConfiguration(new UniverseConfiguration());
+        modelBuilder.ApplyConfiguration(new UniverseImageConfiguration());
+        modelBuilder.ApplyConfiguration(new UserImageConfiguration());
         base.OnModelCreating(modelBuilder);
     }
     public override int SaveChanges()
     {
-        var httpContext = GetHttpContext();
-        _userId = Convert.ToInt32(httpContext?.Items["UserId"]);
-        OnBeforeSaving();
+        var userId = AccessUser.GetUserId();
+        OnBeforeSaving(userId);
         return base.SaveChanges();
     }
-    private HttpContext GetHttpContext()
-    {
-        var serviceProvider = this.GetInfrastructure();
-        var httpContextAccessor = serviceProvider.GetService(typeof(IHttpContextAccessor)) as IHttpContextAccessor;
-        return httpContextAccessor?.HttpContext;
-    }
-    protected virtual void OnBeforeSaving()
+    protected virtual void OnBeforeSaving(int userId)
     {
         this.ChangeTracker.DetectChanges();
         var added = this.ChangeTracker.Entries()
@@ -82,7 +77,7 @@ public class FantasticUniverseProjectContext : IdentityDbContext<AppUser, AppRol
                 this.Entry(entity).Property(nameof(IEntity.DeletedDate)).IsModified = false;
                 track.CreatedDate = GetDbDateTime();
                 track.IsActive = true;
-                track.CreatedBy = _userId;
+                track.CreatedBy = userId;
             }
         }
         var modified = this.ChangeTracker.Entries()
@@ -99,7 +94,7 @@ public class FantasticUniverseProjectContext : IdentityDbContext<AppUser, AppRol
                 this.Entry(entity).Property(nameof(IEntity.CreatedDate)).IsModified = false;
                 track.UpdatedDate = GetDbDateTime();
                 track.IsActive = true;
-                track.ModifiedBy = _userId;
+                track.ModifiedBy = userId;
             }
         }
     }

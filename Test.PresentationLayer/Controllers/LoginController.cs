@@ -30,7 +30,6 @@ public class LoginController : Controller
             if (user.EmailConfirmed == true)
             {
                 HttpContext.Session.SetString("UserName", user.UserName);
-                HttpContext.Session.SetString("ImageUrl", user.ImageUrl);
                 return RedirectToAction("Index", "MainPage");
             }//Lütfen Mail Adresinizi onaylayınız
         }//kullanıcı adı veya şifre hatalı

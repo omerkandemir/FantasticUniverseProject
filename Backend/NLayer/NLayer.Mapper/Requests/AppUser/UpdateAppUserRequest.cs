@@ -11,5 +11,5 @@ public class UpdateAppUserRequest : IUpdateRequest
     public string Username { get; set; }
     public string City { get; set; }
     public string District { get; set; }
-    public string ImageUrl { get; set; }
+    public int UniverseImageId { get; set; }
 }

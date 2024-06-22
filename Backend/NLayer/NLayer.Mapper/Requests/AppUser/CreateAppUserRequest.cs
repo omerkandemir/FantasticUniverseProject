@@ -10,7 +10,7 @@ public class CreateAppUserRequest : ICreateRequest
     public string Username { get; set; }
     public string City { get; set; }
     public string District { get; set; }
-    public string ImageUrl { get; set; }
+    public int UniverseImageId { get; set; }
     public string Password { get; set; }
     public string ConfirmPassword { get; set; }
 }

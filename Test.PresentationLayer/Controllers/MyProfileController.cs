@@ -27,7 +27,7 @@ public class MyProfileController : Controller
             City = values.City,
             District = values.District,
             Username = values.UserName,
-            ImageUrl = values.ImageUrl,
+            UniverseImageId = values.UniverseImageId,
         };
         return View(updateAppUserRequest);
     }
@@ -47,7 +47,7 @@ public class MyProfileController : Controller
         user.City = updateAppUserRequest.City;
         user.District = updateAppUserRequest.District;
         user.UserName = updateAppUserRequest.Username;
-        user.ImageUrl = updateAppUserRequest.ImageUrl;
+        user.UniverseImageId = updateAppUserRequest.UniverseImageId;
        var result = await _userManager.UpdateAsync(user);   
         if (result.Succeeded)
         {

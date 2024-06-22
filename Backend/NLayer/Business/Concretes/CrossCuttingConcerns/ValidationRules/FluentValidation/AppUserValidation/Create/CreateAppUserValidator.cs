@@ -19,5 +19,6 @@ public class CreateAppUserValidator : BaseCreateValidator<CreateAppUserRequest>
         RuleFor(x => x.Name).MaximumLength(2).WithMessage("Lütfen en az 2 karakter girişi yapın");
         RuleFor(x => x.Password).Equal(y=>y.ConfirmPassword).WithMessage("Parolanız eşleşmiyor");
         RuleFor(x => x.Email).EmailAddress().WithMessage("Lütfen geçerli bir mail adresi giriniz");
+        RuleFor(x => x.UniverseImageId).NotEmpty().WithMessage("Lütfen görsel seçiniz.");
     }
 }

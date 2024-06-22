@@ -14,6 +14,8 @@ body, html {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     max-width: 800px;
     width: 100%;
+    box-sizing: border-box; /* padding ve border'ý geniþlik hesabýna dahil et ---*/
+    transition: all 0.3s ease; /* Geçiþ efekti ---*/
 }
 
 .form-group {
@@ -49,10 +51,4 @@ label {
 .validation-summary-errors {
     color: #dc3545;
     margin-bottom: 1rem;
-}
-#image-preview {
-    display: block;
-    margin-top: 20px;
-    max-width: 100%;
-    max-height: 300px;
 }

@@ -46,7 +46,7 @@ public class ConfirmMailController : Controller
             ViewBag.City = _appUser.City;
             ViewBag.District = _appUser.District;
             ViewBag.UserName = _appUser.UserName;
-            ViewBag.ImageUrl = _appUser.ImageUrl;
+            ViewBag.UniverseImageId = _appUser.UniverseImageId;
             ViewBag.ConfirmCode = _appUser.ConfirmCode;
         }
     }

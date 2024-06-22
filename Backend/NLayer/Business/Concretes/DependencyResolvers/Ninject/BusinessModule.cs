@@ -1,6 +1,7 @@
 ﻿using Ninject.Modules;
 using NLayer.Business.Abstracts;
 using NLayer.Business.Concretes.Managers;
+using NLayer.Core.Utilities.ImageOperations;
 using NLayer.DataAccess.Abstracts;
 using NLayer.DataAccess.Concretes.EntityFramework;
 
@@ -48,5 +49,13 @@ public class BusinessModule : NinjectModule
 
         Bind<IUniverseService>().To<UniverseManager>().InSingletonScope();
         Bind<IUniverseDal>().To<EfUniverseDal>().InSingletonScope();
+
+        Bind<IUniverseImageService>().To<UniverseImageManager>().InSingletonScope();
+        Bind<IUniverseImageDal>().To<EfUniverseImageDal>().InSingletonScope();
+
+        Bind<IUserImageService>().To<UserImageManager>().InSingletonScope();
+        Bind<IUserImageDal>().To<EfUserImageDal>().InSingletonScope();
+
+        Bind<IGetDefaultImages>().To<GetDefaultImages>().InSingletonScope();
     }
 }

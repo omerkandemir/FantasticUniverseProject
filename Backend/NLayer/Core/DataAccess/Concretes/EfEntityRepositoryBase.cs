@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using NLayer.Core.DataAccess.Abstracts;
 using NLayer.Core.Entities.Abstract;
 using NLayer.Core.Entities.Authentication;
@@ -24,22 +25,42 @@ public class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEnti
     {
         CrudOperation(entity, EntityState.Deleted);
     }
-    public TEntity Get(Expression<Func<TEntity, bool>> filter)
+    public TEntity Get(
+        Expression<Func<TEntity, bool>> filter,
+        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
     {
         using (TContext context = new TContext())
         {
-            return context.Set<TEntity>().SingleOrDefault(filter);
+            IQueryable<TEntity> query = Query(include, context);
+
+            return query.FirstOrDefault(filter);
         }
     }
 
-    public List<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null)
+    public List<TEntity> GetAll(
+        Expression<Func<TEntity, bool>> filter = null,
+        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
     {
         using (TContext context = new TContext())
         {
-            //filtre nullsa TEntity e abone et. Null değilse Where uygula onu da listeyi çevirmeyi unutma :)
-            return filter == null ? context.Set<TEntity>().ToList() : context.Set<TEntity>().Where(filter).ToList();
+            IQueryable<TEntity> query = Query(include, context);
+
+            return filter == null ? query.ToList() : query.Where(filter).ToList();
         }
     }
+
+    private IQueryable<TEntity> Query(Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include, TContext context)
+    {
+        IQueryable<TEntity> query = context.Set<TEntity>();
+
+        if (include != null)
+        {
+            query = include(query);
+        }
+
+        return query;
+    }
+
     private void CrudOperation(TEntity entity, EntityState entityState)
     {
         try

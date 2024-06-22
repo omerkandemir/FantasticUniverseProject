@@ -2,6 +2,7 @@
 using Autofac.Extensions.DependencyInjection;
 using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.AppUserValidation;
 using NLayer.Core.Entities.Authentication;
+using NLayer.Core.Utilities.UserOperations;
 using NLayer.DataAccess.Concretes.EntityFramework;
 using NLayer.Dto.Autofac;
 
@@ -58,6 +59,9 @@ public class Startup
             app.UseExceptionHandler("/Home/Error");
             app.UseHsts();
         }
+        var httpContextAccessor = app.ApplicationServices.GetRequiredService<IHttpContextAccessor>();
+        AccessUser.Configure(httpContextAccessor);
+
         app.UseMiddleware<UserContextMiddleware>();
 
         app.UseHttpsRedirection();
@@ -74,7 +78,7 @@ public class Startup
         {
             endpoints.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Login}/{action=Index}/{id?}");
+                pattern: "{controller=Register}/{action=Index}/{id?}");
         });
     }
 }
