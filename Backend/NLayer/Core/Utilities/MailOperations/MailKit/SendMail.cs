@@ -23,4 +23,10 @@ public static class SendMail
         smtpClient.Send(mimeMessage);
         smtpClient.Disconnect(true);
     }
+
+    public static int GenerateConfirmCode()
+    {
+        Random random = new Random();
+        return random.Next(100000, 1000000);
+    }
 }

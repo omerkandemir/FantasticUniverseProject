@@ -1,5 +1,11 @@
 ﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
 
+@{
+    var userName = @HttpContextAccessor.HttpContext.Session.GetString("UserName");
+    var imageURL = @HttpContextAccessor.HttpContext.Session.Get("ImageURL");
+    string base64Image = imageURL != null ? Convert.ToBase64String(imageURL) : string.Empty;
+}
+
 <header>
     <nav class="navbar">
         <div class="navbar-brand">
@@ -12,8 +18,22 @@
             <li><a href="/MyProfile/Index">Profilim</a></li>
         </ul>
         <div class="navbar-user">
-            <img src="test" alt="Kullanıcı Resmi" class="user-img">
-            <span class="username">@HttpContextAccessor.HttpContext.Session.GetString("UserName")</span>
+            <img src="data:image/jpeg;base64,@base64Image" alt="Kullanıcı Resmi" class="user-img">
+            <span class="username">@userName</span>
+            <div class="dropdown">
+                <button class="dropbtn">▼</button>
+                <div class="dropdown-content">
+                    <a href="/MyProfile/Index">Profilim</a>
+                    <a href="/MyProfile/ChangeProfileImage">Profil Resmi Değiştirme</a>
+                    <a href="/MyProfile/ChangeEmail">E-mail Değiştirme</a>
+                    <a href="/MyProfile/ChangePassword">Parola Değiştirme</a>
+                    <a href="javascript:;" onclick="document.getElementById('logoutForm').submit();" class="dropdown-item">Çıkış Yap</a>
+
+                    <form id="logoutForm" asp-controller="MyProfile" asp-action="Logout" method="post" style="display: none;">
+                        @Html.AntiForgeryToken()
+                    </form>
+                </div>
+            </div>
         </div>
     </nav>
 </header>

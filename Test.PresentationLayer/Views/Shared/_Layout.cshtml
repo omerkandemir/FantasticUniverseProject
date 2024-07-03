@@ -3,9 +3,8 @@
 @await Component.InvokeAsync("_MainLayoutHeadPartial")
 <body>
     @await Component.InvokeAsync("_MainLayoutHeaderPartial")
-
     <!-- İçerik buraya gelecek -->
-    <main>
+    <main role="main">
         <section class="content">
             <!-- Kullanıcının içeriği buraya gelecek -->
             @RenderBody()

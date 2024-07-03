@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NLayer.Core.Entities.Authentication;
-using Test.PresentationLayer.Models;
+using Test.PresentationLayer.Models.AppUser;
 
 namespace Test.PresentationLayer.Controllers;
 

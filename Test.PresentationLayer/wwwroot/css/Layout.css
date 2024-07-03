@@ -1,0 +1,195 @@
+/* Genel stiller */
+body {
+    font-family: 'Arial', sans-serif; /* Tüm sayfa için varsayýlan font ailesi */
+    margin: 0; /* Sayfanýn kenar boþluðunu sýfýrlar */
+    padding: 0; /* Sayfanýn iç boþluðunu sýfýrlar */
+    box-sizing: border-box; /* Kutu modelini sýnýrlar içine alýr (padding ve border hesaplar) */
+}
+
+/* Header ve Navbar Stilleri */
+header {
+    background-color: #333; /* Header arka plan rengi */
+    color: #fff; /* Header metin rengi */
+    padding: 10px 0; /* Header iç boþluðu */
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000; /* Header'ý en önde tutmak için z-index */
+}
+main {
+    padding-top: 60px; /* Header'ýn ve navbar'ýn yüksekliði kadar padding top  */
+    padding-bottom: 60px; /* Footer'ýn yüksekliði kadar padding bottom  */
+}
+
+.navbar {
+    display: flex; /* Navbar'ý flex konteyner olarak düzenler */
+    justify-content: space-between; /* Elemanlarý arasýnda boþluk býrakýr */
+    align-items: center; /* Elemanlarý dikeyde ortalar */
+    max-width: 1200px; /* Navbar'ýn maksimum geniþliði */
+    margin: 0 auto; /* Navbar'ý ortalar */
+    padding: 0 20px; /* Navbar iç boþluðu */
+}
+
+.navbar-brand .logo {
+    color: #fff; /* Marka logosunun metin rengi */
+    text-decoration: none; /* Link altý çizgisini kaldýrýr */
+    font-size: 24px; /* Marka logosu font büyüklüðü */
+    font-weight: bold; /* Marka logosu kalýnlýðý */
+}
+
+.navbar-nav {
+    list-style: none; /* Liste iþaretlerini kaldýrýr */
+    display: flex; /* Menü öðelerini flex konteyner olarak düzenler */
+    gap: 15px; /* Öðeler arasýnda boþluk býrakýr */
+    margin: 0; /* Menü iç boþluðu */
+    padding: 0; /* Menü iç boþluðu */
+}
+
+    .navbar-nav li a {
+        color: #fff; /* Menü linklerinin metin rengi */
+        text-decoration: none; /* Link altý çizgisini kaldýrýr */
+        padding: 10px 15px; /* Link iç boþluðu */
+        transition: background-color 0.3s; /* Arka plan geçiþ efekti süresi */
+    }
+
+        .navbar-nav li a:hover {
+            background-color: #555; /* Link üzerine gelindiðinde arka plan rengi */
+            border-radius: 5px; /* Link kenar yuvarlama */
+        }
+
+.navbar-user {
+    display: flex; /* Kullanýcý bölümünü flex konteyner olarak düzenler */
+    align-items: center; /* Elemanlarý dikeyde ortalar */
+    position: relative; /* Pozisyonu belirler */
+}
+
+.user-img {
+    width: 40px; /* Kullanýcý resmi geniþliði */
+    height: 40px; /* Kullanýcý resmi yüksekliði */
+    border-radius: 50%; /* Kullanýcý resmi kenar yuvarlama */
+    margin-right: 10px; /* Sað boþluk */
+}
+
+.username {
+    font-size: 16px; /* Kullanýcý adý font büyüklüðü */
+    color: #fff; /* Kullanýcý adý metin rengi */
+}
+
+/* Dropdown Menü Stilleri */
+.dropdown {
+    position: relative; /* Pozisyonu belirler */
+    display: inline-block; /* Ýçeriði blok olarak düzenler */
+}
+
+.dropbtn {
+    background-color: transparent; /* Düðme arka plan rengi */
+    border: none; /* Düðme kenarlýk yok */
+    cursor: pointer; /* Ýmleç türü */
+    font-size: 16px; /* Düðme font büyüklüðü */
+    color: #fff; /* Düðme metin rengi */
+    border-radius: 5px; /* Düðme kenar yuvarlama */
+    transition: background-color 0.3s; /* Arka plan geçiþ efekti süresi */
+}
+
+.dropdown-content {
+    display: none; /* Dropdown içeriði baþlangýçta gizlidir */
+    position: absolute; /* Pozisyonu belirler */
+    right: 0; /* Sað kenara hizalar */
+    background-color: #fff; /* Arka plan rengi */
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* Kutu gölgesi */
+    z-index: 1; /* Yýðýnlama sýrasý */
+    min-width: 160px; /* Minimum geniþlik */
+    margin-top: 10px; /* Üst kenara boþluk býrakýr */
+    border-radius: 10px; /* Kenar yuvarlama */
+}
+
+    .dropdown-content a {
+        color: black; /* Dropdown içeriði metin rengi */
+        padding: 12px 16px; /* Ýçerik iç boþluðu */
+        text-decoration: none; /* Link altý çizgisini kaldýrýr */
+        display: block; /* Blok düzenleme */
+        border-bottom: 1px solid #f1f1f1; /* Satýr çizgisi */
+    }
+
+        .dropdown-content a:hover {
+            background-color: #f1f1f1; /* Link üzerine gelindiðinde arka plan rengi */
+        }
+
+/* Dropdown Menünün Görünmesi */
+.navbar-user:hover .dropdown-content {
+    display: block; /* Kullanýcý bölümüne gelindiðinde dropdown içeriði görünür olur */
+}
+
+/* Medya Sorgularý */
+@media (max-width: 768px) {
+    main {
+        padding-top: 60px; /* Küçük ekranlarda da header yüksekliði kadar boþluk */
+        padding-bottom: 60px; /* Küçük ekranlarda da footer yüksekliði kadar boþluk */
+    }
+    .navbar {
+        flex-direction: column; /* Yatay yerine dikey düzenleme */
+        align-items: flex-start; /* Sol üst köþeye hizalar */
+        padding: 0 10px; /* Boþluk ayarlarý */
+    }
+
+    .navbar-nav {
+        flex-direction: column; /* Yatay yerine dikey düzenleme */
+        gap: 10px; /* Boþluk ayarlarý */
+        width: 100%; /* Geniþlik ayarlarý */
+    }
+
+        .navbar-nav li {
+            width: 100%; /* Geniþlik ayarlarý */
+        }
+
+            .navbar-nav li a {
+                display: block; /* Blok düzenleme */
+                width: 100%; /* Geniþlik ayarlarý */
+                text-align: left; /* Sol hizalama */
+            }
+
+    .navbar-user {
+        flex-direction: column; /* Yatay yerine dikey düzenleme */
+        align-items: flex-start; /* Sol üst köþeye hizalar */
+        width: 100%; /* Geniþlik ayarlarý */
+    }
+
+    .username, .dropbtn {
+        width: 100%; /* Geniþlik ayarlarý */
+        text-align: left; /* Sol hizalama */
+    }
+
+    .dropdown-content {
+        right: 0; /* Sað kenara hizalar */
+        left: 0; /* Sol kenara hizalar */
+    }
+}
+
+@media (max-width: 480px) {
+    .navbar-brand .logo {
+        font-size: 20px; /* Font büyüklüðü ayarlarý */
+    }
+
+    .username {
+        font-size: 14px; /* Font büyüklüðü ayarlarý */
+    }
+
+    .dropbtn {
+        font-size: 14px; /* Font büyüklüðü ayarlarý */
+    }
+
+    .dropdown-content a {
+        padding: 10px 14px; /* Ýçerik iç boþluðu */
+    }
+}
+
+/* Footer Stilleri */
+footer {
+    background-color: #333; /* Arka plan rengi */
+    color: #fff; /* Metin rengi */
+    text-align: center; /* Metni merkezler */
+    padding: 10px 0; /* Ýç boþluk ayarlarý */
+    position: fixed; /* Pozisyonu belirler */
+    width: 100%; /* Geniþlik ayarlarý */
+    bottom: 0; /* Alt kenara hizalar */
+}

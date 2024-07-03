@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using NLayer.Core.Entities.Authentication;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Mapper.Requests.AppUser;
-using Test.PresentationLayer.Models;
+using Test.PresentationLayer.Models.AppUser;
 
 namespace Test.PresentationLayer.Controllers;
 

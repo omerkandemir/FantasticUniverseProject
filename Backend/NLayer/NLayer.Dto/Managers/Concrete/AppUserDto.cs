@@ -25,16 +25,13 @@ public class AppUserDto : IAppUserDto
     }
     public async Task<IErrorResponse> AddAsync(CreateAppUserRequest request)
     {
-        Random random = new Random();
-        int code = random.Next(100000, 1000000);
         var value = _mapper.Map<AppUser>(request);
-        value.ConfirmCode = code;
+        value.ConfirmCode = SendMail.GenerateConfirmCode();
         var result = await _userManager.CreateAsync(value, request.Password);
         var response = _mapper.Map<CreatedAppUserResponse>(value);
         if (result.Succeeded)
         {
-           SendMail.SendConfirmCodeMail(code, value);
-
+            SendMail.SendConfirmCodeMail(value.ConfirmCode, value);
             return new SuccessResponse(response);
         }
         else
@@ -44,7 +41,7 @@ public class AppUserDto : IAppUserDto
             return new ErrorResponse(errorMessage);
         }
     }
-
+    
     public IErrorResponse Update(UpdateAppUserRequest request)
     {
         throw new NotImplementedException();

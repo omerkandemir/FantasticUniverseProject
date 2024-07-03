@@ -30,6 +30,7 @@
 
 	<ItemGroup>
 		<Folder Include="Business\Utilities\" />
+		<Folder Include="FirstDatas\Images\" />
 	</ItemGroup>
 
 </Project>

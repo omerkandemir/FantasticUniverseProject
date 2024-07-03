@@ -5,6 +5,7 @@ using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Core.Entities.Concrete;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Mapper.Requests.UserImage;
+using NLayer.Mapper.Responses.UniverseImage;
 using NLayer.Mapper.Responses.UserImage;
 
 namespace NLayer.Dto.Managers.Concrete;
@@ -76,7 +77,12 @@ public class UserImageDto : IUserImageDto
         var response = _mapper.Map<List<GetAllUserImageResponse>>(value.Data);
         return response;
     }
-
+    public List<GetAllUniverseImageResponse> GetUsersImage()
+    {
+        var value = _userImageService.GetUsersImage();
+        var response = _mapper.Map<List<GetAllUniverseImageResponse>>(value.Data);
+        return response;
+    }
     public void AddUserFirstImages()
     {
         _userImageService.AddUserFirstImages();

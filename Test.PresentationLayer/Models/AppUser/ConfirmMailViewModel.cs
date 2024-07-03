@@ -1,4 +1,4 @@
-﻿namespace Test.PresentationLayer.Models;
+﻿namespace Test.PresentationLayer.Models.AppUser;
 
 public class ConfirmMailViewModel
 {
