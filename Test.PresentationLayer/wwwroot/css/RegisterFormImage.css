@@ -1,0 +1,58 @@
+#image-gallery-container {
+    overflow-x: auto; /* Yatay kaydýrma çubuðunu göstermek için kullanýlýr. Eðer içerik yatay yönde taþarsa, kullanýcýlar kaydýrarak tüm içeriði görebilir. */
+    white-space: nowrap; /* Tüm resimleri bir satýrda tutmak için kullanýlýr. Bu özellik, içeriklerin bir satýrda yan yana yerleþmesini saðlar. */
+}
+
+#image-gallery {
+    display: inline-block; /* Yatay sýralama için kullanýlýr. Öðelerin birbirlerine yatay olarak hizalanmasýný saðlar. */
+    flex-wrap: wrap; /*Öðelerin esnek kutulama (flexbox) düzenini sarmasýný saðlar. Yani içerik sýðmadýðýnda bir sonraki satýra geçmesini saðlar.*/
+    padding: 10px; /*Öðelerin iç kýsmýndaki dolgu miktarýný belirler.*/
+    background-color: transparent; /* Arka plan rengini saydam (transparent) olarak ayarlar.*/
+}
+
+.image-item {
+    flex: 0 0 calc(25% - 20px); /* Öðelerin büyüme faktörünü, küçülme faktörünü ve temel geniþliðini belirler. Bu özellik, öðelerin sarma düzeni içinde nasýl yerleþtirileceðini ayarlar. */
+    max-width: calc(25% - 20px); /* Öðelerin maksimum geniþliðini belirler. */
+    height: 100px; /* Öðelerin sabit yüksekliðini belirler. */
+    margin-right: 20px; /* Öðeler arasýndaki boþluðu saðlar. */
+    position: relative; /*Öðenin konumlamasýný belirler.*/
+    text-align: center; /* Ýçeriðin merkeze alýnmasýný saðlar */
+    border: 2px solid black; /* Öðenin kenarlýk (border) stilini belirler.*/
+    overflow: hidden; /*Ýçerik taþma durumunda görünmeyen kýsmýnýn gizlenmesini saðlar.*/
+    display: inline-block; /* Yatay sýralama için kullanýlýr. */
+    justify-content: center; /* Ýçeriðin yatay hizalanmasýný merkeze alýr.*/
+    align-items: center; /*Ýçeriðin dikey hizalanmasýný merkeze alýr.*/
+    background-color: transparent; /* Arka plan rengini saydam (transparent) olarak ayarlar.*/
+}
+
+    .image-item img {
+        width: 100%; /* Resmin geniþliðini tam geniþlik olarak ayarlar. */
+        height: 100%; /* Resmin yüksekliðini tam geniþlik olarak ayarlar.*/
+        object-fit: cover; /*  Resmi çerçevenin tamamýný kaplayacak þekilde boyutlandýrýr. */
+        object-position: center; /*  Resmi çerçeve içinde ortalar. */
+        cursor: pointer; /* Fare imlecinin resmin üzerine geldiðinde deðiþmesini saðlar. */
+        padding: 0px; /* Ýçerik içindeki dolgu miktarýný sýfýrlar. */
+        box-sizing: border-box; /*  Padding'i geniþliðe ve yüksekliðe dahil eder. */
+        border: 2px solid black; /*Resmin kenarlýk (border) stilini belirler.*/
+    }
+
+    .image-item.selected img {
+        border: 2px solid blue; /* Seçili resmin kenarlýk (border) stilini belirler. */
+        background-color: rgba(0, 0, 0, 0.1); /* Hafif arka plan rengi verir */
+    }
+
+#selected-image-preview-container {
+    display: none; /*Önizleme container'ýný varsayýlan olarak gizler.*/
+    position: relative; /*Önizleme container'ýnýn konumunu belirler.*/
+    width: 150px; /* Listelenen görsellerin geniþliði ile uyumlu olarak ayarlar. */
+    height: 200px; /*  Listelenen görsellerin yüksekliði ile uyumlu olarak ayarlar. */
+    overflow: hidden; /*Ýçerik taþma durumunda görünmeyen kýsmýnýn gizlenmesini saðlar.*/
+}
+
+#selected-image-preview {
+    width: 100%; /*  Önizleme resminin geniþliðini otomatik ayarlar. */
+    height: 93%; /*  Önizleme resminin yüksekliðini otomatik ayarlar.*/
+    object-fit: cover; /* Önizleme resmini çerçevenin tamamýný kaplayacak þekilde boyutlandýrýr. */
+    object-position: center; /* Önizleme resminin çerçeve içinde ortalanmasýný saðlar. */
+    border: none; /* Varsayýlan sýnýrý kaldýrýr */
+}

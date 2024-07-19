@@ -6,6 +6,7 @@ using FluentValidation;
 using NLayer.Business.Abstracts;
 using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.AbilityCharacterValidation.Create;
 using NLayer.Business.Concretes.Managers;
+using NLayer.Core.Utilities.ImageOperations;
 using NLayer.Core.Utilities.Interceptors;
 using NLayer.DataAccess.Abstracts;
 using NLayer.DataAccess.Concretes.EntityFramework;
@@ -88,6 +89,17 @@ public class AutofacBusinessModule : Module
 
         builder.RegisterType<AdventureCharacterManager>().As<IAdventureCharacterService>().SingleInstance();
         builder.RegisterType<EfAdventureCharacterDal>().As<IAdventureCharacterDal>().SingleInstance();
+
+        builder.RegisterType<UniverseImageManager>().As<IUniverseImageService>().SingleInstance();
+        builder.RegisterType<EfUniverseImageDal>().As<IUniverseImageDal>().SingleInstance();
+
+        builder.RegisterType<UserImageManager>().As<IUserImageService>().SingleInstance();
+        builder.RegisterType<EfUserImageDal>().As<IUserImageDal>().SingleInstance();
+
+        builder.RegisterType<EfAppUserDal>().As<IAppUserDal>().SingleInstance();
+        builder.RegisterType<AppUserManager>().As<IAppUserService>().SingleInstance();
+
+        builder.RegisterType<GetDefaultImages>().As<IGetDefaultImages>().SingleInstance();
 
         builder.RegisterType<CreateAbilityCharacterValidator>().As<IValidator<CreateAbilityCharacterRequest>>();
     }

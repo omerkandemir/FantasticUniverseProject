@@ -1,0 +1,48 @@
+﻿@model ChangeEmailViewModel
+@{
+    ViewData["Title"] = "ChangeEmail";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kullanıcı Bilgileri</title>
+    <link href="~/css/UpdateUserForm.css?v=1.0" rel="stylesheet" />
+</head>
+<body>
+    <div class="form-container">
+        <h2>Kullanıcı Bilgileri</h2>
+        <br />
+        <div asp-validation-summary="ModelOnly" class="validation-summary-errors"></div>
+        @if (ViewBag.SuccessMessage != null)
+        {
+            <div class="success-message">
+                @ViewBag.SuccessMessage
+            </div>
+        }
+        <br />
+        <form method="post">
+            <div class="form-group">
+                <label asp-for="Email">Email</label>
+                <input type="email" asp-for="Email" class="form-control" placeholder="Email" required />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password">Şifre</label>
+                <input type="password" asp-for="Password" class="form-control" placeholder="Şifre" required />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Güncelle</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using NLayer.Business.Abstracts;
 using NLayer.Core.Dto.Abstracts;
+using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Entities.Concretes;
 using NLayer.Mapper.Requests.Union;
@@ -17,26 +18,47 @@ public class UnionDto : IUnionDto
         _unionService = unionService;
         _mapper = mapper;
     }
-    public ICreatedResponse Add(CreateUnionRequest request)
+    public IErrorResponse Add(CreateUnionRequest request)
     {
         var value = _mapper.Map<Union>(request);
-        _unionService.Add(value);
+        var result = _unionService.Add(value);
         var response = _mapper.Map<CreatedUnionResponse>(value);
-        return response;
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessResponse(response);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
     }
-    public IUpdatedResponse Update(UpdateUnionRequest request)
+    public IErrorResponse Update(UpdateUnionRequest request)
     {
         var value = _mapper.Map<Union>(request);
-        _unionService.Update(value);
+        var result = _unionService.Update(value);
         var response = _mapper.Map<UpdatedUnionResponse>(value);
-        return response;
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessResponse(response);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
     }
-    public IDeletedResponse Delete(DeleteUnionRequest request)
+    public IErrorResponse Delete(DeleteUnionRequest request)
     {
         var value = _mapper.Map<Union>(request);
-        _unionService.Delete(value);
+        var result = _unionService.Delete(value);
         var response = _mapper.Map<DeletedUnionResponse>(value);
-        return response;
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessResponse(response);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
     }
 
     public IGetResponse Get(object id)

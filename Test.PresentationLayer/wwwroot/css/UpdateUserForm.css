@@ -1,0 +1,81 @@
+﻿/* Form Container */
+.form-container {
+    max-width: 500px;
+    width: 100%; /* Formun genişliğini %100 yapar */
+    margin: 20px auto; /* Otomatik hizalama */
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+    /* Form Header */
+    .form-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+/* Form Elementleri */
+.form-group {
+    margin-bottom: 20px;
+}
+
+    .form-group label {
+        display: block;
+        font-weight: bold;
+    }
+
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: border-color 0.3s;
+}
+
+    .form-control:focus {
+        outline: none;
+        border-color: #007bff;
+    }
+
+/* Hata Mesajları */
+.text-danger {
+    color: #ff0000;
+    font-size: 0.875em;
+}
+
+/* Checkbox ve Buton Stilleri */
+.form-check-label {
+    font-weight: normal;
+}
+
+.btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+    .btn:hover {
+        background-color: #0056b3;
+    }
+
+.success-message {
+    color: #28a745;
+    list-style-type: disc; /* Madde işareti */
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 20px; /* Formun üstünde biraz boşluk bırakmak için */
+}
+.field-validation-error {
+    color: #dc3545;
+    font-size: 0.875em;
+    list-style-type: disc; 
+    margin-left: 20px; 
+}

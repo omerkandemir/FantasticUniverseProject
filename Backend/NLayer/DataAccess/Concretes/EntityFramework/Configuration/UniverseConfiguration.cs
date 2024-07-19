@@ -20,5 +20,9 @@ public class UniverseConfiguration : BaseEntityConfiguration<Universe>
             HasMany(x => x.Galaxies).
             WithOne(x => x.Universe).
             HasForeignKey(x => x.UniverseId);
+        builder.
+            HasMany(x => x.UniverseImages).
+            WithOne(x => x.Universe).
+            HasForeignKey(x => x.UniverseId);
     }
 }

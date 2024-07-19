@@ -1,12 +1,15 @@
-﻿using NLayer.Core.Entities.Abstract;
+﻿using Microsoft.EntityFrameworkCore.Query;
+using NLayer.Core.Entities.Abstract;
 using System.Linq.Expressions;
 
 namespace NLayer.Core.DataAccess.Abstracts;
 
 public interface IEntityRepository<T> where T : class, IEntity, new()
 {
-    List<T> GetAll(Expression<Func<T, bool>> filter = null); 
-    T Get(Expression<Func<T, bool>> filter);
+    List<T> GetAll(Expression<Func<T, bool>> filter = null,
+        Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null); 
+    T Get(Expression<Func<T, bool>> filter = null,
+        Func<IQueryable<T>, IIncludableQueryable<T, object>> include = null);
     void Add(T entity);
     void Update(T entity);
     void Delete(T entity);

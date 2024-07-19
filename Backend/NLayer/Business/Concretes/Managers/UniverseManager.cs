@@ -14,6 +14,20 @@ public class UniverseManager : BaseManager<Universe, IUniverseDal>, IUniverseSer
     public UniverseManager(IUniverseDal tdal) : base(tdal)
     {
     }
+
+    public void AddFirstUniverseData()
+    {
+        if (_tdal.GetAll(ui => ui.Name == "Fantastic Universe").Any())
+        {
+            return;
+        }
+        var universe = new Universe()
+        {
+            Name = "Fantastic Universe",
+        };
+        _tdal.Add(universe);
+    }
+
     [ValidationAspect(typeof(CreateUniverseValidator), Priority = 1)]
     public override IReturnType Add(Universe Value)
     {

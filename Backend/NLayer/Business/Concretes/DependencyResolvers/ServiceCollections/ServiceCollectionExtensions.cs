@@ -19,6 +19,9 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IAdventureService, AdventureManager>();
         services.AddSingleton<IAdventureDal, EfAdventureDal>();
 
+        services.AddSingleton<IAdventureCharacterService, AdventureCharacterManager>();
+        services.AddSingleton<IAdventureCharacterDal, EfAdventureCharacterDal>();
+
         services.AddSingleton<ICharacterService, CharacterManager>();
         services.AddSingleton<ICharacterDal, EfCharacterDal>();
 
@@ -46,8 +49,11 @@ public static class ServiceCollectionExtensions
         services.AddSingleton<IUniverseService, UniverseManager>();
         services.AddSingleton<IUniverseDal, EfUniverseDal>();
 
-        services.AddSingleton<IAdventureCharacterService, AdventureCharacterManager>();
-        services.AddSingleton<IAdventureCharacterDal, EfAdventureCharacterDal>();
+        services.AddSingleton<IUniverseImageService, UniverseImageManager>();
+        services.AddSingleton<IUniverseImageDal, EfUniverseImageDal>();
+
+        services.AddSingleton<IUserImageService, UserImageManager>();
+        services.AddSingleton<IUserImageDal, EfUserImageDal>();
     }
 }
 

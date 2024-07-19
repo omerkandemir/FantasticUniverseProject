@@ -1,0 +1,68 @@
+﻿@model UpdateAppUserRequest
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kullanıcı Bilgileri</title>
+    <link href="~/css/UpdateUserForm.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="form-container">
+        <h2>Kullanıcı Bilgileri</h2>
+        <br />
+        <div asp-validation-summary="ModelOnly" class="validation-summary-errors"></div>
+        @if (ViewBag.SuccessMessage != null)
+        {
+            <div class="success-message">
+                @ViewBag.SuccessMessage
+            </div>
+        }
+        <br />
+        <form method="post">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="Name"></label>
+                    <input type="text" asp-for="Name" class="form-control" placeholder="Name" required />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="Surname"></label>
+                    <input type="text" asp-for="Surname" class="form-control" placeholder="Surname" required />
+                    <span asp-validation-for="Surname" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="UserName"></label>
+                    <input type="text" asp-for="UserName" class="form-control" placeholder="UserName" required />
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label asp-for="City"></label>
+                    <input type="text" asp-for="City" class="form-control" placeholder="City" required />
+                    <span asp-validation-for="City" class="text-danger"></span>
+                </div>
+                <div class="form-group col-md-6">
+                    <label asp-for="District"></label>
+                    <input type="text" asp-for="District" class="form-control" placeholder="District" required />
+                    <span asp-validation-for="District" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Güncelle</button>
+            </div>
+        </form>
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>

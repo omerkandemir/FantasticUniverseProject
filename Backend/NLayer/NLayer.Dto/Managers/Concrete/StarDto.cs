@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using NLayer.Business.Abstracts;
 using NLayer.Core.Dto.Abstracts;
+using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Entities.Concretes;
 using NLayer.Mapper.Requests.Star;
@@ -17,26 +18,47 @@ public class StarDto : IStarDto
         _starService = starService;
         _mapper = mapper;
     }
-    public ICreatedResponse Add(CreateStarRequest request)
+    public IErrorResponse Add(CreateStarRequest request)
     {
         var value = _mapper.Map<Star>(request);
-        _starService.Add(value);
+        var result = _starService.Add(value);
         var response = _mapper.Map<CreatedStarResponse>(value);
-        return response;
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessResponse(response);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
     }
-    public IUpdatedResponse Update(UpdateStarRequest request)
+    public IErrorResponse Update(UpdateStarRequest request)
     {
         var value = _mapper.Map<Star>(request);
-        _starService.Update(value);
+        var result = _starService.Update(value);
         var response = _mapper.Map<UpdatedStarResponse>(value);
-        return response;
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessResponse(response);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
     }
-    public IDeletedResponse Delete(DeleteStarRequest request)
+    public IErrorResponse Delete(DeleteStarRequest request)
     {
         var value = _mapper.Map<Star>(request);
-        _starService.Delete(value);
+        var result = _starService.Delete(value);
         var response = _mapper.Map<DeletedStarResponse>(value);
-        return response;
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessResponse(response);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
     }
 
     public IGetResponse Get(object id)

@@ -15,4 +15,8 @@
     <ProjectReference Include="..\NLayer.Mapper\NLayer.Mapper.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Concretes\CrossCuttingConcerns\ValidationRules\FluentValidation\AppUserValidation\Delete\" />
+  </ItemGroup>
+
 </Project>

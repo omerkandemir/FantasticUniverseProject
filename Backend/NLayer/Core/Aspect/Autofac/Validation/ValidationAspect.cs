@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Castle.DynamicProxy;
+﻿using Castle.DynamicProxy;
 using FluentValidation;
 using NLayer.Core.CrossCuttingConcern.Validation.FluentValidation;
 using NLayer.Core.Utilities.Interceptors;
@@ -11,6 +10,7 @@ namespace NLayer.Core.Aspect.Autofac.Validation;
 public class ValidationAspect : MethodInterception
 {
     private readonly Type _validatorType;
+
     public ValidationAspect(Type validatorType)
     {
         if (!typeof(IValidator).IsAssignableFrom(validatorType))
@@ -21,17 +21,25 @@ public class ValidationAspect : MethodInterception
     }
     protected override void OnBefore(IInvocation invocation)
     {
-        var config = new MapperConfiguration(cfg =>
-        {
-            cfg.CreateMap(invocation.Arguments[0].GetType(), _validatorType.BaseType.GetGenericArguments()[0]);
-        });
-        var mapper = config.CreateMapper();
         var validator = (IValidator)Activator.CreateInstance(_validatorType);
+        var entityType = _validatorType.BaseType.GetGenericArguments()[0];
+        var combinedArguments = Activator.CreateInstance(entityType);
 
         foreach (var argument in invocation.Arguments)
         {
-            var entity = mapper.Map(argument, argument.GetType(), _validatorType.BaseType.GetGenericArguments()[0]);
-            ValidationTool.Validate(validator, entity);
+            var argumentType = argument.GetType();
+
+            foreach (var property in argumentType.GetProperties())
+            {
+                var targetProperty = entityType.GetProperties()
+                    .FirstOrDefault(p => p.Name.Equals(property.Name, StringComparison.OrdinalIgnoreCase));
+                if (targetProperty != null)
+                {
+                    targetProperty.SetValue(combinedArguments, property.GetValue(argument));
+                }
+            }
         }
+
+        ValidationTool.Validate(validator, combinedArguments);
     }
 }

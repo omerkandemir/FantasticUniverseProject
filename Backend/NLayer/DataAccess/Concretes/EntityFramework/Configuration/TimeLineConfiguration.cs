@@ -12,6 +12,5 @@ public class TimeLineConfiguration : BaseEntityConfiguration<TimeLine>
         base.Configure(builder);
         builder.ToTable("TimeLines");
         builder.Property(x => x.StartingAdventureId).HasColumnName("StartingAdventureId");
-        builder.Property(x => x.UniverseId).HasColumnName("UniverseId");
     }
 }

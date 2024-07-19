@@ -5,4 +5,5 @@ namespace NLayer.Business.Abstracts;
 
 public interface IUniverseService : IEntityServiceRepository<Universe>
 {
+    void AddFirstUniverseData();
 }

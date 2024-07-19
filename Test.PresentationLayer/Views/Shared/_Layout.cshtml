@@ -1,0 +1,16 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+@await Component.InvokeAsync("_MainLayoutHeadPartial")
+<body>
+    @await Component.InvokeAsync("_MainLayoutHeaderPartial")
+    <!-- İçerik buraya gelecek -->
+    <main role="main">
+        <section class="content">
+            <!-- Kullanıcının içeriği buraya gelecek -->
+            @RenderBody()
+        </section>
+    </main>
+
+    @await Component.InvokeAsync("_MainLayoutFooterPartial")
+</body>
+</html>

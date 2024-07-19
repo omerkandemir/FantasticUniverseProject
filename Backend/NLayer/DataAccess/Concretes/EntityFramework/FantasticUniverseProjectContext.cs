@@ -1,15 +1,17 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using NLayer.Core.Entities.Abstract;
+using NLayer.Core.Entities.Authentication;
+using NLayer.Core.Entities.Concrete;
+using NLayer.Core.Utilities.UserOperations;
 using NLayer.DataAccess.Concretes.EntityFramework.Configuration;
 using NLayer.Entities.Concretes;
 using System.Data;
 
 namespace NLayer.DataAccess.Concretes.EntityFramework;
 
-public class FantasticUniverseProjectContext : DbContext
-{
-    //public DbSet<T> Entities { get; set; }
-    //public int UserId { get; set; }
+public class FantasticUniverseProjectContext : IdentityDbContext<AppUser, AppRole, int> // IdentityDbContext, DbContext sınıfından miras alır
+{    
     public DbSet<Ability> Abilities { get; set; }
     public DbSet<AbilityCharacter> AbilityCharacters { get; set; }
     public DbSet<AdventureCharacter> AdventureCharacters { get; set; }
@@ -23,14 +25,15 @@ public class FantasticUniverseProjectContext : DbContext
     public DbSet<UnionCharacter> UnionCharacters { get; set; }
     public DbSet<Union> Unions { get; set; }
     public DbSet<Universe> Universes { get; set; }
+    public DbSet<UniverseImage> UniverseImages { get; set; }
+    public DbSet<UserImage> UserImages { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer(@"Data Source=(localdb)\Omer; Initial Catalog = EnochDb;");
+            optionsBuilder.UseSqlServer(@"Data Source=(localdb)\Omer; Initial Catalog = FantasticUniverseProjectDb;");
         }
-        // base.OnConfiguring(optionsBuilder);
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -48,13 +51,17 @@ public class FantasticUniverseProjectContext : DbContext
         modelBuilder.ApplyConfiguration(new UnionCharacterConfiguration());
         modelBuilder.ApplyConfiguration(new UnionConfiguration());
         modelBuilder.ApplyConfiguration(new UniverseConfiguration());
+        modelBuilder.ApplyConfiguration(new UniverseImageConfiguration());
+        modelBuilder.ApplyConfiguration(new UserImageConfiguration());
+        base.OnModelCreating(modelBuilder);
     }
     public override int SaveChanges()
     {
-        OnBeforeSaving();
+        var userId = AccessUser.GetUserId();
+        OnBeforeSaving(userId);
         return base.SaveChanges();
     }
-    protected virtual void OnBeforeSaving()
+    protected virtual void OnBeforeSaving(int userId)
     {
         this.ChangeTracker.DetectChanges();
         var added = this.ChangeTracker.Entries()
@@ -70,7 +77,7 @@ public class FantasticUniverseProjectContext : DbContext
                 this.Entry(entity).Property(nameof(IEntity.DeletedDate)).IsModified = false;
                 track.CreatedDate = GetDbDateTime();
                 track.IsActive = true;
-                //track.CreatedBy = UserId;
+                track.CreatedBy = userId;
             }
         }
         var modified = this.ChangeTracker.Entries()
@@ -87,7 +94,7 @@ public class FantasticUniverseProjectContext : DbContext
                 this.Entry(entity).Property(nameof(IEntity.CreatedDate)).IsModified = false;
                 track.UpdatedDate = GetDbDateTime();
                 track.IsActive = true;
-                //track.ModifiedBy = UserId;
+                track.ModifiedBy = userId;
             }
         }
     }

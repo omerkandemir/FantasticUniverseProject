@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using NLayer.Business.Abstracts;
 using NLayer.Core.Dto.Abstracts;
+using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Entities.Concretes;
 using NLayer.Mapper.Requests.Planet;
@@ -17,26 +18,47 @@ public class PlanetDto : IPlanetDto
         _planetService = planetService;
         _mapper = mapper;
     }
-    public ICreatedResponse Add(CreatePlanetRequest request)
+    public IErrorResponse Add(CreatePlanetRequest request)
     {
         var value = _mapper.Map<Planet>(request);
-        _planetService.Add(value);
+        var result = _planetService.Add(value);
         var response = _mapper.Map<CreatedPlanetResponse>(value);
-        return response;
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessResponse(response);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
     }
-    public IUpdatedResponse Update(UpdatePlanetRequest request)
+    public IErrorResponse Update(UpdatePlanetRequest request)
     {
         var value = _mapper.Map<Planet>(request);
-        _planetService.Update(value);
+        var result = _planetService.Update(value);
         var response = _mapper.Map<UpdatedPlanetResponse>(value);
-        return response;
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessResponse(response);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
     }
-    public IDeletedResponse Delete(DeletePlanetRequest request)
+    public IErrorResponse Delete(DeletePlanetRequest request)
     {
         var value = _mapper.Map<Planet>(request);
-        _planetService.Delete(value);
+        var result = _planetService.Delete(value);
         var response = _mapper.Map<DeletedPlanetResponse>(value);
-        return response;
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessResponse(response);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
     }
 
     public IGetResponse Get(object id)
