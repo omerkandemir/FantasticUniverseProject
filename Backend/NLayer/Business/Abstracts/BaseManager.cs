@@ -14,11 +14,11 @@ public abstract class BaseManager<T, Tdal>
     {
         _tdal = tdal;
     }
-    public virtual IReturnType Add(T Value)
+    public virtual IReturnType Add(T value)
     {
         try
         {
-            _tdal.Add(Value);
+            _tdal.Add(value);
             return new ReturnType(GetDatasInfo.Added, CrudOperation.Add);
         }
         catch (Exception ex)
@@ -26,11 +26,11 @@ public abstract class BaseManager<T, Tdal>
             return new ReturnType(GetDatasInfo.AddedFailed, CrudOperation.Add, ex);
         }
     }
-    public virtual IReturnType Update(T Value)
+    public virtual IReturnType Update(T value)
     {
         try
         {
-            _tdal.Update(Value);
+            _tdal.Update(value);
             return new ReturnType(GetDatasInfo.Updated, CrudOperation.Update);
         }
         catch (Exception ex)
@@ -38,11 +38,11 @@ public abstract class BaseManager<T, Tdal>
             return new ReturnType(GetDatasInfo.UpdatedFailed, CrudOperation.Update, ex);
         }
     }
-    public virtual IReturnType Delete(T Value)
+    public virtual IReturnType Delete(T value)
     {
         try
         {
-            _tdal.Delete(Value);
+            _tdal.Delete(value);
             return new ReturnType(GetDatasInfo.Deleted, CrudOperation.Delete);
         }
         catch (Exception ex)
@@ -65,7 +65,7 @@ public abstract class BaseManager<T, Tdal>
     {
         try
         {
-            return new DataReturnType<List<T>>(_tdal.GetAll().ToList(), GetDatasInfo.SuccessListData,CrudOperation.List);
+            return new DataReturnType<List<T>>(_tdal.GetAll().ToList(), GetDatasInfo.SuccessListData, CrudOperation.List);
         }
         catch (Exception ex)
         {

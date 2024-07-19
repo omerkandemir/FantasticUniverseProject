@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NLayer.Core.Entities.Authentication;
 using NLayer.Dto.Managers.Abstract;
@@ -44,29 +45,49 @@ public class RegisterController : Controller
     [HttpPost]
     public async Task<IActionResult> Index(CreateAppUserRequest createAppUserRequest)
     {
-        var response = await _appUserDto.AddAsync(createAppUserRequest);
+        RegisterViewModel viewModel = LoadViewModel(createAppUserRequest);
 
-        if (response.Success)
+        if (createAppUserRequest.Password != createAppUserRequest.ConfirmPassword)
         {
+            ModelState.AddModelError(string.Empty, "Parolalar eşleşmiyor.");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return View(viewModel);
+        }
+        try
+        {
+            var response = await _appUserDto.AddAsync(createAppUserRequest);
+
             var user = await _userManager.FindByEmailAsync(createAppUserRequest.Email);
             await _signInManager.SignInAsync(user, isPersistent: false);
             _userImageDto.AddUserFirstImages();
 
             return RedirectToAction("Index", "ConfirmMail");
         }
-        else
+        catch (ValidationException ex)
         {
-            ModelState.AddModelError(string.Empty, response.ErrorMessage);
+            foreach (var error in ex.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.ErrorMessage);
+            }
         }
+        catch (Exception ex)
+        {
+            ModelState.AddModelError(string.Empty, "Bir hata oluştu: " + ex.Message);
+        }
+        return View(viewModel);
+    }
+
+    private RegisterViewModel LoadViewModel(CreateAppUserRequest createAppUserRequest)
+    {
         var images = _universeImageDto.GetFirstUserImages();
         var viewModel = new RegisterViewModel
         {
             CreateAppUserRequest = createAppUserRequest,
             Images = images.ToList()
         };
-
-        viewModel.Images = _universeImageDto.GetFirstUserImages().ToList();
-
-        return View(viewModel);
+        return viewModel;
     }
 }

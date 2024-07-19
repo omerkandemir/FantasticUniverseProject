@@ -10,7 +10,7 @@ namespace NLAyer.Core.DataAccess.Concretes.EntityFramework;
 
 public class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEntity>
     where TEntity : class, IEntity, new()
-    where TContext : IdentityDbContext<AppUser, AppRole, int>, new() 
+    where TContext : IdentityDbContext<AppUser, AppRole, int>, new()
 {
     public void Add(TEntity entity)
     {
@@ -65,28 +65,31 @@ public class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEnti
     {
         try
         {
-            switch (entityState)
+            using (TContext context = new TContext())
             {
-                case EntityState.Added: Crud(entity, EntityState.Added); break;
-                case EntityState.Deleted: Crud(entity, EntityState.Deleted); break;
-                case EntityState.Modified: Crud(entity, EntityState.Modified); break;
-                default:
-                    break;
+                var entry = context.Entry(entity);
+                switch (entityState)
+                {
+                    case EntityState.Added:
+                        entry.State = EntityState.Added;
+                        break;
+                    case EntityState.Deleted:
+                        entry.State = EntityState.Deleted;
+                        break;
+                    case EntityState.Modified:
+                        context.Attach(entity); // Entity'yi attach et
+                        entry.State = EntityState.Modified;
+                        break;
+                    default:
+                        break;
+                }
+                context.SaveChanges();
             }
         }
         catch (Exception ex)
         {
 
             throw new Exception(ex.Message);
-        }
-    }
-    private static void Crud(TEntity entity, EntityState entityState)
-    {
-        using (TContext context = new TContext())
-        {
-            var crudEntity = context.Entry(entity);
-            crudEntity.State = entityState;
-            context.SaveChanges();
         }
     }
 }

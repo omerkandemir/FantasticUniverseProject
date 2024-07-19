@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Identity;
+using NLayer.Business.Abstracts;
 using NLayer.Core.Dto.Abstracts;
 using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Core.Entities.Authentication;
@@ -12,39 +12,43 @@ namespace NLayer.Dto.Managers.Concrete;
 
 public class AppUserDto : IAppUserDto
 {
-    private readonly UserManager<AppUser> _userManager;
+    private readonly IAppUserService _appUserService;
     private readonly IMapper _mapper;
-    public AppUserDto(UserManager<AppUser> userManager, IMapper mapper)
+    public AppUserDto(IAppUserService appUserService, IMapper mapper)
     {
-        _userManager = userManager;
+        _appUserService = appUserService;
         _mapper = mapper;
-    }
-    public IErrorResponse Add(CreateAppUserRequest request)
-    {
-        throw new NotImplementedException();
     }
     public async Task<IErrorResponse> AddAsync(CreateAppUserRequest request)
     {
-        var value = _mapper.Map<AppUser>(request);
+        AppUser value = _mapper.Map<AppUser>(request);
         value.ConfirmCode = SendMail.GenerateConfirmCode();
-        var result = await _userManager.CreateAsync(value, request.Password);
+        var result = await _appUserService.AddAsync(value, request.Password);
         var response = _mapper.Map<CreatedAppUserResponse>(value);
-        if (result.Succeeded)
+        if (result.Success)
         {
             SendMail.SendConfirmCodeMail(value.ConfirmCode, value);
-            return new SuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse(response);
         }
         else
-        {
-            var errors = result.Errors.Select(e => e.Description);
-            var errorMessage = string.Join(", ", errors);
-            return new ErrorResponse(errorMessage);
+        {          
+            return ResponseFactory.CreateErrorResponse(result);
         }
     }
     
-    public IErrorResponse Update(UpdateAppUserRequest request)
+    public async Task<IErrorResponse> UpdateAsync(UpdateAppUserRequest request)
     {
-        throw new NotImplementedException();
+        AppUser value = _mapper.Map<AppUser>(request);
+        var response = _mapper.Map<CreatedAppUserResponse>(value);
+        var result = await _appUserService.UpdateAsync(value);
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessResponse(response);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
     }
     public IErrorResponse Delete(DeleteAppUserRequest request)
     {
@@ -57,6 +61,14 @@ public class AppUserDto : IAppUserDto
     }
 
     public List<GetAllAppUserResponse> GetAll()
+    {
+        throw new NotImplementedException();
+    }
+    public IErrorResponse Add(CreateAppUserRequest request)
+    {
+        throw new NotImplementedException();
+    }
+    public IErrorResponse Update(UpdateAppUserRequest request)
     {
         throw new NotImplementedException();
     }

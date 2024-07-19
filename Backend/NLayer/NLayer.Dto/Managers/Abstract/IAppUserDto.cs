@@ -12,4 +12,5 @@ public interface IAppUserDto : IEntityRepositoryDto<
     GetAllAppUserResponse>
 {
     Task<IErrorResponse> AddAsync(CreateAppUserRequest request);
+    Task<IErrorResponse> UpdateAsync(UpdateAppUserRequest request);
 }

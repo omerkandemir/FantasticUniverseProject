@@ -1,13 +1,12 @@
 ﻿using FluentValidation;
 using NLayer.Core.CrossCuttingConcern.Validation.FluentValidation;
-
 using NLayer.Mapper.Requests.AppUser;
 
-namespace NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.AppUserValidation.Create;
+namespace NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.AppUserValidation.Update;
 
-public class CreateAppUserValidator : BaseCreateValidator<CreateAppUserRequest>
+public class UpdateAppUserValidator : BaseUpdateValidator<UpdateAppUserRequest>
 {
-    public CreateAppUserValidator()
+    public UpdateAppUserValidator()
     {
         RuleFor(x => x.Name).NotEmpty().WithMessage("Ad alanı boş geçilemez");
         RuleFor(x => x.Name).MaximumLength(30).WithMessage("Lütfen Ad alanı için en fazla 30 karakter girişi yapın");
@@ -23,6 +22,5 @@ public class CreateAppUserValidator : BaseCreateValidator<CreateAppUserRequest>
         RuleFor(x => x.UniverseImageId).NotEmpty().WithMessage("Lütfen görsel seçiniz.");
         RuleFor(x => x.City).NotEmpty().WithMessage("Şehir alanı boş geçilemez.");
         RuleFor(x => x.District).NotEmpty().WithMessage("İlçe alanı boş geçilemez.");
-
     }
 }

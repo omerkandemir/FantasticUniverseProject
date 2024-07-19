@@ -36,7 +36,7 @@ public class MyProfileController : Controller
             Surname = values.Surname,
             City = values.City,
             District = values.District,
-            Username = values.UserName,
+            UserName = values.UserName,
         };
         return View(updateAppUserRequest);
     }
@@ -57,12 +57,12 @@ public class MyProfileController : Controller
         user.Surname = updateAppUserRequest.Surname;
         user.City = updateAppUserRequest.City;
         user.District = updateAppUserRequest.District;
-        user.UserName = updateAppUserRequest.Username;
+        user.UserName = updateAppUserRequest.UserName;
         var result = await _userManager.UpdateAsync(user);
         if (result.Succeeded)
         {
             await _signInManager.RefreshSignInAsync(user); // oturumu yenile
-            HttpContext.Session.SetString("UserName", updateAppUserRequest.Username);
+            HttpContext.Session.SetString("UserName", updateAppUserRequest.UserName);
             ViewBag.SuccessMessage = "Kullanıcı Bilgileri Başarıyla Güncellendi";
             return View(updateAppUserRequest);
         }

@@ -12,6 +12,7 @@ public class AppUserProfile : Profile
         CreateMap<AppUser, CreateAppUserRequest>().ReverseMap();
         CreateMap<AppUser, CreatedAppUserResponse>().ReverseMap();
         CreateMap<AppUser, UpdateAppUserRequest>().ReverseMap();
+        CreateMap<AppUser, UpdateAppUserInfoRequest>().ReverseMap();
         CreateMap<AppUser, UpdatedAppUserResponse>().ReverseMap();
         CreateMap<AppUser, DeleteAppUserRequest>().ReverseMap();
         CreateMap<AppUser, DeletedAppUserResponse>().ReverseMap();

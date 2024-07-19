@@ -96,6 +96,9 @@ public class AutofacBusinessModule : Module
         builder.RegisterType<UserImageManager>().As<IUserImageService>().SingleInstance();
         builder.RegisterType<EfUserImageDal>().As<IUserImageDal>().SingleInstance();
 
+        builder.RegisterType<EfAppUserDal>().As<IAppUserDal>().SingleInstance();
+        builder.RegisterType<AppUserManager>().As<IAppUserService>().SingleInstance();
+
         builder.RegisterType<GetDefaultImages>().As<IGetDefaultImages>().SingleInstance();
 
         builder.RegisterType<CreateAbilityCharacterValidator>().As<IValidator<CreateAbilityCharacterRequest>>();

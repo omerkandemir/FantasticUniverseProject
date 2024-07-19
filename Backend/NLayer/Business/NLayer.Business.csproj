@@ -16,7 +16,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Concretes\CrossCuttingConcerns\ValidationRules\FluentValidation\AppUserValidation\Update\" />
     <Folder Include="Concretes\CrossCuttingConcerns\ValidationRules\FluentValidation\AppUserValidation\Delete\" />
   </ItemGroup>
 
