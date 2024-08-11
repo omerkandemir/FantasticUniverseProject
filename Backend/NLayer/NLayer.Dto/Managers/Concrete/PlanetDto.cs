@@ -18,42 +18,42 @@ public class PlanetDto : IPlanetDto
         _planetService = planetService;
         _mapper = mapper;
     }
-    public IErrorResponse Add(CreatePlanetRequest request)
+    public IResponse Add(CreatePlanetRequest request)
     {
-        var value = _mapper.Map<Planet>(request);
-        var result = _planetService.Add(value);
-        var response = _mapper.Map<CreatedPlanetResponse>(value);
+        Planet planet = _mapper.Map<Planet>(request);
+        var result = _planetService.Add(planet);
+        var response = _mapper.Map<CreatedPlanetResponse>(planet);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<Planet>(response, planet);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IErrorResponse Update(UpdatePlanetRequest request)
+    public IResponse Update(UpdatePlanetRequest request)
     {
-        var value = _mapper.Map<Planet>(request);
-        var result = _planetService.Update(value);
-        var response = _mapper.Map<UpdatedPlanetResponse>(value);
+        Planet planet = _mapper.Map<Planet>(request);
+        var result = _planetService.Update(planet);
+        var response = _mapper.Map<UpdatedPlanetResponse>(planet);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<Planet>(response, planet);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IErrorResponse Delete(DeletePlanetRequest request)
+    public IResponse Delete(DeletePlanetRequest request)
     {
-        var value = _mapper.Map<Planet>(request);
-        var result = _planetService.Delete(value);
-        var response = _mapper.Map<DeletedPlanetResponse>(value);
+        Planet planet = _mapper.Map<Planet>(request);
+        var result = _planetService.Delete(planet);
+        var response = _mapper.Map<DeletedPlanetResponse>(planet);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<Planet>(response, planet);
         }
         else
         {

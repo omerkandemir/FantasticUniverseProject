@@ -18,42 +18,42 @@ public class AdventureDto : IAdventureDto
         _adventureService = adventureService;
         _mapper = mapper;
     }
-    public IErrorResponse Add(CreateAdventureRequest request)
+    public IResponse Add(CreateAdventureRequest request)
     {
-        var value = _mapper.Map<Adventure>(request);
-        var result = _adventureService.Add(value);
-        var response = _mapper.Map<CreatedAdventureResponse>(value);
+        Adventure adventure = _mapper.Map<Adventure>(request);
+        var result = _adventureService.Add(adventure);
+        var response = _mapper.Map<CreatedAdventureResponse>(adventure);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<Adventure>(response, adventure);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IErrorResponse Update(UpdateAdventureRequest request)
+    public IResponse Update(UpdateAdventureRequest request)
     {
-        var value = _mapper.Map<Adventure>(request);
-        var result = _adventureService.Update(value);
-        var response = _mapper.Map<UpdatedAdventureResponse>(value);
+        Adventure adventure = _mapper.Map<Adventure>(request);
+        var result = _adventureService.Update(adventure);
+        var response = _mapper.Map<UpdatedAdventureResponse>(adventure);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<Adventure>(response, adventure);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IErrorResponse Delete(DeleteAdventureRequest request)
+    public IResponse Delete(DeleteAdventureRequest request)
     {
-        var value = _mapper.Map<Adventure>(request);
-        var result = _adventureService.Delete(value);
-        var response = _mapper.Map<DeletedAdventureResponse>(value);
+        Adventure adventure = _mapper.Map<Adventure>(request);
+        var result = _adventureService.Delete(adventure);
+        var response = _mapper.Map<DeletedAdventureResponse>(adventure);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<Adventure>(response, adventure);
         }
         else
         {

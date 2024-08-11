@@ -29,14 +29,14 @@ public class UniverseImageDto : IUniverseImageDto
     {
         return _universeImageService.GetFirstImagesFromDatabase();
     }
-    public IErrorResponse Add(CreateUniverseImageRequest request)
+    public IResponse Add(CreateUniverseImageRequest request)
     {
-        var value = _mapper.Map<UniverseImage>(request);
-        var result = _universeImageService.Add(value);
-        var response = _mapper.Map<CreatedUniverseImageResponse>(value);
+        UniverseImage universeImage = _mapper.Map<UniverseImage>(request);
+        var result = _universeImageService.Add(universeImage);
+        var response = _mapper.Map<CreatedUniverseImageResponse>(universeImage);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<UniverseImage>(response, universeImage);
         }
         else
         {
@@ -44,14 +44,14 @@ public class UniverseImageDto : IUniverseImageDto
         }
     }
 
-    public IErrorResponse Update(UpdateUniverseImageRequest request)
+    public IResponse Update(UpdateUniverseImageRequest request)
     {
-        var value = _mapper.Map<UniverseImage>(request);
-        var result = _universeImageService.Update(value);
-        var response = _mapper.Map<UpdatedUniverseImageResponse>(value);
+        UniverseImage universeImage = _mapper.Map<UniverseImage>(request);
+        var result = _universeImageService.Update(universeImage);
+        var response = _mapper.Map<UpdatedUniverseImageResponse>(universeImage);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<UniverseImage>(response, universeImage);
         }
         else
         {
@@ -59,14 +59,14 @@ public class UniverseImageDto : IUniverseImageDto
         }
     }
 
-    public IErrorResponse Delete(DeleteUniverseImageRequest request)
+    public IResponse Delete(DeleteUniverseImageRequest request)
     {
-        var value = _mapper.Map<UniverseImage>(request);
-        var result = _universeImageService.Delete(value);
-        var response = _mapper.Map<DeletedUniverseImageResponse>(value);
+        UniverseImage universeImage = _mapper.Map<UniverseImage>(request);
+        var result = _universeImageService.Delete(universeImage);
+        var response = _mapper.Map<DeletedUniverseImageResponse>(universeImage);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<UniverseImage>(response, universeImage);
         }
         else
         {

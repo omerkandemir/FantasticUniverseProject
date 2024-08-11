@@ -18,42 +18,42 @@ public class AdventureCharacterDto : IAdventureCharacterDto
         _adventureCharacterService = adventureCharacterService;
         _mapper = mapper;
     }
-    public IErrorResponse Add(CreateAdventureCharacterRequest request)
+    public IResponse Add(CreateAdventureCharacterRequest request)
     {
-        var value = _mapper.Map<AdventureCharacter>(request);
-        var result = _adventureCharacterService.Add(value);
-        var response = _mapper.Map<CreatedAdventureCharacterResponse>(value);
+        AdventureCharacter adventureCharacter = _mapper.Map<AdventureCharacter>(request);
+        var result = _adventureCharacterService.Add(adventureCharacter);
+        var response = _mapper.Map<CreatedAdventureCharacterResponse>(adventureCharacter);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<AdventureCharacter>(response, adventureCharacter);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IErrorResponse Update(UpdateAdventureCharacterRequest request)
+    public IResponse Update(UpdateAdventureCharacterRequest request)
     {
-        var value = _mapper.Map<AdventureCharacter>(request);
-        var result = _adventureCharacterService.Update(value);
-        var response = _mapper.Map<UpdatedAdventureCharacterResponse>(value);
+        AdventureCharacter adventureCharacter = _mapper.Map<AdventureCharacter>(request);
+        var result = _adventureCharacterService.Update(adventureCharacter);
+        var response = _mapper.Map<UpdatedAdventureCharacterResponse>(adventureCharacter);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<AdventureCharacter>(response, adventureCharacter);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IErrorResponse Delete(DeleteAdventureCharacterRequest request)
+    public IResponse Delete(DeleteAdventureCharacterRequest request)
     {
-        var value = _mapper.Map<AdventureCharacter>(request);
-        var result = _adventureCharacterService.Delete(value);
-        var response = _mapper.Map<DeletedAdventureCharacterResponse>(value);
+        AdventureCharacter adventureCharacter = _mapper.Map<AdventureCharacter>(request);
+        var result = _adventureCharacterService.Delete(adventureCharacter);
+        var response = _mapper.Map<DeletedAdventureCharacterResponse>(adventureCharacter);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<AdventureCharacter>(response, adventureCharacter);
         }
         else
         {

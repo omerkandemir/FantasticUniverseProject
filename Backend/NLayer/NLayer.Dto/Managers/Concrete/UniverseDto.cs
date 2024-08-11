@@ -18,42 +18,42 @@ public class UniverseDto : IUniverseDto
         _universeService = universeService;
         _mapper = mapper;
     }
-    public IErrorResponse Add(CreateUniverseRequest request)
+    public IResponse Add(CreateUniverseRequest request)
     {
-        var value = _mapper.Map<Universe>(request);
-        var result = _universeService.Add(value);
-        var response = _mapper.Map<CreatedUniverseResponse>(value);
+        Universe universe = _mapper.Map<Universe>(request);
+        var result = _universeService.Add(universe);
+        var response = _mapper.Map<CreatedUniverseResponse>(universe);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<Universe>(response, universe);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IErrorResponse Update(UpdateUniverseRequest request)
+    public IResponse Update(UpdateUniverseRequest request)
     {
-        var value = _mapper.Map<Universe>(request);
-        var result = _universeService.Update(value);
-        var response = _mapper.Map<UpdatedUniverseResponse>(value);
+        Universe universe = _mapper.Map<Universe>(request);
+        var result = _universeService.Update(universe);
+        var response = _mapper.Map<UpdatedUniverseResponse>(universe);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<Universe>(response, universe);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IErrorResponse Delete(DeleteUniverseRequest request)
+    public IResponse Delete(DeleteUniverseRequest request)
     {
-        var value = _mapper.Map<Universe>(request);
-        var result = _universeService.Delete(value);
-        var response = _mapper.Map<DeletedUniverseResponse>(value);
+        Universe universe = _mapper.Map<Universe>(request);
+        var result = _universeService.Delete(universe);
+        var response = _mapper.Map<DeletedUniverseResponse>(universe);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<Universe>(response, universe);
         }
         else
         {

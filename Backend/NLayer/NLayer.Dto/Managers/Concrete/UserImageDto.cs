@@ -19,14 +19,14 @@ public class UserImageDto : IUserImageDto
         _userImageService = userImageService;
         _mapper = mapper;
     }
-    public IErrorResponse Add(CreateUserImageRequest request)
+    public IResponse Add(CreateUserImageRequest request)
     {
-        var value = _mapper.Map<UserImage>(request);
-        var result = _userImageService.Add(value);
-        var response = _mapper.Map<CreatedUserImageResponse>(value);
+        UserImage userImage = _mapper.Map<UserImage>(request);
+        var result = _userImageService.Add(userImage);
+        var response = _mapper.Map<CreatedUserImageResponse>(userImage);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<UserImage>(response, userImage);
         }
         else
         {
@@ -34,14 +34,14 @@ public class UserImageDto : IUserImageDto
         }
     }
 
-    public IErrorResponse Update(UpdateUserImageRequest request)
+    public IResponse Update(UpdateUserImageRequest request)
     {
-        var value = _mapper.Map<UserImage>(request);
-        var result = _userImageService.Update(value);
-        var response = _mapper.Map<UpdatedUserImageResponse>(value);
+        UserImage userImage = _mapper.Map<UserImage>(request);
+        var result = _userImageService.Update(userImage);
+        var response = _mapper.Map<UpdatedUserImageResponse>(userImage);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<UserImage>(response, userImage);
         }
         else
         {
@@ -49,14 +49,14 @@ public class UserImageDto : IUserImageDto
         }
     }
 
-    public IErrorResponse Delete(DeleteUserImageRequest request)
+    public IResponse Delete(DeleteUserImageRequest request)
     {
-        var value = _mapper.Map<UserImage>(request);
-        var result = _userImageService.Delete(value);
-        var response = _mapper.Map<DeletedUserImageResponse>(value);
+        UserImage userImage = _mapper.Map<UserImage>(request);
+        var result = _userImageService.Delete(userImage);
+        var response = _mapper.Map<DeletedUserImageResponse>(userImage);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<UserImage>(response, userImage);
         }
         else
         {

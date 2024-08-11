@@ -18,42 +18,42 @@ public class SpeciesDto : ISpeciesDto
         _speciesService = speciesService;
         _mapper = mapper;
     }
-    public IErrorResponse Add(CreateSpeciesRequest request)
+    public IResponse Add(CreateSpeciesRequest request)
     {
-        var value = _mapper.Map<Species>(request);
-        var result = _speciesService.Add(value);
-        var response = _mapper.Map<CreatedSpeciesResponse>(value);
+        Species species = _mapper.Map<Species>(request);
+        var result = _speciesService.Add(species);
+        var response = _mapper.Map<CreatedSpeciesResponse>(species);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<Species>(response, species);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IErrorResponse Update(UpdateSpeciesRequest request)
+    public IResponse Update(UpdateSpeciesRequest request)
     {
-        var value = _mapper.Map<Species>(request);
-        var result = _speciesService.Update(value);
-        var response = _mapper.Map<UpdatedSpeciesResponse>(value);
+        Species species = _mapper.Map<Species>(request);
+        var result = _speciesService.Update(species);
+        var response = _mapper.Map<UpdatedSpeciesResponse>(species);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<Species>(response, species);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IErrorResponse Delete(DeleteSpeciesRequest request)
+    public IResponse Delete(DeleteSpeciesRequest request)
     {
-        var value = _mapper.Map<Species>(request);
-        var result = _speciesService.Delete(value);
-        var response = _mapper.Map<DeletedSpeciesResponse>(value);
+        Species species = _mapper.Map<Species>(request);
+        var result = _speciesService.Delete(species);
+        var response = _mapper.Map<DeletedSpeciesResponse>(species);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<Species>(response, species);
         }
         else
         {

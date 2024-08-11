@@ -1,14 +1,19 @@
-﻿namespace NLayer.Core.Dto.ReturnTypes;
+﻿using NLayer.Core.Dto.Abstracts;
+using NLayer.Core.Entities.Abstract;
 
-public class SuccessResponse : IErrorResponse
+namespace NLayer.Core.Dto.ReturnTypes;
+
+public class SuccessResponse<T> : ISuccessResponse<T> where T : class, IEntity, new()
 {
+    public T Entity { get; set; }
     public object Data { get; }
     public bool Success => true;
-    public string ErrorMessage => null;
 
-    public SuccessResponse(object data)
+
+    public SuccessResponse(object data, T entity)
     {
         Data = data;
+        Entity = entity;
     }
-    
+
 }

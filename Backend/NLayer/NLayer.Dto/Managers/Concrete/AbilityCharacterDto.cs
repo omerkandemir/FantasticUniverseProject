@@ -18,42 +18,42 @@ public class AbilityCharacterDto : IAbilityCharacterDto
         _abilityCharacterService = abilityCharacterService;
         _mapper = mapper;
     }
-    public IErrorResponse Add(CreateAbilityCharacterRequest request)
+    public IResponse Add(CreateAbilityCharacterRequest request)
     {
-        var value = _mapper.Map<AbilityCharacter>(request);
-        var result = _abilityCharacterService.Add(value);
-        var response = _mapper.Map<CreatedAbilityCharacterResponse>(value);
+        AbilityCharacter abilityCharacter = _mapper.Map<AbilityCharacter>(request);
+        var result = _abilityCharacterService.Add(abilityCharacter);
+        var response = _mapper.Map<CreatedAbilityCharacterResponse>(abilityCharacter);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<AbilityCharacter>(response, abilityCharacter);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IErrorResponse Update(UpdateAbilityCharacterRequest request)
+    public IResponse Update(UpdateAbilityCharacterRequest request)
     {
-        var value = _mapper.Map<AbilityCharacter>(request);
-        var result = _abilityCharacterService.Update(value);
-        var response = _mapper.Map<UpdatedAbilityCharacterResponse>(value);
+        AbilityCharacter abilityCharacter = _mapper.Map<AbilityCharacter>(request);
+        var result = _abilityCharacterService.Update(abilityCharacter);
+        var response = _mapper.Map<UpdatedAbilityCharacterResponse>(abilityCharacter);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<AbilityCharacter>(response, abilityCharacter);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IErrorResponse Delete(DeleteAbilityCharacterRequest request)
+    public IResponse Delete(DeleteAbilityCharacterRequest request)
     {
-        var value = _mapper.Map<AbilityCharacter>(request);
-        var result = _abilityCharacterService.Delete(value);
-        var response = _mapper.Map<DeletedAbilityCharacterResponse>(value);
+        AbilityCharacter abilityCharacter = _mapper.Map<AbilityCharacter>(request);
+        var result = _abilityCharacterService.Delete(abilityCharacter);
+        var response = _mapper.Map<DeletedAbilityCharacterResponse>(abilityCharacter);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<AbilityCharacter>(response, abilityCharacter);
         }
         else
         {

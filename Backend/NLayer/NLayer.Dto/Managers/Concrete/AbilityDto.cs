@@ -18,42 +18,42 @@ public class AbilityDto : IAbilityDto
         _abilityService = abilityService;
         _mapper = mapper;
     }
-    public IErrorResponse Add(CreateAbilityRequest request)
+    public IResponse Add(CreateAbilityRequest request)
     {
-        var value = _mapper.Map<Ability>(request);
-        var result = _abilityService.Add(value);
-        var response = _mapper.Map<CreatedAbilityResponse>(value);
+        Ability ability = _mapper.Map<Ability>(request);
+        var result = _abilityService.Add(ability);
+        var response = _mapper.Map<CreatedAbilityResponse>(ability);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<Ability>(response, ability);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IErrorResponse Update(UpdateAbilityRequest request)
+    public IResponse Update(UpdateAbilityRequest request)
     {
-        var value = _mapper.Map<Ability>(request);
-        var result = _abilityService.Update(value);
-        var response = _mapper.Map<UpdatedAbilityResponse>(value);
+        Ability ability = _mapper.Map<Ability>(request);
+        var result = _abilityService.Update(ability);
+        var response = _mapper.Map<UpdatedAbilityResponse>(ability);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<Ability>(response, ability);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IErrorResponse Delete(DeleteAbilityRequest request)
+    public IResponse Delete(DeleteAbilityRequest request)
     {
-        var value = _mapper.Map<Ability>(request);
-        var result = _abilityService.Delete(value);
-        var response = _mapper.Map<DeletedAbilityResponse>(value);
+        Ability ability = _mapper.Map<Ability>(request);
+        var result = _abilityService.Delete(ability);
+        var response = _mapper.Map<DeletedAbilityResponse>(ability);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<Ability>(response, ability);
         }
         else
         {

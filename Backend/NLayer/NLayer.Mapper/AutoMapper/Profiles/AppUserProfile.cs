@@ -13,9 +13,13 @@ public class AppUserProfile : Profile
         CreateMap<AppUser, CreatedAppUserResponse>().ReverseMap();
         CreateMap<AppUser, UpdateAppUserRequest>().ReverseMap();
         CreateMap<AppUser, UpdateAppUserInfoRequest>().ReverseMap();
+        CreateMap<AppUser, UpdateAppUserEmailRequest>().ReverseMap();
+        CreateMap<AppUser, UpdateAppUserPasswordRequest>().ReverseMap();
+        CreateMap<AppUser, UpdateAppUserProfileImageRequest>().ReverseMap();
         CreateMap<AppUser, UpdatedAppUserResponse>().ReverseMap();
         CreateMap<AppUser, DeleteAppUserRequest>().ReverseMap();
         CreateMap<AppUser, DeletedAppUserResponse>().ReverseMap();
         CreateMap<AppUser, GetAllAppUserResponse>().ReverseMap();
+        CreateMap<AppUser, ConfirmMailRequest>().ReverseMap();
     }
 }

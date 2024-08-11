@@ -23,7 +23,7 @@
             <div class="form-group">
                 <label for="currentProfileImage">Mevcut Profil Resminiz:</label>
                 <div class="img-container"></div>
-                <img id="current-profile-image" src="data:image/jpg;base64,@Convert.ToBase64String(Model.getAllUniverseImageResponses.FirstOrDefault(x => x.Id == Model.SelectedImageId)?.ImageURL)" alt="Mevcut Profil Resmi" class="img-thumbnail" />
+                <img id="current-profile-image" src="data:image/jpg;base64,@Convert.ToBase64String(Model.GetAllUniverseImageResponses.FirstOrDefault(x => x.Id == Model.SelectedImageId)?.ImageURL)" alt="Mevcut Profil Resmi" class="img-thumbnail" />
             </div>
             <div class="form-group">
                 <label for="profileImage">Yeni Profil Resmi Seç:</label>
@@ -32,7 +32,7 @@
                 <span asp-validation-for="SelectedImageId" class="text-danger"></span>
                 <div id="image-gallery-container" style="display: none;">
                     <div id="image-gallery">
-                        @foreach (var image in Model.getAllUniverseImageResponses)
+                        @foreach (var image in Model.GetAllUniverseImageResponses)
                         {
                             var base64Image = Convert.ToBase64String(image.ImageURL);
                             <div class="image-item" data-id="@image.Id" onclick="selectImage(@image.Id, 'data:image/jpg;base64,@base64Image')">
