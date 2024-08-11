@@ -1,6 +1,8 @@
 ﻿using FluentValidation;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NLayer.Business.Abstracts;
+using NLayer.Core.Dto.Abstracts;
+using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Core.Entities.Authentication;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Mapper.Requests.AppUser;
@@ -11,21 +13,18 @@ namespace Test.PresentationLayer.Controllers;
 public class RegisterController : Controller
 {
     private readonly IAppUserDto _appUserDto;
+    private readonly ISignInService<AppUser> _signInService;
     private readonly IUniverseImageDto _universeImageDto;
-    private readonly UserManager<AppUser> _userManager;
-    private readonly SignInManager<AppUser> _signInManager;
     private readonly IUserImageDto _userImageDto;
 
     public RegisterController(
         IAppUserDto appUserDto,
-        UserManager<AppUser> userManager,
-        SignInManager<AppUser> signInManager,
+        ISignInService<AppUser> signInService,
         IUniverseImageDto universeImageDto,
         IUserImageDto userImageDto)
     {
         _appUserDto = appUserDto;
-        _userManager = userManager;
-        _signInManager = signInManager;
+        _signInService = signInService;
         _universeImageDto = universeImageDto;
         _userImageDto = userImageDto;
     }
@@ -58,13 +57,26 @@ public class RegisterController : Controller
         }
         try
         {
-            var response = await _appUserDto.AddAsync(createAppUserRequest);
+            var result = await _appUserDto.AddAsync(createAppUserRequest);
+            var userResult = await _appUserDto.GetUserByMailAsync(createAppUserRequest.Email);
+            if (userResult.Success)
+            {
+                var user = userResult as SuccessResponse<AppUser>;
 
-            var user = await _userManager.FindByEmailAsync(createAppUserRequest.Email);
-            await _signInManager.SignInAsync(user, isPersistent: false);
-            _userImageDto.AddUserFirstImages();
+                await _signInService.SignInAsync(user.Entity, isPersistent: false);
+                _userImageDto.AddUserFirstImages();
 
-            return RedirectToAction("Index", "ConfirmMail");
+                return RedirectToAction("Index", "ConfirmMail");
+            }
+            else
+            {
+                var errorResponse = result as IErrorResponse;
+                if (errorResponse != null)
+                {
+                    ModelState.AddModelError(string.Empty, errorResponse.ErrorMessage);
+                }
+                return NotFound();
+            }
         }
         catch (ValidationException ex)
         {

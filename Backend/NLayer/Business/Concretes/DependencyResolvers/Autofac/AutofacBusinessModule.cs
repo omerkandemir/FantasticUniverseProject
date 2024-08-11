@@ -4,8 +4,10 @@ using AutoMapper;
 using Castle.DynamicProxy;
 using FluentValidation;
 using NLayer.Business.Abstracts;
+using NLayer.Business.Concretes.Authentication;
 using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.AbilityCharacterValidation.Create;
 using NLayer.Business.Concretes.Managers;
+using NLayer.Core.Entities.Authentication;
 using NLayer.Core.Utilities.ImageOperations;
 using NLayer.Core.Utilities.Interceptors;
 using NLayer.DataAccess.Abstracts;
@@ -102,6 +104,9 @@ public class AutofacBusinessModule : Module
         builder.RegisterType<GetDefaultImages>().As<IGetDefaultImages>().SingleInstance();
 
         builder.RegisterType<CreateAbilityCharacterValidator>().As<IValidator<CreateAbilityCharacterRequest>>();
+
+        builder.RegisterType<SignInManagerAdapter>().As<ISignInService<AppUser>>();
+        builder.RegisterType<UserManagerAdapter>().As<IUserService<AppUser>>();
     }
 }
 

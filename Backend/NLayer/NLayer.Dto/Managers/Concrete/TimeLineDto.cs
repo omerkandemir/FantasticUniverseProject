@@ -18,42 +18,42 @@ public class TimeLineDto : ITimeLineDto
         _timeLineService = timeLineService;
         _mapper = mapper;
     }
-    public IErrorResponse Add(CreateTimeLineRequest request)
+    public IResponse Add(CreateTimeLineRequest request)
     {
-        var value = _mapper.Map<TimeLine>(request);
-        var result = _timeLineService.Add(value);
-        var response = _mapper.Map<CreatedTimeLineResponse>(value);
+        TimeLine timeLine = _mapper.Map<TimeLine>(request);
+        var result = _timeLineService.Add(timeLine);
+        var response = _mapper.Map<CreatedTimeLineResponse>(timeLine);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<TimeLine>(response, timeLine);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IErrorResponse Update(UpdateTimeLineRequest request)
+    public IResponse Update(UpdateTimeLineRequest request)
     {
-        var value = _mapper.Map<TimeLine>(request);
-        var result = _timeLineService.Update(value);
-        var response = _mapper.Map<UpdatedTimeLineResponse>(value);
+        TimeLine timeLine = _mapper.Map<TimeLine>(request);
+        var result = _timeLineService.Update(timeLine);
+        var response = _mapper.Map<UpdatedTimeLineResponse>(timeLine);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<TimeLine>(response, timeLine);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IErrorResponse Delete(DeleteTimeLineRequest request)
+    public IResponse Delete(DeleteTimeLineRequest request)
     {
-        var value = _mapper.Map<TimeLine>(request);
-        var result = _timeLineService.Delete(value);
-        var response = _mapper.Map<DeletedTimeLineResponse>(value);
+        TimeLine timeLine = _mapper.Map<TimeLine>(request);
+        var result = _timeLineService.Delete(timeLine);
+        var response = _mapper.Map<DeletedTimeLineResponse>(timeLine);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<TimeLine>(response, timeLine);
         }
         else
         {

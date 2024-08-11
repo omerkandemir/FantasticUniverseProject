@@ -18,42 +18,42 @@ public class CharacterDto : ICharacterDto
         _characterService = characterService;
         _mapper = mapper;
     }
-    public IErrorResponse Add(CreateCharacterRequest request)
+    public IResponse Add(CreateCharacterRequest request)
     {
-        var value = _mapper.Map<Character>(request);
-        var result = _characterService.Add(value);
-        var response = _mapper.Map<CreatedCharacterResponse>(value);
+        Character character = _mapper.Map<Character>(request);
+        var result = _characterService.Add(character);
+        var response = _mapper.Map<CreatedCharacterResponse>(character);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<Character>(response, character);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IErrorResponse Update(UpdateCharacterRequest request)
+    public IResponse Update(UpdateCharacterRequest request)
     {
-        var value = _mapper.Map<Character>(request);
-        var result = _characterService.Update(value);
-        var response = _mapper.Map<UpdatedCharacterResponse>(value);
+        Character character = _mapper.Map<Character>(request);
+        var result = _characterService.Update(character);
+        var response = _mapper.Map<UpdatedCharacterResponse>(character);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<Character>(response, character);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IErrorResponse Delete(DeleteCharacterRequest request)
+    public IResponse Delete(DeleteCharacterRequest request)
     {
-        var value = _mapper.Map<Character>(request);
-        var result = _characterService.Delete(value);
-        var response = _mapper.Map<DeletedCharacterResponse>(value);
+        Character character = _mapper.Map<Character>(request);
+        var result = _characterService.Delete(character);
+        var response = _mapper.Map<DeletedCharacterResponse>(character);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<Character>(response, character);
         }
         else
         {

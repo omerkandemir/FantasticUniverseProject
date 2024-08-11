@@ -18,42 +18,42 @@ public class UnionDto : IUnionDto
         _unionService = unionService;
         _mapper = mapper;
     }
-    public IErrorResponse Add(CreateUnionRequest request)
+    public IResponse Add(CreateUnionRequest request)
     {
-        var value = _mapper.Map<Union>(request);
-        var result = _unionService.Add(value);
-        var response = _mapper.Map<CreatedUnionResponse>(value);
+        Union union = _mapper.Map<Union>(request);
+        var result = _unionService.Add(union);
+        var response = _mapper.Map<CreatedUnionResponse>(union);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<Union>(response, union);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IErrorResponse Update(UpdateUnionRequest request)
+    public IResponse Update(UpdateUnionRequest request)
     {
-        var value = _mapper.Map<Union>(request);
-        var result = _unionService.Update(value);
-        var response = _mapper.Map<UpdatedUnionResponse>(value);
+        Union union = _mapper.Map<Union>(request);
+        var result = _unionService.Update(union);
+        var response = _mapper.Map<UpdatedUnionResponse>(union);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<Union>(response, union);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IErrorResponse Delete(DeleteUnionRequest request)
+    public IResponse Delete(DeleteUnionRequest request)
     {
-        var value = _mapper.Map<Union>(request);
-        var result = _unionService.Delete(value);
-        var response = _mapper.Map<DeletedUnionResponse>(value);
+        Union union = _mapper.Map<Union>(request);
+        var result = _unionService.Delete(union);
+        var response = _mapper.Map<DeletedUnionResponse>(union);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<Union>(response, union);
         }
         else
         {

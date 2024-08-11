@@ -1,5 +1,4 @@
 ﻿using NLayer.Core.Dto.Abstracts;
-using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Mapper.Requests.AppUser;
 using NLayer.Mapper.Responses.AppUser;
 
@@ -11,6 +10,13 @@ public interface IAppUserDto : IEntityRepositoryDto<
     DeleteAppUserRequest,
     GetAllAppUserResponse>
 {
-    Task<IErrorResponse> AddAsync(CreateAppUserRequest request);
-    Task<IErrorResponse> UpdateAsync(UpdateAppUserRequest request);
+    Task<IResponse> AddAsync(CreateAppUserRequest request);
+    Task<IResponse> UpdateAsync(UpdateAppUserRequest request);
+    Task<IResponse> UpdateEmailAsync(UpdateAppUserEmailRequest request);
+    Task<IResponse> UpdatePasswordAsync(UpdateAppUserPasswordRequest request);
+    Task<IResponse> UpdateProfilePhotoAsync(UpdateAppUserProfileImageRequest request);
+    Task<IResponse> ConfirmMailAsync(ConfirmMailRequest request);
+    Task<IResponse> GetUserByNameAsync(string name);
+    Task<IResponse> GetUserByMailAsync(string email);
+    Task<IResponse> GetUserAsync(System.Security.Claims.ClaimsPrincipal claimsPrincipal);
 }

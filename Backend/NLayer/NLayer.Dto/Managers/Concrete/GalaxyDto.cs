@@ -18,42 +18,42 @@ public class GalaxyDto : IGalaxyDto
         _galaxyService = galaxyService;
         _mapper = mapper;
     }
-    public IErrorResponse Add(CreateGalaxyRequest request)
+    public IResponse Add(CreateGalaxyRequest request)
     {
-        var value = _mapper.Map<Galaxy>(request);
-        var result = _galaxyService.Add(value);
-        var response = _mapper.Map<CreatedGalaxyResponse>(value);
+        Galaxy galaxy = _mapper.Map<Galaxy>(request);
+        var result = _galaxyService.Add(galaxy);
+        var response = _mapper.Map<CreatedGalaxyResponse>(galaxy);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<Galaxy>(response, galaxy);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IErrorResponse Update(UpdateGalaxyRequest request)
+    public IResponse Update(UpdateGalaxyRequest request)
     {
-        var value = _mapper.Map<Galaxy>(request);
-        var result = _galaxyService.Update(value);
-        var response = _mapper.Map<UpdatedGalaxyResponse>(value);
+        Galaxy galaxy = _mapper.Map<Galaxy>(request);
+        var result = _galaxyService.Update(galaxy);
+        var response = _mapper.Map<UpdatedGalaxyResponse>(galaxy);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<Galaxy>(response, galaxy);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IErrorResponse Delete(DeleteGalaxyRequest request)
+    public IResponse Delete(DeleteGalaxyRequest request)
     {
-        var value = _mapper.Map<Galaxy>(request);
-        var result = _galaxyService.Delete(value);
-        var response = _mapper.Map<DeletedGalaxyResponse>(value);
+        Galaxy galaxy = _mapper.Map<Galaxy>(request);
+        var result = _galaxyService.Delete(galaxy);
+        var response = _mapper.Map<DeletedGalaxyResponse>(galaxy);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<Galaxy>(response, galaxy);
         }
         else
         {

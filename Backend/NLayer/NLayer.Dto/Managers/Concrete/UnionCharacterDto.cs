@@ -18,42 +18,42 @@ public class UnionCharacterDto : IUnionCharacterDto
         _unionCharacterService = unionCharacterService;
         _mapper = mapper;
     }
-    public IErrorResponse Add(CreateUnionCharacterRequest request)
+    public IResponse Add(CreateUnionCharacterRequest request)
     {
-        var value = _mapper.Map<UnionCharacter>(request);
-        var result = _unionCharacterService.Add(value);
-        var response = _mapper.Map<CreatedUnionCharacterResponse>(value);
+        UnionCharacter unionCharacter = _mapper.Map<UnionCharacter>(request);
+        var result = _unionCharacterService.Add(unionCharacter);
+        var response = _mapper.Map<CreatedUnionCharacterResponse>(unionCharacter);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<UnionCharacter>(response, unionCharacter);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IErrorResponse Update(UpdateUnionCharacterRequest request)
+    public IResponse Update(UpdateUnionCharacterRequest request)
     {
-        var value = _mapper.Map<UnionCharacter>(request);
-        var result = _unionCharacterService.Update(value);
-        var response = _mapper.Map<UpdatedUnionCharacterResponse>(value);
+        UnionCharacter unionCharacter = _mapper.Map<UnionCharacter>(request);
+        var result = _unionCharacterService.Update(unionCharacter);
+        var response = _mapper.Map<UpdatedUnionCharacterResponse>(unionCharacter);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<UnionCharacter>(response, unionCharacter);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IErrorResponse Delete(DeleteUnionCharacterRequest request)
+    public IResponse Delete(DeleteUnionCharacterRequest request)
     {
-        var value = _mapper.Map<UnionCharacter>(request);
-        var result = _unionCharacterService.Delete(value);
-        var response = _mapper.Map<DeletedUnionCharacterResponse>(value);
+        UnionCharacter unionCharacter = _mapper.Map<UnionCharacter>(request);
+        var result = _unionCharacterService.Delete(unionCharacter);
+        var response = _mapper.Map<DeletedUnionCharacterResponse>(unionCharacter);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<UnionCharacter>(response, unionCharacter);
         }
         else
         {

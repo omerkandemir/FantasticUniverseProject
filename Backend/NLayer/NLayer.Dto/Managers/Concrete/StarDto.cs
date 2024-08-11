@@ -18,42 +18,42 @@ public class StarDto : IStarDto
         _starService = starService;
         _mapper = mapper;
     }
-    public IErrorResponse Add(CreateStarRequest request)
+    public IResponse Add(CreateStarRequest request)
     {
-        var value = _mapper.Map<Star>(request);
-        var result = _starService.Add(value);
-        var response = _mapper.Map<CreatedStarResponse>(value);
+        Star star = _mapper.Map<Star>(request);
+        var result = _starService.Add(star);
+        var response = _mapper.Map<CreatedStarResponse>(star);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<Star>(response, star);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IErrorResponse Update(UpdateStarRequest request)
+    public IResponse Update(UpdateStarRequest request)
     {
-        var value = _mapper.Map<Star>(request);
-        var result = _starService.Update(value);
-        var response = _mapper.Map<UpdatedStarResponse>(value);
+        Star star = _mapper.Map<Star>(request);
+        var result = _starService.Update(star);
+        var response = _mapper.Map<UpdatedStarResponse>(star);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<Star>(response, star);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IErrorResponse Delete(DeleteStarRequest request)
+    public IResponse Delete(DeleteStarRequest request)
     {
-        var value = _mapper.Map<Star>(request);
-        var result = _starService.Delete(value);
-        var response = _mapper.Map<DeletedStarResponse>(value);
+        Star star = _mapper.Map<Star>(request);
+        var result = _starService.Delete(star);
+        var response = _mapper.Map<DeletedStarResponse>(star);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse(response);
+            return ResponseFactory.CreateSuccessResponse<Star>(response, star);
         }
         else
         {

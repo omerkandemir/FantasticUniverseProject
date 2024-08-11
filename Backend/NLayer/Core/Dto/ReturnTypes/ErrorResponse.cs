@@ -1,4 +1,6 @@
-﻿namespace NLayer.Core.Dto.ReturnTypes;
+﻿using NLayer.Core.Dto.Abstracts;
+
+namespace NLayer.Core.Dto.ReturnTypes;
 
 public class ErrorResponse : IErrorResponse
 {
