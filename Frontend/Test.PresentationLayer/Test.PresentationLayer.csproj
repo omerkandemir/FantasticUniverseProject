@@ -16,11 +16,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Backend\NLayer\NLayer.Dto\NLayer.Dto.csproj" />
+    <Folder Include="ViewComponents\User\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="ViewComponents\User\" />
+    <ProjectReference Include="..\..\Backend\NLayer\NLayer.Dto\NLayer.Dto.csproj" />
   </ItemGroup>
 
 </Project>
