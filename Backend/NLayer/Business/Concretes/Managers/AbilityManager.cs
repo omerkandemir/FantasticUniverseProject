@@ -15,7 +15,7 @@ public class AbilityManager : BaseManager<Ability, IAbilityDal>, IAbilityService
     public AbilityManager(IAbilityDal tdal) : base(tdal)
     {
     }
-    
+
     [ValidationAspect(typeof(CreateAbilityValidator), Priority = 2)]
     [CheckUserLoginAspect(Priority = 1)]
     public override IReturnType Add(Ability Value)

@@ -2,17 +2,10 @@
 using Autofac.Extras.DynamicProxy;
 using AutoMapper;
 using Castle.DynamicProxy;
-using FluentValidation;
-using NLayer.Business.Abstracts;
-using NLayer.Business.Concretes.Authentication;
-using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.AbilityCharacterValidation.Create;
-using NLayer.Business.Concretes.Managers;
-using NLayer.Core.Entities.Authentication;
-using NLayer.Core.Utilities.ImageOperations;
 using NLayer.Core.Utilities.Interceptors;
-using NLayer.DataAccess.Abstracts;
-using NLayer.DataAccess.Concretes.EntityFramework;
-using NLayer.Mapper.Requests.AbilityCharacter;
+using NLayer.Core.DependencyRevolvers;
+using NLayer.Core.Utilities.IOC;
+using NLayer.Business.Concretes.DependencyResolvers.Autofac.Modules;
 
 namespace NLayer.Business.Concretes.DependencyResolvers.Autofac;
 
@@ -53,60 +46,28 @@ public class AutofacBusinessModule : Module
 
     private void RegisterServices(ContainerBuilder builder)
     {
-        builder.RegisterType<AbilityManager>().As<IAbilityService>().SingleInstance();
-        builder.RegisterType<EfAbilityDal>().As<IAbilityDal>().SingleInstance();
+        SetAutofacContainer(builder);
 
-        builder.RegisterType<AbilityCharacterManager>().As<IAbilityCharacterService>().SingleInstance();
-        builder.RegisterType<EfAbilityCharacterDal>().As<IAbilityCharacterDal>().SingleInstance();
+        var modules = new IModule[]
+        {
+            new CoreModule(),
+            new CacheModule(),
+            new DataAccessModule(),
+            new BusinessModule(),
+        };
 
-        builder.RegisterType<AdventureManager>().As<IAdventureService>().SingleInstance();
-        builder.RegisterType<EfAdventureDal>().As<IAdventureDal>().SingleInstance();
+        foreach (var module in modules)
+        {
+            module.Load(builder);
+        }
+    }
 
-        builder.RegisterType<CharacterManager>().As<ICharacterService>().SingleInstance();
-        builder.RegisterType<EfCharacterDal>().As<ICharacterDal>().SingleInstance();
-
-        builder.RegisterType<GalaxyManager>().As<IGalaxyService>().SingleInstance();
-        builder.RegisterType<EfGalaxyDal>().As<IGalaxyDal>().SingleInstance();
-
-        builder.RegisterType<PlanetManager>().As<IPlanetService>().SingleInstance();
-        builder.RegisterType<EfPlanetDal>().As<IPlanetDal>().SingleInstance();
-
-        builder.RegisterType<SpeciesManager>().As<ISpeciesService>().SingleInstance();
-        builder.RegisterType<EfSpeciesDal>().As<ISpeciesDal>().SingleInstance();
-
-        builder.RegisterType<StarManager>().As<IStarService>().SingleInstance();
-        builder.RegisterType<EfStarDal>().As<IStarDal>().SingleInstance();
-
-        builder.RegisterType<TimeLineManager>().As<ITimeLineService>().SingleInstance();
-        builder.RegisterType<EfTimeLineDal>().As<ITimeLineDal>().SingleInstance();
-
-        builder.RegisterType<UnionCharacterManager>().As<IUnionCharacterService>().SingleInstance();
-        builder.RegisterType<EfUnionCharacterDal>().As<IUnionCharacterDal>().SingleInstance();
-
-        builder.RegisterType<UnionManager>().As<IUnionService>().SingleInstance();
-        builder.RegisterType<EfUnionDal>().As<IUnionDal>().SingleInstance();
-
-        builder.RegisterType<UniverseManager>().As<IUniverseService>().SingleInstance();
-        builder.RegisterType<EfUniverseDal>().As<IUniverseDal>().SingleInstance();
-
-        builder.RegisterType<AdventureCharacterManager>().As<IAdventureCharacterService>().SingleInstance();
-        builder.RegisterType<EfAdventureCharacterDal>().As<IAdventureCharacterDal>().SingleInstance();
-
-        builder.RegisterType<UniverseImageManager>().As<IUniverseImageService>().SingleInstance();
-        builder.RegisterType<EfUniverseImageDal>().As<IUniverseImageDal>().SingleInstance();
-
-        builder.RegisterType<UserImageManager>().As<IUserImageService>().SingleInstance();
-        builder.RegisterType<EfUserImageDal>().As<IUserImageDal>().SingleInstance();
-
-        builder.RegisterType<EfAppUserDal>().As<IAppUserDal>().SingleInstance();
-        builder.RegisterType<AppUserManager>().As<IAppUserService>().SingleInstance();
-
-        builder.RegisterType<GetDefaultImages>().As<IGetDefaultImages>().SingleInstance();
-
-        builder.RegisterType<CreateAbilityCharacterValidator>().As<IValidator<CreateAbilityCharacterRequest>>();
-
-        builder.RegisterType<SignInManagerAdapter>().As<ISignInService<AppUser>>();
-        builder.RegisterType<UserManagerAdapter>().As<IUserService<AppUser>>();
+    private static void SetAutofacContainer(ContainerBuilder builder)
+    {
+        builder.RegisterBuildCallback(container =>
+        {
+            AutofacServiceTool.SetContainer((IContainer)container);
+        });
     }
 }
 

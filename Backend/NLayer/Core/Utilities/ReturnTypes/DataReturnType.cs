@@ -1,9 +1,11 @@
-﻿using NLayer.Core.Utilities.Infos;
+﻿using Newtonsoft.Json;
+using NLayer.Core.Utilities.Infos;
 
 namespace NLayer.Core.Utilities.ReturnTypes;
 
 public class DataReturnType<T> : ReturnType, IDataReturnType<T>
 {
+    [JsonConstructor]
     public DataReturnType(T data, string message, CrudOperation crudOperation) : base(message, crudOperation, true)
     {
         Data = data;

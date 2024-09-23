@@ -1,4 +1,5 @@
-﻿using NLayer.Core.DataAccess.Abstracts;
+﻿using NLayer.Core.Aspect.Autofac.Caching;
+using NLayer.Core.DataAccess.Abstracts;
 using NLayer.Core.Entities.Abstract;
 using NLayer.Core.Utilities.Infos;
 using NLayer.Core.Utilities.ReturnTypes;
@@ -14,6 +15,7 @@ public abstract class BaseManager<T, Tdal>
     {
         _tdal = tdal;
     }
+    [CacheRemoveAspect("GetAll")]
     public virtual IReturnType Add(T value)
     {
         try
@@ -26,6 +28,8 @@ public abstract class BaseManager<T, Tdal>
             return new ReturnType(GetDatasInfo.AddedFailed, CrudOperation.Add, ex);
         }
     }
+
+    [CacheRemoveAspect("GetAll")]
     public virtual IReturnType Update(T value)
     {
         try
@@ -38,6 +42,7 @@ public abstract class BaseManager<T, Tdal>
             return new ReturnType(GetDatasInfo.UpdatedFailed, CrudOperation.Update, ex);
         }
     }
+    [CacheRemoveAspect("GetAll")]
     public virtual IReturnType Delete(T value)
     {
         try
@@ -50,6 +55,8 @@ public abstract class BaseManager<T, Tdal>
             return new ReturnType(GetDatasInfo.DeletedFailed, CrudOperation.Delete, ex);
         }
     }
+
+    [CacheAspect(duration: 60)] 
     public virtual IDataReturnType<T> Get(object id)
     {
         try
@@ -61,6 +68,8 @@ public abstract class BaseManager<T, Tdal>
             return new DataReturnType<T>(GetDatasInfo.FailedGetData, CrudOperation.Get, ex);
         }
     }
+
+    [CacheAspect(duration: 60)] 
     public virtual IDataReturnType<List<T>> GetAll()
     {
         try
