@@ -52,6 +52,7 @@ public class AutofacBusinessModule : Module
         {
             new CoreModule(),
             new CacheModule(),
+            new LogModule(),
             new DataAccessModule(),
             new BusinessModule(),
         };

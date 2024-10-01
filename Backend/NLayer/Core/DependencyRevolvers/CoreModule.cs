@@ -10,8 +10,10 @@ public class CoreModule : IModule
 {
     public void Load(ContainerBuilder builder)
     {
-        builder.RegisterType<GetDefaultImages>().As<IGetDefaultImages>().SingleInstance();
+        // Middleware'in bağımlılığı olan IHttpContextAccessor kaydı
         builder.RegisterType<HttpContextAccessor>().As<IHttpContextAccessor>().SingleInstance();
+
+        builder.RegisterType<GetDefaultImages>().As<IGetDefaultImages>().SingleInstance();
         builder.RegisterType<Stopwatch>().SingleInstance();
     }
 }

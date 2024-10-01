@@ -2,6 +2,7 @@
 using Autofac.Extensions.DependencyInjection;
 using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.AppUserValidation;
 using NLayer.Core.Entities.Authentication;
+using NLayer.Core.Middleware;
 using NLayer.Core.Utilities.UserOperations;
 using NLayer.DataAccess.Concretes.EntityFramework;
 using NLayer.Dto.Autofac;
@@ -62,17 +63,18 @@ public class Startup
         var httpContextAccessor = app.ApplicationServices.GetRequiredService<IHttpContextAccessor>();
         AccessUser.Configure(httpContextAccessor);
 
-        app.UseMiddleware<UserContextMiddleware>();
-
         app.UseHttpsRedirection();
         app.UseStaticFiles();
 
         app.UseRouting();
 
-        app.UseSession();
-
+        app.UseSession(); // Session middleware'i etkinleştir
         app.UseAuthentication();
         app.UseAuthorization();
+        app.UseMiddleware<UserContextMiddleware>(); 
+
+
+
 
         app.UseEndpoints(endpoints =>
         {
