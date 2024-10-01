@@ -259,7 +259,6 @@ public class MyProfileController : Controller
                             var newUniverseImage = _universeImageDto.Get(profileImageViewModel.SelectedImageId) as GetAllUniverseImageResponse;
                             if (newUniverseImage != null)
                             {
-                                //HttpContext.Session.Remove("ImageURL");
                                 HttpContext.Session.Set("ImageURL", newUniverseImage.ImageURL);
                             }
                             return RedirectToAction("Index", "MainPage");
