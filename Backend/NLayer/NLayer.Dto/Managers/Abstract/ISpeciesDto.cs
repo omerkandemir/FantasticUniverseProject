@@ -4,7 +4,7 @@ using NLayer.Mapper.Responses.Species;
 
 namespace NLayer.Dto.Managers.Abstract;
 
-public interface ISpeciesDto : IEntityRepositoryDto<
+public interface ISpeciesDto : IEntityRepositoryAsyncDto<
         CreateSpeciesRequest,
         UpdateSpeciesRequest,
         DeleteSpeciesRequest,

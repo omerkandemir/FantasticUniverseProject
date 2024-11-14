@@ -5,12 +5,12 @@ using NLayer.Mapper.Responses.UniverseImage;
 
 namespace NLayer.Dto.Managers.Abstract;
 
-public interface IUniverseImageDto : IEntityRepositoryDto<
+public interface IUniverseImageDto : IEntityRepositoryAsyncDto<
     CreateUniverseImageRequest,
     UpdateUniverseImageRequest,
     DeleteUniverseImageRequest,
     GetAllUniverseImageResponse>
 {
-    void AddFirstUserDatas();
-    List<UniverseImage> GetFirstUserImages();
+    Task AddFirstUserDatas();
+    Task<ICollection<UniverseImage>> GetFirstUserImages();
 }

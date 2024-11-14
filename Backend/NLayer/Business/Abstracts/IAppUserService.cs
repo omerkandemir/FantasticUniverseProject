@@ -5,7 +5,7 @@ using NLayer.Mapper.Requests.AppUser;
 
 namespace NLayer.Business.Abstracts;
 
-public interface IAppUserService : IEntityServiceRepository<AppUser>
+public interface IAppUserService : IEntityServiceRepositoryAsync<AppUser>
 {
     Task<IReturnType> AddAsyncWithIdentityUser(AppUser user, string password);
     Task<IReturnType> UpdateAsyncWithIdentityUser(AppUser user);

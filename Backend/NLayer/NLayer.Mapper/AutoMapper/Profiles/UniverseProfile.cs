@@ -15,6 +15,8 @@ public class UniverseProfile : Profile
         CreateMap<Universe, UpdatedUniverseResponse>().ReverseMap();
         CreateMap<Universe, DeleteUniverseRequest>().ReverseMap();
         CreateMap<Universe, DeletedUniverseResponse>().ReverseMap();
-        CreateMap<Universe, GetAllUniverseResponse>().ReverseMap();
+
+        CreateMap<Universe, GetAllUniverseResponse>()
+            .ForMember(dest => dest.ThemeSetting, opt => opt.MapFrom(src => src.ThemeSetting));
     }
 }

@@ -17,33 +17,33 @@ public class PlanetsController : ControllerBase
     [HttpPost("Ekle")]
     public IActionResult Add(CreatePlanetRequest createRequest)
     {
-        var response = _planetDto.Add(createRequest);
+        var response = _planetDto.AddAsync(createRequest);
         return Ok(response);
     }
 
     [HttpPost("Güncelle")]
     public IActionResult Update(UpdatePlanetRequest updateRequest)
     {
-        var response = _planetDto.Update(updateRequest);
+        var response = _planetDto.UpdateAsync(updateRequest);
         return Ok(response);
     }
     [HttpDelete("Sil")]
     public IActionResult Delete(DeletePlanetRequest deleteRequest)
     {
-        var response = _planetDto.Delete(deleteRequest);
+        var response = _planetDto.DeleteAsync(deleteRequest);
         return Ok(response);
     }
 
     [HttpGet("Listele")]
     public IActionResult GetAll()
     {
-        var response = _planetDto.GetAll();
+        var response = _planetDto.GetAllAsync();
         return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
-        var response = _planetDto.Get(Id);
+        var response = _planetDto.GetAsync(Id);
         return Ok(response);
     }
 }

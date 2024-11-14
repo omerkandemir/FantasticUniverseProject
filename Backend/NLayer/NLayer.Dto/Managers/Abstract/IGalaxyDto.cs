@@ -4,7 +4,7 @@ using NLayer.Mapper.Responses.Galaxy;
 
 namespace NLayer.Dto.Managers.Abstract;
 
-public interface IGalaxyDto : IEntityRepositoryDto<
+public interface IGalaxyDto : IEntityRepositoryAsyncDto<
         CreateGalaxyRequest,
         UpdateGalaxyRequest,
         DeleteGalaxyRequest,

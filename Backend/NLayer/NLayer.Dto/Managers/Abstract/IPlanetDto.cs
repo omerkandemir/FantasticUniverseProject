@@ -4,7 +4,7 @@ using NLayer.Mapper.Responses.Planet;
 
 namespace NLayer.Dto.Managers.Abstract
 {
-    public interface IPlanetDto : IEntityRepositoryDto<
+    public interface IPlanetDto : IEntityRepositoryAsyncDto<
         CreatePlanetRequest,
         UpdatePlanetRequest,
         DeletePlanetRequest,

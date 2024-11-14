@@ -3,8 +3,8 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Abstracts;
 
-public interface IUniverseImageService : IEntityServiceRepository<UniverseImage>
+public interface IUniverseImageService : IEntityServiceRepositoryAsync<UniverseImage>
 {
-    void UpdateDatabaseWithNewImages();
-    List<UniverseImage> GetFirstImagesFromDatabase();
+    Task UpdateDatabaseWithNewImages();
+    Task<ICollection<UniverseImage>> GetFirstImagesFromDatabase();
 }

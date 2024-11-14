@@ -18,10 +18,10 @@ public class UnionCharacterDto : IUnionCharacterDto
         _unionCharacterService = unionCharacterService;
         _mapper = mapper;
     }
-    public IResponse Add(CreateUnionCharacterRequest request)
+    public async Task<IResponse> AddAsync(CreateUnionCharacterRequest request)
     {
         UnionCharacter unionCharacter = _mapper.Map<UnionCharacter>(request);
-        var result = _unionCharacterService.Add(unionCharacter);
+        var result = await _unionCharacterService.AddAsync(unionCharacter);
         var response = _mapper.Map<CreatedUnionCharacterResponse>(unionCharacter);
         if (result.Success)
         {
@@ -32,10 +32,10 @@ public class UnionCharacterDto : IUnionCharacterDto
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IResponse Update(UpdateUnionCharacterRequest request)
+    public async Task<IResponse> UpdateAsync(UpdateUnionCharacterRequest request)
     {
         UnionCharacter unionCharacter = _mapper.Map<UnionCharacter>(request);
-        var result = _unionCharacterService.Update(unionCharacter);
+        var result = await _unionCharacterService.UpdateAsync(unionCharacter);
         var response = _mapper.Map<UpdatedUnionCharacterResponse>(unionCharacter);
         if (result.Success)
         {
@@ -46,10 +46,10 @@ public class UnionCharacterDto : IUnionCharacterDto
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IResponse Delete(DeleteUnionCharacterRequest request)
+    public async Task<IResponse> DeleteAsync(DeleteUnionCharacterRequest request)
     {
         UnionCharacter unionCharacter = _mapper.Map<UnionCharacter>(request);
-        var result = _unionCharacterService.Delete(unionCharacter);
+        var result = await _unionCharacterService.DeleteAsync(unionCharacter);
         var response = _mapper.Map<DeletedUnionCharacterResponse>(unionCharacter);
         if (result.Success)
         {
@@ -61,16 +61,16 @@ public class UnionCharacterDto : IUnionCharacterDto
         }
     }
 
-    public IGetResponse Get(object id)
+    public async Task<IGetResponse> GetAsync(object id)
     {
-        var value = _unionCharacterService.Get(id);
+        var value = await _unionCharacterService.GetAsync(id);
         var response = _mapper.Map<GetAllUnionCharacterResponse>(value.Data);
         return response;
     }
 
-    public List<GetAllUnionCharacterResponse> GetAll()
+    public async Task<List<GetAllUnionCharacterResponse>> GetAllAsync()
     {
-        var value = _unionCharacterService.GetAll();
+        var value = await _unionCharacterService.GetAllAsync();
         var response = _mapper.Map<List<GetAllUnionCharacterResponse>>(value.Data);
         return response;
     }

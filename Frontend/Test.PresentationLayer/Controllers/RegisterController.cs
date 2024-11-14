@@ -30,10 +30,10 @@ public class RegisterController : Controller
     }
 
     [HttpGet]
-    public IActionResult Index()
+    public async Task<IActionResult> Index()
     {
-        _universeImageDto.AddFirstUserDatas();
-        var images = _universeImageDto.GetFirstUserImages();
+        await _universeImageDto.AddFirstUserDatas();
+        var images = await _universeImageDto.GetFirstUserImages();
         var viewModel = new RegisterViewModel
         {
             CreateAppUserRequest = new CreateAppUserRequest(),
@@ -44,7 +44,7 @@ public class RegisterController : Controller
     [HttpPost]
     public async Task<IActionResult> Index(CreateAppUserRequest createAppUserRequest)
     {
-        RegisterViewModel viewModel = LoadViewModel(createAppUserRequest);
+        RegisterViewModel viewModel = await LoadViewModel(createAppUserRequest);
 
         if (createAppUserRequest.Password != createAppUserRequest.ConfirmPassword)
         {
@@ -92,9 +92,9 @@ public class RegisterController : Controller
         return View(viewModel);
     }
 
-    private RegisterViewModel LoadViewModel(CreateAppUserRequest createAppUserRequest)
+    private async Task<RegisterViewModel> LoadViewModel(CreateAppUserRequest createAppUserRequest)
     {
-        var images = _universeImageDto.GetFirstUserImages();
+        var images = await _universeImageDto.GetFirstUserImages();
         var viewModel = new RegisterViewModel
         {
             CreateAppUserRequest = createAppUserRequest,

@@ -146,25 +146,17 @@ public class AppUserDto : IAppUserDto
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IResponse Delete(DeleteAppUserRequest request)
+    public Task<IResponse> DeleteAsync(DeleteAppUserRequest request)
     {
         throw new NotImplementedException();
     }
 
-    public IGetResponse Get(object id)
+    public Task<IGetResponse> GetAsync(object id)
     {
         throw new NotImplementedException();
     }
 
-    public List<GetAllAppUserResponse> GetAll()
-    {
-        throw new NotImplementedException();
-    }
-    public IResponse Add(CreateAppUserRequest request)
-    {
-        throw new NotImplementedException();
-    }
-    public IResponse Update(UpdateAppUserRequest request)
+    public Task<List<GetAllAppUserResponse>> GetAllAsync()
     {
         throw new NotImplementedException();
     }

@@ -16,33 +16,33 @@ public class GalaxiesController : ControllerBase
     [HttpPost("Ekle")]
     public IActionResult Add(CreateGalaxyRequest createRequest)
     {
-        var response = _galaxyDto.Add(createRequest);
+        var response = _galaxyDto.AddAsync(createRequest);
         return Ok(response);
     }
 
     [HttpPost("Güncelle")]
     public IActionResult Update(UpdateGalaxyRequest updateRequest)
     {
-        var response = _galaxyDto.Update(updateRequest);
+        var response = _galaxyDto.UpdateAsync(updateRequest);
         return Ok(response);
     }
     [HttpDelete("Sil")]
     public IActionResult Delete(DeleteGalaxyRequest deleteRequest)
     {
-        var response = _galaxyDto.Delete(deleteRequest);
+        var response = _galaxyDto.DeleteAsync(deleteRequest);
         return Ok(response);
     }
 
     [HttpGet("Listele")]
     public IActionResult GetAll()
     {
-        var response = _galaxyDto.GetAll();
+        var response = _galaxyDto.GetAllAsync();
         return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
-        var response = _galaxyDto.Get(Id);
+        var response = _galaxyDto.GetAsync(Id);
         return Ok(response);
     }
 }

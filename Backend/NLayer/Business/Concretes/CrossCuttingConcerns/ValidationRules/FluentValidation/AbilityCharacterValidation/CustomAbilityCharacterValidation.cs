@@ -8,11 +8,11 @@ public static class CustomAbilityCharacterValidation
 {
     public static IRuleBuilderOptions<T, object> DoesAbilityCharacterPairExist<T>(this IRuleBuilder<T, object> ruleBuilder)
     {
-        return ruleBuilder.Must((rootObject, context) =>
+        return ruleBuilder.MustAsync(async (rootObject, context, cancellation) =>
         {
             var pair = (dynamic)rootObject;
             var abilityCharacterService = InstanceFactory.GetInstance<IAbilityCharacterService>();
-            var pairExist = abilityCharacterService.GetAll().Data.Any(p => p.AbilityId == pair.AbilityId && p.CharacterId == pair.CharacterId);
+            var pairExist = (await abilityCharacterService.GetAllAsync()).Data.Any(p => p.AbilityId == pair.AbilityId && p.CharacterId == pair.CharacterId);
             return !pairExist;
         }).WithMessage("Belirtilen AbilityId ve CharacterId çifti mevcut.");
     }

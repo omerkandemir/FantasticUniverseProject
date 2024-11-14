@@ -9,24 +9,24 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes.Managers;
 
-public class GalaxyManager : BaseManager<Galaxy, IGalaxyDal>, IGalaxyService
+public class GalaxyManager : BaseManagerAsync<Galaxy, IGalaxyDal>, IGalaxyService
 {
     public GalaxyManager(IGalaxyDal tdal) : base(tdal)
     {
     }
     [ValidationAspect(typeof(CreateGalaxyValidator), Priority = 1)]
-    public override IReturnType Add(Galaxy Value)
+    public override Task<IReturnType> AddAsync(Galaxy value)
     {
-        return base.Add(Value);
+        return base.AddAsync(value);
     }
     [ValidationAspect(typeof(UpdateGalaxyValidator), Priority = 1)]
-    public override IReturnType Update(Galaxy Value)
+    public override Task<IReturnType> UpdateAsync(Galaxy value)
     {
-        return base.Update(Value);
+        return base.UpdateAsync(value);
     }
     [ValidationAspect(typeof(DeleteGalaxyValidator), Priority = 1)]
-    public override IReturnType Delete(Galaxy Value)
+    public override Task<IReturnType> DeleteAsync(Galaxy value)
     {
-        return base.Delete(Value);
+        return base.DeleteAsync(value);
     }
 }

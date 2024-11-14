@@ -16,31 +16,31 @@ public class AdventureCharactersController : ControllerBase
     [HttpPost("Ekle")]
     public IActionResult Add(CreateAdventureCharacterRequest createRequest)
     {
-        var response = _adventureCharacterDto.Add(createRequest);
+        var response = _adventureCharacterDto.AddAsync(createRequest);
         return Ok(response);
     }
     [HttpPost("Güncelle")]
     public IActionResult Update(UpdateAdventureCharacterRequest updateRequest)
     {
-        var response = _adventureCharacterDto.Update(updateRequest);
+        var response = _adventureCharacterDto.UpdateAsync(updateRequest);
         return Ok(response);
     }
     [HttpDelete("Sil")]
     public IActionResult Delete(DeleteAdventureCharacterRequest deleteRequest)
     {
-        var response = _adventureCharacterDto.Delete(deleteRequest);
+        var response = _adventureCharacterDto.DeleteAsync(deleteRequest);
         return Ok(response);
     }
     [HttpGet("Listele")]
     public IActionResult GetAll()
     {
-        var response = _adventureCharacterDto.GetAll();
+        var response = _adventureCharacterDto.GetAllAsync();
         return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
-        var response = _adventureCharacterDto.Get(Id);
+        var response = _adventureCharacterDto.GetAsync(Id);
         return Ok(response);
     }
 }

@@ -16,13 +16,20 @@ public class AdventureConfiguration : BaseEntityConfiguration<Adventure>
         builder.Property(x => x.AdventureContent).HasColumnName("AdventureContent");
         builder.Property(x => x.StartTime).HasColumnName("StartTime");
         builder.Property(x => x.EndTime).HasColumnName("EndTime");
+
         builder.
             HasMany(x => x.TimeLines).
             WithOne(x => x.Adventure).
             HasForeignKey(x => x.StartingAdventureId);
+
         builder.
             HasMany(x => x.AdventureCharacters).
             WithOne(x => x.Adventure).
-            HasForeignKey(x=>x.AdventureId);
+            HasForeignKey(x => x.AdventureId);
+
+        builder.
+            HasMany(x => x.AdventureCollectionItems).
+            WithOne(x => x.Adventure).
+            HasForeignKey(x => x.AdventureId);
     }
 }

@@ -9,9 +9,9 @@ public static class CustomTimeLineValidator
     public static IRuleBuilderOptions<T, TProperty> IsTimeLineIdExists<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, bool allowNull)
     {
         var timeLineService = InstanceFactory.GetInstance<ITimeLineService>();
-        var timeLines = timeLineService.GetAll().Data;
-        return ruleBuilder.Must((rootObject, Id, context) =>
+        return ruleBuilder.MustAsync(async (rootObject, Id, context) =>
         {
+            var timeLines = (await timeLineService.GetAllAsync()).Data;
             if (allowNull && EqualityComparer<TProperty>.Default.Equals(Id, default))
             {
                 return true; // Null değer kabul edilir.

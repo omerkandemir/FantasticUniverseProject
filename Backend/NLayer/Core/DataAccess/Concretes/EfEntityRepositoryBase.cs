@@ -16,7 +16,6 @@ public class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEnti
     {
         CrudOperation(entity, EntityState.Added);
     }
-
     public void Update(TEntity entity)
     {
         CrudOperation(entity, EntityState.Modified);
@@ -25,9 +24,29 @@ public class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEnti
     {
         CrudOperation(entity, EntityState.Deleted);
     }
+    public async Task AddAsync(TEntity entity)
+    {
+        await CrudOperationAsync(entity, EntityState.Added);
+    }
+    public async Task AddRangeAsync(IEnumerable<TEntity> entities)
+    {
+        await using (TContext context = new TContext())
+        {
+            await context.Set<TEntity>().AddRangeAsync(entities);
+            await context.SaveChangesAsync();
+        }
+    }
+    public async Task UpdateAsync(TEntity entity)
+    {
+        await CrudOperationAsync(entity, EntityState.Modified);
+    }
+    public async Task DeleteAsync(TEntity entity)
+    {
+        await CrudOperationAsync(entity, EntityState.Deleted);
+    }
     public TEntity Get(
-        Expression<Func<TEntity, bool>> filter,
-        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
+    Expression<Func<TEntity, bool>> filter,
+    Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
     {
         using (TContext context = new TContext())
         {
@@ -48,6 +67,29 @@ public class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEnti
             return filter == null ? query.ToList() : query.Where(filter).ToList();
         }
     }
+    public async Task<TEntity> GetAsync(
+        Expression<Func<TEntity, bool>> filter,
+        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
+    {
+        await using (TContext context = new TContext())
+        {
+            IQueryable<TEntity> query = Query(include, context);
+
+            return await query.FirstOrDefaultAsync(filter);
+        }
+    }
+
+    public async Task<ICollection<TEntity>> GetAllAsync(
+        Expression<Func<TEntity, bool>> filter = null,
+        Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null)
+    {
+        await using (TContext context = new TContext())
+        {
+            IQueryable<TEntity> query = Query(include, context);
+
+            return filter == null ? await query.ToListAsync() : await query.Where(filter).ToListAsync();
+        }
+    }
 
     private IQueryable<TEntity> Query(Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include, TContext context)
     {
@@ -60,7 +102,36 @@ public class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEnti
 
         return query;
     }
-
+    private async Task CrudOperationAsync(TEntity entity, EntityState entityState)
+    {
+        try
+        {
+            await using (TContext context = new TContext())
+            {
+                var entry = context.Entry(entity);
+                switch (entityState)
+                {
+                    case EntityState.Added:
+                        entry.State = EntityState.Added;
+                        break;
+                    case EntityState.Deleted:
+                        entry.State = EntityState.Deleted;
+                        break;
+                    case EntityState.Modified:
+                        context.Attach(entity); 
+                        entry.State = EntityState.Modified;
+                        break;
+                    default:
+                        break;
+                }
+                await context.SaveChangesAsync();
+            }
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
     private void CrudOperation(TEntity entity, EntityState entityState)
     {
         try

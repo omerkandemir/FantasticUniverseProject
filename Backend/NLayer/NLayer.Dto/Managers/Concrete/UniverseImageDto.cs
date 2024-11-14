@@ -20,19 +20,19 @@ public class UniverseImageDto : IUniverseImageDto
         _mapper = mapper;
         _universeService = universeService;
     }
-    public void AddFirstUserDatas()
+    public async Task AddFirstUserDatas()
     {
-        _universeService.AddFirstUniverseData();
-        _universeImageService.UpdateDatabaseWithNewImages();
+        await _universeService.AddFirstUniverseData();
+        await _universeImageService.UpdateDatabaseWithNewImages();
     }
-    public List<UniverseImage> GetFirstUserImages()
+    public async Task<ICollection<UniverseImage>> GetFirstUserImages()
     {
-        return _universeImageService.GetFirstImagesFromDatabase();
+        return await _universeImageService.GetFirstImagesFromDatabase();
     }
-    public IResponse Add(CreateUniverseImageRequest request)
+    public async Task<IResponse> AddAsync(CreateUniverseImageRequest request)
     {
         UniverseImage universeImage = _mapper.Map<UniverseImage>(request);
-        var result = _universeImageService.Add(universeImage);
+        var result = await _universeImageService.AddAsync(universeImage);
         var response = _mapper.Map<CreatedUniverseImageResponse>(universeImage);
         if (result.Success)
         {
@@ -44,10 +44,10 @@ public class UniverseImageDto : IUniverseImageDto
         }
     }
 
-    public IResponse Update(UpdateUniverseImageRequest request)
+    public async Task<IResponse> UpdateAsync(UpdateUniverseImageRequest request)
     {
         UniverseImage universeImage = _mapper.Map<UniverseImage>(request);
-        var result = _universeImageService.Update(universeImage);
+        var result = await _universeImageService.UpdateAsync(universeImage);
         var response = _mapper.Map<UpdatedUniverseImageResponse>(universeImage);
         if (result.Success)
         {
@@ -59,10 +59,10 @@ public class UniverseImageDto : IUniverseImageDto
         }
     }
 
-    public IResponse Delete(DeleteUniverseImageRequest request)
+    public async Task<IResponse> DeleteAsync(DeleteUniverseImageRequest request)
     {
         UniverseImage universeImage = _mapper.Map<UniverseImage>(request);
-        var result = _universeImageService.Delete(universeImage);
+        var result = await _universeImageService.DeleteAsync(universeImage);
         var response = _mapper.Map<DeletedUniverseImageResponse>(universeImage);
         if (result.Success)
         {
@@ -74,16 +74,16 @@ public class UniverseImageDto : IUniverseImageDto
         }
     }
 
-    public IGetResponse Get(object id)
+    public async Task<IGetResponse> GetAsync(object id)
     {
-        var value = _universeImageService.Get(id);
+        var value = await _universeImageService.GetAsync(id);
         var response = _mapper.Map<GetAllUniverseImageResponse>(value.Data);
         return response;
     }
 
-    public List<GetAllUniverseImageResponse> GetAll()
+    public async Task<List<GetAllUniverseImageResponse>> GetAllAsync()
     {
-        var value = _universeImageService.GetAll();
+        var value = await _universeImageService.GetAllAsync();
         var response = _mapper.Map<List<GetAllUniverseImageResponse>>(value.Data);
         return response;
     }

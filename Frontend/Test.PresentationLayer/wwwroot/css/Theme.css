@@ -1,0 +1,107 @@
+.background-default {
+    background: none;
+}
+.background-stars {
+    position: relative;
+    background-color: #000;
+    overflow: hidden;
+}
+
+    .background-stars .stars-container {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        z-index: 0;
+        display: block;
+    }
+
+    .background-stars .star {
+        position: absolute;
+        opacity: 0.8;
+        background-color: #fff;
+        border-radius: 50%;
+        animation: twinkling 1.5s infinite alternate;
+    }
+.stars-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -1;
+    display: block;
+}
+
+
+
+.background-night {
+    background: linear-gradient(180deg, #0f2027, #203a43, #2c5364);
+    animation: nightSkyMove 20s infinite linear;
+}
+
+.background-mist {
+    background: linear-gradient(180deg, #6a6a6a, #c4c4c4);
+    position: relative;
+    overflow: hidden;
+}
+
+    .background-mist::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+        animation: mistMove 30s infinite linear;
+        opacity: 0.7;
+    }
+
+.background-galaxy {
+    background: radial-gradient(circle at center, #1a1a2e, #16213e, #0f3460, #000);
+    background-size: cover;
+    animation: galaxyMove 10s infinite linear;
+}
+
+@keyframes twinkling {
+    0% {
+        opacity: 0.8;
+    }
+
+    100% {
+        opacity: 0.3;
+    }
+}
+
+@keyframes galaxyMove {
+    from {
+        background-position: 0 0;
+    }
+
+    to {
+        background-position: 100% 100%;
+    }
+}
+
+@keyframes nightSkyMove {
+    0% {
+        background-position: 0 0;
+    }
+
+    100% {
+        background-position: 100% 100%;
+    }
+}
+
+@keyframes mistMove {
+    from {
+        transform: translate(-50%, -50%);
+    }
+
+    to {
+        transform: translate(50%, 50%);
+    }
+}

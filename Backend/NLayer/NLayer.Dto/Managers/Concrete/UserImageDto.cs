@@ -19,10 +19,10 @@ public class UserImageDto : IUserImageDto
         _userImageService = userImageService;
         _mapper = mapper;
     }
-    public IResponse Add(CreateUserImageRequest request)
+    public async Task<IResponse> AddAsync(CreateUserImageRequest request)
     {
         UserImage userImage = _mapper.Map<UserImage>(request);
-        var result = _userImageService.Add(userImage);
+        var result = await _userImageService.AddAsync(userImage);
         var response = _mapper.Map<CreatedUserImageResponse>(userImage);
         if (result.Success)
         {
@@ -34,10 +34,10 @@ public class UserImageDto : IUserImageDto
         }
     }
 
-    public IResponse Update(UpdateUserImageRequest request)
+    public async Task<IResponse> UpdateAsync(UpdateUserImageRequest request)
     {
         UserImage userImage = _mapper.Map<UserImage>(request);
-        var result = _userImageService.Update(userImage);
+        var result = await _userImageService.UpdateAsync(userImage);
         var response = _mapper.Map<UpdatedUserImageResponse>(userImage);
         if (result.Success)
         {
@@ -49,10 +49,10 @@ public class UserImageDto : IUserImageDto
         }
     }
 
-    public IResponse Delete(DeleteUserImageRequest request)
+    public async Task<IResponse> DeleteAsync(DeleteUserImageRequest request)
     {
         UserImage userImage = _mapper.Map<UserImage>(request);
-        var result = _userImageService.Delete(userImage);
+        var result = await _userImageService.DeleteAsync(userImage);
         var response = _mapper.Map<DeletedUserImageResponse>(userImage);
         if (result.Success)
         {
@@ -64,27 +64,27 @@ public class UserImageDto : IUserImageDto
         }
     }
 
-    public IGetResponse Get(object id)
+    public async Task<IGetResponse> GetAsync(object id)
     {
-        var value = _userImageService.Get(id);
+        var value = await _userImageService.GetAsync(id);
         var response = _mapper.Map<GetAllUserImageResponse>(value.Data);
         return response;
     }
 
-    public List<GetAllUserImageResponse> GetAll()
+    public async Task<List<GetAllUserImageResponse>> GetAllAsync()
     {
-        var value = _userImageService.GetAll();
+        var value = await _userImageService.GetAllAsync();
         var response = _mapper.Map<List<GetAllUserImageResponse>>(value.Data);
         return response;
     }
-    public List<GetAllUniverseImageResponse> GetUsersImage()
+    public async Task<List<GetAllUniverseImageResponse>> GetUsersImage()
     {
-        var value = _userImageService.GetUsersImage();
+        var value = await _userImageService.GetUsersImage();
         var response = _mapper.Map<List<GetAllUniverseImageResponse>>(value.Data);
         return response;
     }
-    public void AddUserFirstImages()
+    public async Task AddUserFirstImages()
     {
-        _userImageService.AddUserFirstImages();
+        await _userImageService.AddUserFirstImages();
     }
 }

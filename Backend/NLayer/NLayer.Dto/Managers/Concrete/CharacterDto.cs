@@ -18,10 +18,10 @@ public class CharacterDto : ICharacterDto
         _characterService = characterService;
         _mapper = mapper;
     }
-    public IResponse Add(CreateCharacterRequest request)
+    public async Task<IResponse> AddAsync(CreateCharacterRequest request)
     {
         Character character = _mapper.Map<Character>(request);
-        var result = _characterService.Add(character);
+        var result = await _characterService.AddAsync(character);
         var response = _mapper.Map<CreatedCharacterResponse>(character);
         if (result.Success)
         {
@@ -32,10 +32,10 @@ public class CharacterDto : ICharacterDto
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IResponse Update(UpdateCharacterRequest request)
+    public async Task<IResponse> UpdateAsync(UpdateCharacterRequest request)
     {
         Character character = _mapper.Map<Character>(request);
-        var result = _characterService.Update(character);
+        var result = await _characterService.UpdateAsync(character);
         var response = _mapper.Map<UpdatedCharacterResponse>(character);
         if (result.Success)
         {
@@ -46,10 +46,10 @@ public class CharacterDto : ICharacterDto
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IResponse Delete(DeleteCharacterRequest request)
+    public async Task<IResponse> DeleteAsync(DeleteCharacterRequest request)
     {
         Character character = _mapper.Map<Character>(request);
-        var result = _characterService.Delete(character);
+        var result = await _characterService.DeleteAsync(character);
         var response = _mapper.Map<DeletedCharacterResponse>(character);
         if (result.Success)
         {
@@ -61,16 +61,16 @@ public class CharacterDto : ICharacterDto
         }
     }
 
-    public IGetResponse Get(object id)
+    public async Task<IGetResponse> GetAsync(object id)
     {
-        var value = _characterService.Get(id);
+        var value = await _characterService.GetAsync(id);
         var response = _mapper.Map<GetAllCharacterResponse>(value.Data);
         return response;
     }
 
-    public List<GetAllCharacterResponse> GetAll()
+    public async Task<List<GetAllCharacterResponse>> GetAllAsync()
     {
-        var value = _characterService.GetAll();
+        var value = await _characterService.GetAllAsync();
         var response = _mapper.Map<List<GetAllCharacterResponse>>(value.Data);
         return response;
     }

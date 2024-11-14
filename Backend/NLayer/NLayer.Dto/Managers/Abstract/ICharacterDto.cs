@@ -4,7 +4,7 @@ using NLayer.Mapper.Responses.Character;
 
 namespace NLayer.Dto.Managers.Abstract;
 
-public interface ICharacterDto : IEntityRepositoryDto<
+public interface ICharacterDto : IEntityRepositoryAsyncDto<
         CreateCharacterRequest,
         UpdateCharacterRequest,
         DeleteCharacterRequest,

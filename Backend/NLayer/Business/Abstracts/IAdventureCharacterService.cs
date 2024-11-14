@@ -3,6 +3,6 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Abstracts;
 
-public interface IAdventureCharacterService : IEntityServiceRepository<AdventureCharacter>
+public interface IAdventureCharacterService : IEntityServiceRepositoryAsync<AdventureCharacter>
 {
 }

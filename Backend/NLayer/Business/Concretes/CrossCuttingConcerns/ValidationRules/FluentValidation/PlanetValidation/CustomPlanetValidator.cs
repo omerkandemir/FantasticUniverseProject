@@ -9,9 +9,9 @@ public static class CustomPlanetValidator
     public static IRuleBuilderOptions<T, TProperty> IsPlanetIdExists<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, bool allowNull)
     {
         var planetService = InstanceFactory.GetInstance<IPlanetService>();
-        var planets = planetService.GetAll().Data;
-        return ruleBuilder.Must((rootObject, Id, context) =>
+        return ruleBuilder.MustAsync(async(rootObject, Id, context) =>
         {
+            var planets = (await planetService.GetAllAsync()).Data;
             if (allowNull && EqualityComparer<TProperty>.Default.Equals(Id, default))
             {
                 return true; // Null değer kabul edilir.

@@ -4,7 +4,7 @@ using NLayer.Mapper.Responses.Union;
 
 namespace NLayer.Dto.Managers.Abstract;
 
-public interface IUnionDto : IEntityRepositoryDto<
+public interface IUnionDto : IEntityRepositoryAsyncDto<
     CreateUnionRequest,
     UpdateUnionRequest,
     DeleteUnionRequest,

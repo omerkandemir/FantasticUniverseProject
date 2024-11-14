@@ -4,7 +4,7 @@ using NLayer.Mapper.Responses.Ability;
 
 namespace NLayer.Dto.Managers.Abstract;
 
-public interface IAbilityDto : IEntityRepositoryDto<
+public interface IAbilityDto : IEntityRepositoryAsyncDto<
     CreateAbilityRequest,
     UpdateAbilityRequest,
     DeleteAbilityRequest,

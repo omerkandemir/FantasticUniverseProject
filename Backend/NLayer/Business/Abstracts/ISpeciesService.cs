@@ -3,6 +3,6 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Abstracts;
 
-public interface ISpeciesService : IEntityServiceRepository<Species>
+public interface ISpeciesService : IEntityServiceRepositoryAsync<Species>
 {
 }

@@ -6,9 +6,9 @@ using NLayer.Core.Utilities.ReturnTypes;
 
 namespace NLayer.Business.Abstracts;
 
-public abstract class BaseManager<T, Tdal>
+public abstract class BaseManager<T, Tdal> 
     where T : class, IEntity, new()
-    where Tdal : IEntityRepository<T>
+    where Tdal : IEntityRepository<T>  
 {
     protected readonly Tdal _tdal;
     protected BaseManager(Tdal tdal)

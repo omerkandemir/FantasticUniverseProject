@@ -9,7 +9,7 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes.Managers;
 
-public class UserImageManager : BaseManager<UserImage, IUserImageDal>, IUserImageService
+public class UserImageManager : BaseManagerAsync<UserImage, IUserImageDal>, IUserImageService
 {
     private readonly IUniverseImageDal _universeImageDal;
     public UserImageManager(IUserImageDal tdal, IUniverseImageDal userImageDal) : base(tdal)
@@ -17,10 +17,10 @@ public class UserImageManager : BaseManager<UserImage, IUserImageDal>, IUserImag
         _universeImageDal = userImageDal;
     }
 
-    public void AddUserFirstImages()
+    public async Task AddUserFirstImages()
     {
         int UserId = AccessUser.GetUserId();
-        var universeImages = _universeImageDal.GetAll(x => x.Universe.Name == "Fantastic Universe", ui => ui.Include(ui => ui.Universe));
+        var universeImages = await _universeImageDal.GetAllAsync(x => x.Universe.Name == "Fantastic Universe", ui => ui.Include(ui => ui.Universe));
 
         foreach (var universeImage in universeImages)
         {
@@ -29,20 +29,20 @@ public class UserImageManager : BaseManager<UserImage, IUserImageDal>, IUserImag
                 UniverseImageId = universeImage.Id,
                 UserId = UserId
             };
-            _tdal.Add(userImage);
+           await _tdal.AddAsync(userImage);
         }
     }
 
-    public IDataReturnType<List<UniverseImage>> GetUsersImage()
+    public async Task<IDataReturnType<List<UniverseImage>>> GetUsersImage()
     {
         try
         {
             int UserId = AccessUser.GetUserId();
-            List<UserImage> userImages = _tdal.GetAll(x => x.UserId == UserId).ToList();
+            List<UserImage> userImages = (await _tdal.GetAllAsync(x => x.UserId == UserId)).ToList();
             List<UniverseImage> universeImages = new List<UniverseImage>();
             foreach (var item in userImages)
             {
-                var universeImage = _universeImageDal.Get(x => x.Id == item.UniverseImageId);
+                var universeImage = await _universeImageDal.GetAsync(x => x.Id == item.UniverseImageId);
                 if (universeImage != null)
                 {
                     universeImages.Add(universeImage);

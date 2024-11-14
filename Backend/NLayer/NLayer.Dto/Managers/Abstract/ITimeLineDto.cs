@@ -4,7 +4,7 @@ using NLayer.Mapper.Responses.TimeLine;
 
 namespace NLayer.Dto.Managers.Abstract;
 
-public interface ITimeLineDto : IEntityRepositoryDto<
+public interface ITimeLineDto : IEntityRepositoryAsyncDto<
         CreateTimeLineRequest,
         UpdateTimeLineRequest,
         DeleteTimeLineRequest,

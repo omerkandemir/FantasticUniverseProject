@@ -223,7 +223,7 @@ public class MyProfileController : Controller
         ChangeProfileImageViewModel profileImageViewModel = new ChangeProfileImageViewModel()
         {
             SelectedImageId = userResponse.Entity.UniverseImageId,
-            GetAllUniverseImageResponses = _userImageDto.GetUsersImage()
+            GetAllUniverseImageResponses = await _userImageDto.GetUsersImage()
         };
         return View(profileImageViewModel);
     }
@@ -256,7 +256,7 @@ public class MyProfileController : Controller
                         if (result.Success)
                         {
                             await _signInService.RefreshSignInAsync(user.Entity);
-                            var newUniverseImage = _universeImageDto.Get(profileImageViewModel.SelectedImageId) as GetAllUniverseImageResponse;
+                            var newUniverseImage = await _universeImageDto.GetAsync(profileImageViewModel.SelectedImageId) as GetAllUniverseImageResponse;
                             if (newUniverseImage != null)
                             {
                                 HttpContext.Session.Set("ImageURL", newUniverseImage.ImageURL);
@@ -314,8 +314,8 @@ public class MyProfileController : Controller
             ModelState.AddModelError(string.Empty, errorResponse.ErrorMessage);
         }
     }
-    private void PrepareChangeProfileImageViewModelForView(ChangeProfileImageViewModel profileImageViewModel)
+    private async void PrepareChangeProfileImageViewModelForView(ChangeProfileImageViewModel profileImageViewModel)
     {
-        profileImageViewModel.GetAllUniverseImageResponses = _userImageDto.GetUsersImage();
+        profileImageViewModel.GetAllUniverseImageResponses = await _userImageDto.GetUsersImage();
     }
 }

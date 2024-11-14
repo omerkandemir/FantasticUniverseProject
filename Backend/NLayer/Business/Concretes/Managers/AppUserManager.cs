@@ -12,7 +12,7 @@ using NLayer.Mapper.Requests.AppUser;
 
 namespace NLayer.Business.Concretes.Managers;
 
-public class AppUserManager : BaseManager<AppUser, IAppUserDal>, IAppUserService
+public class AppUserManager : BaseManagerAsync<AppUser, IAppUserDal>, IAppUserService
 {
     private readonly IUserService<AppUser> _userService;
     public AppUserManager(IAppUserDal tdal, IUserService<AppUser> userService) : base(tdal)

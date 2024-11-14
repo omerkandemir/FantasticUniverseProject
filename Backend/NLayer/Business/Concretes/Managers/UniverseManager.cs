@@ -1,46 +1,154 @@
-﻿using NLayer.Business.Abstracts;
+﻿using Microsoft.EntityFrameworkCore;
+using NLayer.Business.Abstracts;
 using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.UniverseValidation.Create;
 using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.UniverseValidation.Delete;
 using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.UniverseValidation.Update;
+using NLayer.Core.Aspect.Autofac.Transaction;
 using NLayer.Core.Aspect.Autofac.Validation;
+using NLayer.Core.Utilities.Infos;
 using NLayer.Core.Utilities.ReturnTypes;
 using NLayer.DataAccess.Abstracts;
 using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes.Managers;
 
-public class UniverseManager : BaseManager<Universe, IUniverseDal>, IUniverseService
+public class UniverseManager : BaseManagerAsync<Universe, IUniverseDal>, IUniverseService
 {
-    public UniverseManager(IUniverseDal tdal) : base(tdal)
+    private readonly IGalaxyDal _galaxyDal;
+    private readonly IStarDal _starDal;
+    private readonly IPlanetDal _planetDal;
+    private readonly IThemeSettingDal _themeSettingDal;
+    public UniverseManager(IUniverseDal tdal, IGalaxyDal galaxyDal, IStarDal starDal, IPlanetDal planetDal, IThemeSettingDal themeSettingDal) : base(tdal)
     {
+        _galaxyDal = galaxyDal;
+        _starDal = starDal;
+        _planetDal = planetDal;
+        _themeSettingDal = themeSettingDal;
     }
 
-    public void AddFirstUniverseData()
+    public async Task AddFirstUniverseData()
     {
-        if (_tdal.GetAll(ui => ui.Name == "Fantastic Universe").Any())
+        if ((await _tdal.GetAllAsync(ui => ui.Name == "Fantastic Universe")).Any())
         {
             return;
         }
+        var themeSetting = new ThemeSetting()
+        {
+            Background = BackgroundType.Default,
+            FontColorR = 0.ToString(),
+            FontColorB = 0.ToString(),
+            FontColorG = 0.ToString(),
+            FontFamily = string.Empty,
+        };
+        await _themeSettingDal.AddAsync(themeSetting);
         var universe = new Universe()
         {
             Name = "Fantastic Universe",
+            ThemeSetting = themeSetting,
+            ThemeSettingId = themeSetting.Id,
         };
-        _tdal.Add(universe);
+        await _tdal.AddAsync(universe);
+    }
+
+    [TransactionScopeAspect(Priority = 2)]
+    [ValidationAspect(typeof(CreateUniverseValidator), Priority = 1)]
+    public async Task<IReturnType> CreateUniverseAsync(Universe universe)
+    {
+        try
+        {
+            await AddThemeSettingAsync(universe);
+            await _tdal.AddAsync(universe);
+
+            foreach (var galaxy in universe.Galaxies)
+            {
+                await AddGalaxyAsync(galaxy, universe.Id);
+            }
+
+            return new ReturnType(GetDatasInfo.Added, CrudOperation.Add);
+        }
+        catch (Exception ex)
+        {
+            return new ReturnType(GetDatasInfo.AddedFailed, CrudOperation.Add, ex);
+        }
+    }
+
+    private async Task AddThemeSettingAsync(Universe universe)
+    {
+        var themeSetting = universe.ThemeSetting;
+        await _themeSettingDal.AddAsync(universe.ThemeSetting);
+        universe.ThemeSettingId = themeSetting.Id;
+    }
+    private async Task AddGalaxyAsync(Galaxy galaxy, int universeId)
+    {
+        var newGalaxy = new Galaxy
+        {
+            UniverseId = universeId,
+            Name = galaxy.Name,
+            Stars = new List<Star>()
+        };
+
+        await _galaxyDal.AddAsync(newGalaxy);
+
+        foreach (var star in galaxy.Stars)
+        {
+            await AddStarAsync(star, newGalaxy.Id);
+        }
+    }
+    private async Task AddStarAsync(Star star, int galaxyId)
+    {
+        var newStar = new Star
+        {
+            GalaxyId = galaxyId,
+            Name = star.Name,
+            Planets = new List<Planet>()
+        };
+
+        await _starDal.AddAsync(newStar);
+
+        foreach (var planet in star.Planets)
+        {
+            await AddPlanetAsync(planet, newStar.Id);
+        }
+    }
+    private async Task AddPlanetAsync(Planet planet, int starId)
+    {
+        var newPlanet = new Planet
+        {
+            StarId = starId,
+            Name = planet.Name,
+            PlanetAge = planet.PlanetAge,
+            PlanetTemperature = planet.PlanetTemperature,
+            PlanetMass = planet.PlanetMass
+        };
+        await _planetDal.AddAsync(newPlanet);
     }
 
     [ValidationAspect(typeof(CreateUniverseValidator), Priority = 1)]
-    public override IReturnType Add(Universe Value)
+    public override Task<IReturnType> AddAsync(Universe value)
     {
-        return base.Add(Value);
+        return base.AddAsync(value);
     }
     [ValidationAspect(typeof(UpdateUniverseValidator), Priority = 1)]
-    public override IReturnType Update(Universe Value)
+    public override Task<IReturnType> UpdateAsync(Universe value)
     {
-        return base.Update(Value);
+        return base.UpdateAsync(value);
     }
     [ValidationAspect(typeof(DeleteUniverseValidator), Priority = 1)]
-    public override IReturnType Delete(Universe Value)
+    public override Task<IReturnType> DeleteAsync(Universe value)
     {
-        return base.Delete(Value);
+        return base.DeleteAsync(value);
+    }
+    public async Task<IDataReturnType<ICollection<Universe>>> GetUserUniversesAsync(int userId)
+    {
+        try
+        {
+            var userUniverseList = await _tdal.GetAllAsync(x => x.CreatedBy == userId, include: query => query.Include(query => query.ThemeSetting));
+
+            return new DataReturnType<ICollection<Universe>>(userUniverseList, GetDatasInfo.SuccessListData, CrudOperation.List);
+        }
+        catch (Exception ex)
+        {
+            return new DataReturnType<ICollection<Universe>>(GetDatasInfo.FailedListData, CrudOperation.List, ex);
+        }
     }
 }

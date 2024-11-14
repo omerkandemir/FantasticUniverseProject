@@ -4,7 +4,7 @@ using NLayer.Mapper.Responses.Adventure;
 
 namespace NLayer.Dto.Managers.Abstract
 {
-    public interface IAdventureDto : IEntityRepositoryDto<
+    public interface IAdventureDto : IEntityRepositoryAsyncDto<
         CreateAdventureRequest,
         UpdateAdventureRequest,
         DeleteAdventureRequest,

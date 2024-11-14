@@ -18,10 +18,10 @@ public class AbilityCharacterDto : IAbilityCharacterDto
         _abilityCharacterService = abilityCharacterService;
         _mapper = mapper;
     }
-    public IResponse Add(CreateAbilityCharacterRequest request)
+    public async Task<IResponse> AddAsync(CreateAbilityCharacterRequest request)
     {
         AbilityCharacter abilityCharacter = _mapper.Map<AbilityCharacter>(request);
-        var result = _abilityCharacterService.Add(abilityCharacter);
+        var result = await _abilityCharacterService.AddAsync(abilityCharacter);
         var response = _mapper.Map<CreatedAbilityCharacterResponse>(abilityCharacter);
         if (result.Success)
         {
@@ -32,10 +32,10 @@ public class AbilityCharacterDto : IAbilityCharacterDto
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IResponse Update(UpdateAbilityCharacterRequest request)
+    public async Task<IResponse> UpdateAsync(UpdateAbilityCharacterRequest request)
     {
         AbilityCharacter abilityCharacter = _mapper.Map<AbilityCharacter>(request);
-        var result = _abilityCharacterService.Update(abilityCharacter);
+        var result = await _abilityCharacterService.UpdateAsync(abilityCharacter);
         var response = _mapper.Map<UpdatedAbilityCharacterResponse>(abilityCharacter);
         if (result.Success)
         {
@@ -46,10 +46,10 @@ public class AbilityCharacterDto : IAbilityCharacterDto
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IResponse Delete(DeleteAbilityCharacterRequest request)
+    public async Task<IResponse> DeleteAsync(DeleteAbilityCharacterRequest request)
     {
         AbilityCharacter abilityCharacter = _mapper.Map<AbilityCharacter>(request);
-        var result = _abilityCharacterService.Delete(abilityCharacter);
+        var result = await _abilityCharacterService.DeleteAsync(abilityCharacter);
         var response = _mapper.Map<DeletedAbilityCharacterResponse>(abilityCharacter);
         if (result.Success)
         {
@@ -61,16 +61,16 @@ public class AbilityCharacterDto : IAbilityCharacterDto
         }
     }
 
-    public IGetResponse Get(object id)
+    public async Task<IGetResponse> GetAsync(object id)
     {
-        var value = _abilityCharacterService.Get(id);
+        var value = await _abilityCharacterService.GetAsync(id);
         var response = _mapper.Map<GetAllAbilityCharacterResponse>(value.Data);
         return response;
     }
 
-    public List<GetAllAbilityCharacterResponse> GetAll()
+    public async Task<List<GetAllAbilityCharacterResponse>> GetAllAsync()
     {
-        var value = _abilityCharacterService.GetAll();
+        var value = await _abilityCharacterService.GetAllAsync();
         var response = _mapper.Map<List<GetAllAbilityCharacterResponse>>(value.Data);
         return response;
     }

@@ -16,33 +16,33 @@ public class AbilityCharactersController : ControllerBase
     [HttpPost("Ekle")]
     public IActionResult Add(CreateAbilityCharacterRequest createRequest)
     {
-        var response = _abilityCharacterDto.Add(createRequest);
+        var response = _abilityCharacterDto.AddAsync(createRequest);
         return Ok(response);
     }
 
     [HttpPost("Güncelle")]
     public IActionResult Update(UpdateAbilityCharacterRequest updateRequest)
     {
-        var response = _abilityCharacterDto.Update(updateRequest);
+        var response = _abilityCharacterDto.UpdateAsync(updateRequest);
         return Ok(response);
     }
     [HttpDelete("Sil")]
     public IActionResult Delete(DeleteAbilityCharacterRequest deleteRequest)
     {
-        var response = _abilityCharacterDto.Delete(deleteRequest);
+        var response = _abilityCharacterDto.DeleteAsync(deleteRequest);
         return Ok(response);
     }
 
     [HttpGet("Listele")]
     public IActionResult GetAll()
     {
-        var response = _abilityCharacterDto.GetAll();
+        var response = _abilityCharacterDto.GetAllAsync();
         return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
-        var response = _abilityCharacterDto.Get(Id);
+        var response = _abilityCharacterDto.GetAsync(Id);
         return Ok(response);
     }
 }

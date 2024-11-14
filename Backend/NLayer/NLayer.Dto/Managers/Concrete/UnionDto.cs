@@ -18,10 +18,10 @@ public class UnionDto : IUnionDto
         _unionService = unionService;
         _mapper = mapper;
     }
-    public IResponse Add(CreateUnionRequest request)
+    public async Task<IResponse> AddAsync(CreateUnionRequest request)
     {
         Union union = _mapper.Map<Union>(request);
-        var result = _unionService.Add(union);
+        var result = await _unionService.AddAsync(union);
         var response = _mapper.Map<CreatedUnionResponse>(union);
         if (result.Success)
         {
@@ -32,10 +32,10 @@ public class UnionDto : IUnionDto
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IResponse Update(UpdateUnionRequest request)
+    public async Task<IResponse> UpdateAsync(UpdateUnionRequest request)
     {
         Union union = _mapper.Map<Union>(request);
-        var result = _unionService.Update(union);
+        var result = await _unionService.UpdateAsync(union);
         var response = _mapper.Map<UpdatedUnionResponse>(union);
         if (result.Success)
         {
@@ -46,10 +46,10 @@ public class UnionDto : IUnionDto
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IResponse Delete(DeleteUnionRequest request)
+    public async Task<IResponse> DeleteAsync(DeleteUnionRequest request)
     {
         Union union = _mapper.Map<Union>(request);
-        var result = _unionService.Delete(union);
+        var result = await _unionService.DeleteAsync(union);
         var response = _mapper.Map<DeletedUnionResponse>(union);
         if (result.Success)
         {
@@ -61,16 +61,16 @@ public class UnionDto : IUnionDto
         }
     }
 
-    public IGetResponse Get(object id)
+    public async Task<IGetResponse> GetAsync(object id)
     {
-        var value = _unionService.Get(id);
+        var value = await _unionService.GetAsync(id);
         var response = _mapper.Map<GetAllUnionResponse>(value.Data);
         return response;
     }
 
-    public List<GetAllUnionResponse> GetAll()
+    public async Task<List<GetAllUnionResponse>> GetAllAsync()
     {
-        var value = _unionService.GetAll();
+        var value = await _unionService.GetAllAsync();
         var response = _mapper.Map<List<GetAllUnionResponse>>(value.Data);
         return response;
     }

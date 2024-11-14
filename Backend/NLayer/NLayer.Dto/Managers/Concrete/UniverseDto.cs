@@ -18,10 +18,10 @@ public class UniverseDto : IUniverseDto
         _universeService = universeService;
         _mapper = mapper;
     }
-    public IResponse Add(CreateUniverseRequest request)
+    public async Task<IResponse> AddAsync(CreateUniverseRequest request)
     {
         Universe universe = _mapper.Map<Universe>(request);
-        var result = _universeService.Add(universe);
+        var result = await _universeService.AddAsync(universe);
         var response = _mapper.Map<CreatedUniverseResponse>(universe);
         if (result.Success)
         {
@@ -32,10 +32,26 @@ public class UniverseDto : IUniverseDto
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IResponse Update(UpdateUniverseRequest request)
+
+    public async Task<IResponse> CreateUniverseAsync(CreateUniverseRequest request)
     {
         Universe universe = _mapper.Map<Universe>(request);
-        var result = _universeService.Update(universe);
+        var result = await _universeService.CreateUniverseAsync(universe);
+        var response = _mapper.Map<CreatedUniverseResponse>(universe);
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessResponse<Universe>(response, universe);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
+    }
+
+    public async Task<IResponse> UpdateAsync(UpdateUniverseRequest request)
+    {
+        Universe universe = _mapper.Map<Universe>(request);
+        var result = await _universeService.UpdateAsync(universe);
         var response = _mapper.Map<UpdatedUniverseResponse>(universe);
         if (result.Success)
         {
@@ -46,10 +62,10 @@ public class UniverseDto : IUniverseDto
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IResponse Delete(DeleteUniverseRequest request)
+    public async Task<IResponse> DeleteAsync(DeleteUniverseRequest request)
     {
         Universe universe = _mapper.Map<Universe>(request);
-        var result = _universeService.Delete(universe);
+        var result = await _universeService.DeleteAsync(universe);
         var response = _mapper.Map<DeletedUniverseResponse>(universe);
         if (result.Success)
         {
@@ -61,17 +77,31 @@ public class UniverseDto : IUniverseDto
         }
     }
 
-    public IGetResponse Get(object id)
+    public async Task<IGetResponse> GetAsync(object id)
     {
-        var value = _universeService.Get(id);
+        var value = await _universeService.GetAsync(id);
         var response = _mapper.Map<GetAllUniverseResponse>(value.Data);
         return response;
     }
 
-    public List<GetAllUniverseResponse> GetAll()
+    public async Task<List<GetAllUniverseResponse>> GetAllAsync()
     {
-        var value = _universeService.GetAll();
+        var value = await _universeService.GetAllAsync();
         var response = _mapper.Map<List<GetAllUniverseResponse>>(value.Data);
+        return response;
+    }
+
+    public async Task<IGetResponse> GetUniverseDetailAsync(int id)
+    {
+        var value = await _universeService.GetAsync(id);
+        var response = _mapper.Map<GetAllUniverseResponse>(value.Data);
+        return response;
+    }
+
+    public async Task<ICollection<GetAllUniverseResponse>> GetUserUniversesAsync(int userId)
+    {
+        var value = await _universeService.GetUserUniversesAsync(userId);
+        var response = _mapper.Map<ICollection<GetAllUniverseResponse>>(value.Data);
         return response;
     }
 }

@@ -4,7 +4,7 @@ using NLayer.Mapper.Responses.AbilityCharacter;
 
 namespace NLayer.Dto.Managers.Abstract;
 
-public interface IAbilityCharacterDto : IEntityRepositoryDto<
+public interface IAbilityCharacterDto : IEntityRepositoryAsyncDto<
     CreateAbilityCharacterRequest, 
     UpdateAbilityCharacterRequest, 
     DeleteAbilityCharacterRequest,

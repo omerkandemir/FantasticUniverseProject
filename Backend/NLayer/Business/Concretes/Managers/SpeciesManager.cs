@@ -9,24 +9,24 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes.Managers;
 
-public class SpeciesManager : BaseManager<Species, ISpeciesDal>, ISpeciesService
+public class SpeciesManager : BaseManagerAsync<Species, ISpeciesDal>, ISpeciesService
 {
     public SpeciesManager(ISpeciesDal tdal) : base(tdal)
     {
     }
     [ValidationAspect(typeof(CreateSpeciesValidator), Priority = 1)]
-    public override IReturnType Add(Species Value)
+    public override Task<IReturnType> AddAsync(Species value)
     {
-        return base.Add(Value);
+        return base.AddAsync(value);
     }
     [ValidationAspect(typeof(UpdateSpeciesValidator), Priority = 1)]
-    public override IReturnType Update(Species Value)
+    public override Task<IReturnType> UpdateAsync(Species value)
     {
-        return base.Update(Value);
+        return base.UpdateAsync(value);
     }
     [ValidationAspect(typeof(DeleteSpeciesValidator), Priority = 1)]
-    public override IReturnType Delete(Species Value)
+    public override Task<IReturnType> DeleteAsync(Species value)
     {
-        return base.Delete(Value);
+        return base.DeleteAsync(value);
     }
 }

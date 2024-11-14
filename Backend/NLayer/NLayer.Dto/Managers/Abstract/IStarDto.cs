@@ -4,7 +4,7 @@ using NLayer.Mapper.Responses.Star;
 
 namespace NLayer.Dto.Managers.Abstract;
 
-public interface IStarDto : IEntityRepositoryDto<
+public interface IStarDto : IEntityRepositoryAsyncDto<
         CreateStarRequest,
         UpdateStarRequest,
         DeleteStarRequest,

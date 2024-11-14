@@ -18,10 +18,10 @@ public class AdventureCharacterDto : IAdventureCharacterDto
         _adventureCharacterService = adventureCharacterService;
         _mapper = mapper;
     }
-    public IResponse Add(CreateAdventureCharacterRequest request)
+    public async Task<IResponse> AddAsync(CreateAdventureCharacterRequest request)
     {
         AdventureCharacter adventureCharacter = _mapper.Map<AdventureCharacter>(request);
-        var result = _adventureCharacterService.Add(adventureCharacter);
+        var result =  await _adventureCharacterService.AddAsync(adventureCharacter);
         var response = _mapper.Map<CreatedAdventureCharacterResponse>(adventureCharacter);
         if (result.Success)
         {
@@ -32,10 +32,10 @@ public class AdventureCharacterDto : IAdventureCharacterDto
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IResponse Update(UpdateAdventureCharacterRequest request)
+    public async Task<IResponse> UpdateAsync(UpdateAdventureCharacterRequest request)
     {
         AdventureCharacter adventureCharacter = _mapper.Map<AdventureCharacter>(request);
-        var result = _adventureCharacterService.Update(adventureCharacter);
+        var result = await _adventureCharacterService.UpdateAsync(adventureCharacter);
         var response = _mapper.Map<UpdatedAdventureCharacterResponse>(adventureCharacter);
         if (result.Success)
         {
@@ -46,10 +46,10 @@ public class AdventureCharacterDto : IAdventureCharacterDto
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IResponse Delete(DeleteAdventureCharacterRequest request)
+    public async Task<IResponse> DeleteAsync(DeleteAdventureCharacterRequest request)
     {
         AdventureCharacter adventureCharacter = _mapper.Map<AdventureCharacter>(request);
-        var result = _adventureCharacterService.Delete(adventureCharacter);
+        var result = await _adventureCharacterService.DeleteAsync(adventureCharacter);
         var response = _mapper.Map<DeletedAdventureCharacterResponse>(adventureCharacter);
         if (result.Success)
         {
@@ -61,16 +61,16 @@ public class AdventureCharacterDto : IAdventureCharacterDto
         }
     }
 
-    public IGetResponse Get(object id)
+    public async Task<IGetResponse> GetAsync(object id)
     {
-        var value = _adventureCharacterService.Get(id);
+        var value = await _adventureCharacterService.GetAsync(id);
         var response = _mapper.Map<GetAllAdventureCharacterResponse>(value.Data);
         return response;
     }
 
-    public List<GetAllAdventureCharacterResponse> GetAll()
+    public async Task<List<GetAllAdventureCharacterResponse>> GetAllAsync()
     {
-        var value = _adventureCharacterService.GetAll();
+        var value = await _adventureCharacterService.GetAllAsync();
         var response = _mapper.Map<List<GetAllAdventureCharacterResponse>>(value.Data);
         return response;
     }

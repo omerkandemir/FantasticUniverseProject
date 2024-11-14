@@ -4,14 +4,12 @@ using NLayer.Mapper.Responses.AppUser;
 
 namespace NLayer.Dto.Managers.Abstract;
 
-public interface IAppUserDto : IEntityRepositoryDto<
+public interface IAppUserDto : IEntityRepositoryAsyncDto<
     CreateAppUserRequest,
     UpdateAppUserRequest,
     DeleteAppUserRequest,
     GetAllAppUserResponse>
 {
-    Task<IResponse> AddAsync(CreateAppUserRequest request);
-    Task<IResponse> UpdateAsync(UpdateAppUserRequest request);
     Task<IResponse> UpdateEmailAsync(UpdateAppUserEmailRequest request);
     Task<IResponse> UpdatePasswordAsync(UpdateAppUserPasswordRequest request);
     Task<IResponse> UpdateProfilePhotoAsync(UpdateAppUserProfileImageRequest request);

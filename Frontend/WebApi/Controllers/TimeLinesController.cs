@@ -16,33 +16,33 @@ public class TimeLinesController : ControllerBase
     [HttpPost("Ekle")]
     public IActionResult Add(CreateTimeLineRequest createRequest)
     {
-        var response = _timeLineDto.Add(createRequest);
+        var response = _timeLineDto.AddAsync(createRequest);
         return Ok(response);
     }
 
     [HttpPost("Güncelle")]
     public IActionResult Update(UpdateTimeLineRequest updateRequest)
     {
-        var response = _timeLineDto.Update(updateRequest);
+        var response = _timeLineDto.UpdateAsync(updateRequest);
         return Ok(response);
     }
     [HttpDelete("Sil")]
     public IActionResult Delete(DeleteTimeLineRequest deleteRequest)
     {
-        var response = _timeLineDto.Delete(deleteRequest);
+        var response = _timeLineDto.DeleteAsync(deleteRequest);
         return Ok(response);
     }
 
     [HttpGet("Listele")]
     public IActionResult GetAll()
     {
-        var response = _timeLineDto.GetAll();
+        var response = _timeLineDto.GetAllAsync();
         return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
-        var response = _timeLineDto.Get(Id);
+        var response = _timeLineDto.GetAsync(Id);
         return Ok(response);
     }
 }

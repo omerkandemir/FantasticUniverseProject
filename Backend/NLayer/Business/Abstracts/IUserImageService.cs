@@ -5,8 +5,8 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Abstracts;
 
-public interface IUserImageService : IEntityServiceRepository<UserImage>
+public interface IUserImageService : IEntityServiceRepositoryAsync<UserImage>
 {
-    void AddUserFirstImages();
-    IDataReturnType<List<UniverseImage>> GetUsersImage();
+    Task AddUserFirstImages();
+    Task<IDataReturnType<List<UniverseImage>>> GetUsersImage();
 }

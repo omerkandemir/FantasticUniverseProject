@@ -24,26 +24,26 @@ public class AppUserController : ControllerBase
     [HttpPost("Güncelle")]
     public IActionResult Update(UpdateAppUserRequest updateRequest)
     {
-        var response = _appUserDto.Update(updateRequest);
+        var response = _appUserDto.UpdateAsync(updateRequest);
         return Ok(response);
     }
     [HttpDelete("Sil")]
     public IActionResult Delete(DeleteAppUserRequest deleteRequest)
     {
-        var response = _appUserDto.Delete(deleteRequest);
+        var response = _appUserDto.DeleteAsync(deleteRequest);
         return Ok(response);
     }
 
     [HttpGet("Listele")]
     public IActionResult GetAll()
     {
-        var response = _appUserDto.GetAll();
+        var response = _appUserDto.GetAllAsync();
         return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
-        var response = _appUserDto.Get(Id);
+        var response = _appUserDto.GetAsync(Id);
         return Ok(response);
     }
 }

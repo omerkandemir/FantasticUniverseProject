@@ -1,0 +1,141 @@
+/* Genel ayarlar */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Lato', sans-serif;
+    overflow: hidden;
+}
+
+/* Merkezi içerik */
+.mystic-content {
+    position: relative;
+    max-width: 400px;
+    text-align: center;
+    color: black;
+    z-index: 1;
+}
+
+.mystic-text {
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+/* Butonlar */
+.galaxy-button, .theme-button, .create-button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    margin: 8px 0;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.galaxy-button {
+    background: linear-gradient(135deg, #3c0e3c, #7f2b7f);
+    color: #ffc107;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+    .galaxy-button:hover {
+        transform: scale(1.05);
+    }
+
+.theme-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #ff6f61, #ff9c4f, #ffc93c);
+    color: #fff;
+    border-radius: 50px;
+}
+
+    .theme-button i {
+        margin-right: 8px;
+        font-size: 1.1em;
+    }
+
+    .theme-button:hover {
+        transform: scale(1.05);
+    }
+
+.create-button {
+    background: linear-gradient(135deg, #3a0d3a, #8f3d8f);
+    color: #ffc107;
+    box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+    .create-button:hover {
+        transform: scale(1.05);
+    }
+
+/* Pop-up ayarlarý */
+.theme-modal, .galaxy-modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #3c0e3c;
+    color: #fff;
+    padding: 15px;
+    border-radius: 12px;
+    width: 80%;
+    max-width: 300px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.theme-modal {
+    left: 10%;
+}
+
+.galaxy-modal {
+    right: 10%;
+}
+
+    .theme-modal h3, .galaxy-modal h3 {
+        font-size: 1.2em;
+    }
+
+    .theme-modal label, .galaxy-modal label {
+        display: block;
+        color: #f0e7db;
+        margin-top: 10px;
+        font-size: 1em;
+    }
+
+    .theme-modal select, .theme-modal input[type="color"],
+    .galaxy-modal input[type="text"] {
+        width: 100%;
+        padding: 8px;
+        margin-top: 5px;
+        border-radius: 5px;
+        border: none;
+        font-size: 1em;
+    }
+
+
+
+.galaxy-card {
+    background-color: #3c0e3c;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 5px;
+    color: #ffc107;
+    cursor: pointer;
+    text-align: center;
+}
+
+.galaxy-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}

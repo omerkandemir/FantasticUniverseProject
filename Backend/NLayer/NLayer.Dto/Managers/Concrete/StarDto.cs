@@ -18,10 +18,10 @@ public class StarDto : IStarDto
         _starService = starService;
         _mapper = mapper;
     }
-    public IResponse Add(CreateStarRequest request)
+    public async Task<IResponse> AddAsync(CreateStarRequest request)
     {
         Star star = _mapper.Map<Star>(request);
-        var result = _starService.Add(star);
+        var result = await _starService.AddAsync(star);
         var response = _mapper.Map<CreatedStarResponse>(star);
         if (result.Success)
         {
@@ -32,10 +32,10 @@ public class StarDto : IStarDto
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IResponse Update(UpdateStarRequest request)
+    public async Task<IResponse> UpdateAsync(UpdateStarRequest request)
     {
         Star star = _mapper.Map<Star>(request);
-        var result = _starService.Update(star);
+        var result = await _starService.UpdateAsync(star);
         var response = _mapper.Map<UpdatedStarResponse>(star);
         if (result.Success)
         {
@@ -46,10 +46,10 @@ public class StarDto : IStarDto
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IResponse Delete(DeleteStarRequest request)
+    public async Task<IResponse> DeleteAsync(DeleteStarRequest request)
     {
         Star star = _mapper.Map<Star>(request);
-        var result = _starService.Delete(star);
+        var result = await _starService.DeleteAsync(star);
         var response = _mapper.Map<DeletedStarResponse>(star);
         if (result.Success)
         {
@@ -61,16 +61,16 @@ public class StarDto : IStarDto
         }
     }
 
-    public IGetResponse Get(object id)
+    public async Task<IGetResponse> GetAsync(object id)
     {
-        var value = _starService.Get(id);
+        var value = await _starService.GetAsync(id);
         var response = _mapper.Map<GetAllStarResponse>(value.Data);
         return response;
     }
 
-    public List<GetAllStarResponse> GetAll()
+    public async Task<List<GetAllStarResponse>> GetAllAsync()
     {
-        var value = _starService.GetAll();
+        var value = await _starService.GetAllAsync();
         var response = _mapper.Map<List<GetAllStarResponse>>(value.Data);
         return response;
     }

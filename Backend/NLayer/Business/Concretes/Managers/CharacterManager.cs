@@ -9,24 +9,24 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes.Managers;
 
-public class CharacterManager : BaseManager<Character, ICharacterDal>, ICharacterService
+public class CharacterManager : BaseManagerAsync<Character, ICharacterDal>, ICharacterService
 {
     public CharacterManager(ICharacterDal tdal) : base(tdal)
     {
     }
     [ValidationAspect(typeof(CreateCharacterValidator), Priority = 1)]
-    public override IReturnType Add(Character Value)
+    public override Task<IReturnType> AddAsync(Character value)
     {
-        return base.Add(Value);
+        return base.AddAsync(value);
     }
     [ValidationAspect(typeof(UpdateCharacterValidator), Priority = 1)]
-    public override IReturnType Update(Character Value)
+    public override Task<IReturnType> UpdateAsync(Character value)
     {
-        return base.Update(Value);
+        return base.UpdateAsync(value);
     }
     [ValidationAspect(typeof(DeleteCharacterValidator), Priority = 1)]
-    public override IReturnType Delete(Character Value)
+    public override Task<IReturnType> DeleteAsync(Character value)
     {
-        return base.Delete(Value);
+        return base.DeleteAsync(value);
     }
 }

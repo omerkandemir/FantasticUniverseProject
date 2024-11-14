@@ -9,10 +9,10 @@ public static class CustomSpeciesValidator
     public static IRuleBuilderOptions<T, TProperty> IsSpeciesIdExists<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, bool allowNull)
     {
         var speciesService = InstanceFactory.GetInstance<ISpeciesService>();
-        var species = speciesService.GetAll().Data;
 
-        return ruleBuilder.Must((rootObject, Id, context) =>
+        return ruleBuilder.MustAsync(async(rootObject, Id, context) =>
         {
+            var species = (await speciesService.GetAllAsync()).Data;
             if (allowNull && EqualityComparer<TProperty>.Default.Equals(Id, default))
             {
                 return true; // Null değer kabul edilir.

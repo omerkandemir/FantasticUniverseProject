@@ -4,7 +4,7 @@ using NLayer.Mapper.Responses.UnionCharacter;
 
 namespace NLayer.Dto.Managers.Abstract;
 
-public interface IUnionCharacterDto : IEntityRepositoryDto<
+public interface IUnionCharacterDto : IEntityRepositoryAsyncDto<
         CreateUnionCharacterRequest,
         UpdateUnionCharacterRequest,
         DeleteUnionCharacterRequest,

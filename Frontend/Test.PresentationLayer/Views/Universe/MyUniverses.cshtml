@@ -1,0 +1,44 @@
+﻿@model IEnumerable<GetAllUniverseResponse>
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evrenlerim</title>
+    <link href="~/css/Theme.css?v=1.0.4" rel="stylesheet" />
+    <link href="~/css/MyUniverses.css?v=1.0.24" rel="stylesheet" />
+</head>
+<body>
+    <div class="universe-cards">
+        @if (Model == null || !Model.Any())
+        {
+            <p>Herhangi bir evren bulunamadı.</p>
+        }else
+        {
+            @foreach (var universe in Model)
+            {
+                var fontColor = $"rgb({universe.ThemeSetting.FontColorR}, {universe.ThemeSetting.FontColorG}, {universe.ThemeSetting.FontColorB})";
+                var backgroundClass = $"background-{universe.ThemeSetting.Background.ToString().ToLower()}";
+                <div class="universe-card" class="@backgroundClass"
+                     style="font-family:@universe.ThemeSetting.FontFamily; color:@fontColor;"
+                     data-background="@universe.ThemeSetting.Background.ToString().ToLower()"
+                     data-font="@universe.ThemeSetting.FontFamily"
+                     data-color="@fontColor"
+                     onclick="openUniverse(@universe.Id)">
+
+                    <div class="creation-date">
+                        Oluşturulma Tarihi: @universe.CreatedDate.ToString("dd MMM yyyy")
+                    </div>
+                    <div class="card-content">
+                        <h3>@universe.Name</h3>
+                    </div>
+                </div>
+            }
+        }
+        
+    </div>
+    <script src="~/js/theme.js"></script>
+    <script src="~/js/myuniverses.js"></script>
+</body>
+</html>

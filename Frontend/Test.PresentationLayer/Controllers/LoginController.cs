@@ -40,7 +40,7 @@ public class LoginController : Controller
                 var user = userResult as SuccessResponse<AppUser>;
                 if (user.Entity.EmailConfirmed == true)
                 {
-                    return ConfimedMailProcess(user);
+                    return await ConfimedMailProcess(user);
                 }
                 else
                 {
@@ -73,9 +73,9 @@ public class LoginController : Controller
         return RedirectToAction("Index", "ConfirmMail");
     }
 
-    private IActionResult ConfimedMailProcess(SuccessResponse<AppUser>? user)
+    private async Task<IActionResult> ConfimedMailProcess(SuccessResponse<AppUser>? user)
     {
-        var universeImage = _universeImageDto.Get(user.Entity.UniverseImageId) as GetAllUniverseImageResponse;
+        var universeImage = await _universeImageDto.GetAsync(user.Entity.UniverseImageId) as GetAllUniverseImageResponse;
         byte[] imageURL = universeImage.ImageURL;
         HttpContext.Session.SetString("UserName", user.Entity.UserName);
         HttpContext.Session.Set("ImageURL", imageURL);

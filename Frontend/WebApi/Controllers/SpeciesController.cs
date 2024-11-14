@@ -16,33 +16,33 @@ public class SpeciesController : ControllerBase
     [HttpPost("Ekle")]
     public IActionResult Add(CreateSpeciesRequest createRequest)
     {
-        var response = _speciesDto.Add(createRequest);
+        var response = _speciesDto.AddAsync(createRequest);
         return Ok(response);
     }
 
     [HttpPost("Güncelle")]
     public IActionResult Update(UpdateSpeciesRequest updateRequest)
     {
-        var response = _speciesDto.Update(updateRequest);
+        var response = _speciesDto.UpdateAsync(updateRequest);
         return Ok(response);
     }
     [HttpDelete("Sil")]
     public IActionResult Delete(DeleteSpeciesRequest deleteRequest)
     {
-        var response = _speciesDto.Delete(deleteRequest);
+        var response = _speciesDto.DeleteAsync(deleteRequest);
         return Ok(response);
     }
 
     [HttpGet("Listele")]
     public IActionResult GetAll()
     {
-        var response = _speciesDto.GetAll();
+        var response = _speciesDto.GetAllAsync();
         return Ok(response);
     }
     [HttpGet("Getir")]
     public IActionResult Get(int Id = 1)
     {
-        var response = _speciesDto.Get(Id);
+        var response = _speciesDto.GetAsync(Id);
         return Ok(response);
     }
 }
