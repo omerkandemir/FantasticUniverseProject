@@ -5,7 +5,8 @@ using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Entities.Concretes;
 using NLayer.Mapper.Requests.AbilityCharacter;
-using NLayer.Mapper.Responses.AbilityCharacter;
+using NLayer.Mapper.Responses.Abstract;
+using NLayer.Mapper.Responses.Concrete.AbilityCharacter;
 
 namespace NLayer.Dto.Managers.Concrete;
 
@@ -25,7 +26,7 @@ public class AbilityCharacterDto : IAbilityCharacterDto
         var response = _mapper.Map<CreatedAbilityCharacterResponse>(abilityCharacter);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<AbilityCharacter>(response, abilityCharacter);
+            return ResponseFactory.CreateSuccessResponse<AbilityCharacter>(abilityCharacter, response);
         }
         else
         {
@@ -39,7 +40,7 @@ public class AbilityCharacterDto : IAbilityCharacterDto
         var response = _mapper.Map<UpdatedAbilityCharacterResponse>(abilityCharacter);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<AbilityCharacter>(response, abilityCharacter);
+            return ResponseFactory.CreateSuccessResponse<AbilityCharacter>(abilityCharacter, response);
         }
         else
         {
@@ -53,7 +54,7 @@ public class AbilityCharacterDto : IAbilityCharacterDto
         var response = _mapper.Map<DeletedAbilityCharacterResponse>(abilityCharacter);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<AbilityCharacter>(response, abilityCharacter);
+            return ResponseFactory.CreateSuccessResponse<AbilityCharacter>(abilityCharacter, response);
         }
         else
         {
@@ -64,14 +65,14 @@ public class AbilityCharacterDto : IAbilityCharacterDto
     public async Task<IGetResponse> GetAsync(object id)
     {
         var value = await _abilityCharacterService.GetAsync(id);
-        var response = _mapper.Map<GetAllAbilityCharacterResponse>(value.Data);
+        var response = _mapper.Map<GetAbilityCharacterResponse>(value.Data);
         return response;
     }
 
-    public async Task<List<GetAllAbilityCharacterResponse>> GetAllAsync()
+    public async Task<IGetAllResponse<IGetAbilityCharacterResponse>> GetAllAsync()
     {
         var value = await _abilityCharacterService.GetAllAsync();
-        var response = _mapper.Map<List<GetAllAbilityCharacterResponse>>(value.Data);
+        var response = _mapper.Map<GetAllAbilityCharacterResponse>(value.Data);
         return response;
     }
 }

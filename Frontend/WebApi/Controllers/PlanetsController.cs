@@ -15,35 +15,41 @@ public class PlanetsController : ControllerBase
     }
 
     [HttpPost("Ekle")]
-    public IActionResult Add(CreatePlanetRequest createRequest)
+    public async Task<IActionResult> Add([FromBody] CreatePlanetRequest createRequest)
     {
-        var response = _planetDto.AddAsync(createRequest);
-        return Ok(response);
+        var response = await _planetDto.AddAsync(createRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
 
-    [HttpPost("Güncelle")]
-    public IActionResult Update(UpdatePlanetRequest updateRequest)
+    [HttpPut("Güncelle")]
+    public async Task<IActionResult> Update([FromBody] UpdatePlanetRequest updateRequest)
     {
-        var response = _planetDto.UpdateAsync(updateRequest);
-        return Ok(response);
+        var response = await _planetDto.UpdateAsync(updateRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
-    [HttpDelete("Sil")]
-    public IActionResult Delete(DeletePlanetRequest deleteRequest)
+    [HttpDelete("Sil{id}")]
+    public async Task<IActionResult> Delete(DeletePlanetRequest deleteRequest)
     {
-        var response = _planetDto.DeleteAsync(deleteRequest);
-        return Ok(response);
+        var response = await _planetDto.DeleteAsync(deleteRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
 
     [HttpGet("Listele")]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll()
     {
-        var response = _planetDto.GetAllAsync();
+        var response = await _planetDto.GetAllAsync();
         return Ok(response);
     }
-    [HttpGet("Getir")]
-    public IActionResult Get(int Id = 1)
+    [HttpGet("Getir{id}")]
+    public async Task<IActionResult> Get(int id)
     {
-        var response = _planetDto.GetAsync(Id);
+        var response = await _planetDto.GetAsync(id);
         return Ok(response);
     }
 }

@@ -29,7 +29,7 @@ public class BusinessModule : IModule
         builder.RegisterType<UniverseManager>().As<IUniverseService>().SingleInstance();
         builder.RegisterType<UniverseImageManager>().As<IUniverseImageService>().SingleInstance();
         builder.RegisterType<UserImageManager>().As<IUserImageService>().SingleInstance();
-        builder.RegisterType<AppUserManager>().As<IAppUserService>().SingleInstance();
+        builder.RegisterType<AppUserManager>().As<IAppUserService<AppUser>>().SingleInstance();
 
         builder.RegisterType<CreateAbilityCharacterValidator>().As<IValidator<CreateAbilityCharacterRequest>>();
 

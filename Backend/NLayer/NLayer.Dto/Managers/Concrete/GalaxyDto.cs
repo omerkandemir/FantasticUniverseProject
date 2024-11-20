@@ -5,7 +5,8 @@ using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Entities.Concretes;
 using NLayer.Mapper.Requests.Galaxy;
-using NLayer.Mapper.Responses.Galaxy;
+using NLayer.Mapper.Responses.Abstract;
+using NLayer.Mapper.Responses.Concrete.Galaxy;
 
 namespace NLayer.Dto.Managers.Concrete;
 
@@ -25,7 +26,7 @@ public class GalaxyDto : IGalaxyDto
         var response = _mapper.Map<CreatedGalaxyResponse>(galaxy);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Galaxy>(response, galaxy);
+            return ResponseFactory.CreateSuccessResponse<Galaxy>(galaxy, response);
         }
         else
         {
@@ -39,7 +40,7 @@ public class GalaxyDto : IGalaxyDto
         var response = _mapper.Map<UpdatedGalaxyResponse>(galaxy);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Galaxy>(response, galaxy);
+            return ResponseFactory.CreateSuccessResponse<Galaxy>(galaxy, response);
         }
         else
         {
@@ -53,7 +54,7 @@ public class GalaxyDto : IGalaxyDto
         var response = _mapper.Map<DeletedGalaxyResponse>(galaxy);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Galaxy>(response, galaxy);
+            return ResponseFactory.CreateSuccessResponse<Galaxy>(galaxy, response);
         }
         else
         {
@@ -64,14 +65,14 @@ public class GalaxyDto : IGalaxyDto
     public async Task<IGetResponse> GetAsync(object id)
     {
         var value = await _galaxyService.GetAsync(id);
-        var response = _mapper.Map<GetAllGalaxyResponse>(value.Data);
+        var response = _mapper.Map<GetGalaxyResponse>(value.Data);
         return response;
     }
 
-    public async Task<List<GetAllGalaxyResponse>> GetAllAsync()
+    public async Task<IGetAllResponse<IGetGalaxyResponse>> GetAllAsync()
     {
         var value = await _galaxyService.GetAllAsync();
-        var response = _mapper.Map<List<GetAllGalaxyResponse>>(value.Data);
+        var response = _mapper.Map<GetAllGalaxyResponse>(value.Data);
         return response;
     }
 }

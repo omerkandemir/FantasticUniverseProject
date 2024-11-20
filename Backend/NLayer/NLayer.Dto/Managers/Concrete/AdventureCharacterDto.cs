@@ -5,7 +5,8 @@ using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Entities.Concretes;
 using NLayer.Mapper.Requests.AdventureCharacter;
-using NLayer.Mapper.Responses.AdventureCharacter;
+using NLayer.Mapper.Responses.Abstract;
+using NLayer.Mapper.Responses.Concrete.AdventureCharacter;
 
 namespace NLayer.Dto.Managers.Concrete;
 
@@ -25,7 +26,7 @@ public class AdventureCharacterDto : IAdventureCharacterDto
         var response = _mapper.Map<CreatedAdventureCharacterResponse>(adventureCharacter);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<AdventureCharacter>(response, adventureCharacter);
+            return ResponseFactory.CreateSuccessResponse<AdventureCharacter>(adventureCharacter, response);
         }
         else
         {
@@ -39,7 +40,7 @@ public class AdventureCharacterDto : IAdventureCharacterDto
         var response = _mapper.Map<UpdatedAdventureCharacterResponse>(adventureCharacter);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<AdventureCharacter>(response, adventureCharacter);
+            return ResponseFactory.CreateSuccessResponse<AdventureCharacter>(adventureCharacter, response);
         }
         else
         {
@@ -53,7 +54,7 @@ public class AdventureCharacterDto : IAdventureCharacterDto
         var response = _mapper.Map<DeletedAdventureCharacterResponse>(adventureCharacter);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<AdventureCharacter>(response, adventureCharacter);
+            return ResponseFactory.CreateSuccessResponse<AdventureCharacter>(adventureCharacter, response);
         }
         else
         {
@@ -64,14 +65,14 @@ public class AdventureCharacterDto : IAdventureCharacterDto
     public async Task<IGetResponse> GetAsync(object id)
     {
         var value = await _adventureCharacterService.GetAsync(id);
-        var response = _mapper.Map<GetAllAdventureCharacterResponse>(value.Data);
+        var response = _mapper.Map<GetAdventureCharacterResponse>(value.Data);
         return response;
     }
 
-    public async Task<List<GetAllAdventureCharacterResponse>> GetAllAsync()
+    public async Task<IGetAllResponse<IGetAdventureCharacterResponse>> GetAllAsync()
     {
         var value = await _adventureCharacterService.GetAllAsync();
-        var response = _mapper.Map<List<GetAllAdventureCharacterResponse>>(value.Data);
+        var response = _mapper.Map<GetAllAdventureCharacterResponse>(value.Data);
         return response;
     }
 }

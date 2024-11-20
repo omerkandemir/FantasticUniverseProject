@@ -6,18 +6,25 @@ using NLayer.Core.Entities.Authentication;
 using NLayer.Core.Utilities.MailOperations.MailKit;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Mapper.Requests.AppUser;
-using NLayer.Mapper.Responses.AppUser;
+using NLayer.Mapper.Responses.Abstract;
+using NLayer.Mapper.Responses.Concrete.Ability;
+using NLayer.Mapper.Responses.Concrete.AppUser;
 
 namespace NLayer.Dto.Managers.Concrete;
 
 public class AppUserDto : IAppUserDto
 {
-    private readonly IAppUserService _appUserService;
+    private readonly IAppUserService<AppUser> _appUserService;
     private readonly IMapper _mapper;
-    public AppUserDto(IAppUserService appUserService, IMapper mapper)
+    private readonly ISignInService<AppUser> _signInService;
+    private readonly IUniverseImageService _universeImageService;
+
+    public AppUserDto(IAppUserService<AppUser> appUserService, IMapper mapper, ISignInService<AppUser> signInService, IUniverseImageService universeImageService)
     {
         _appUserService = appUserService;
         _mapper = mapper;
+        _signInService = signInService;
+        _universeImageService = universeImageService;
     }
     public async Task<IResponse> AddAsync(CreateAppUserRequest request)
     {
@@ -28,7 +35,7 @@ public class AppUserDto : IAppUserDto
         if (result.Success)
         {
             SendMail.SendConfirmCodeMail(user.ConfirmCode, user);
-            return ResponseFactory.CreateSuccessResponse<AppUser>(response, user);
+            return ResponseFactory.CreateSuccessResponse<AppUser>(user, response);
         }
         else
         {
@@ -43,7 +50,7 @@ public class AppUserDto : IAppUserDto
         var result = await _appUserService.UpdateAsyncWithIdentityUser(user);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<AppUser>(response, user);
+            return ResponseFactory.CreateSuccessResponse<AppUser>(user, response);
         }
         else
         {
@@ -54,10 +61,10 @@ public class AppUserDto : IAppUserDto
     {
         AppUser user = _mapper.Map<AppUser>(request);
         var result = await _appUserService.ConfirmEmailAsyncWithIdentityUser(request);
-        if(result.Success)
+        if (result.Success)
         {
             var response = _mapper.Map<UpdatedAppUserResponse>(user);
-            return ResponseFactory.CreateSuccessResponse<AppUser>(response, user);
+            return ResponseFactory.CreateSuccessResponse<AppUser>(user, response);
         }
         else
         {
@@ -71,7 +78,7 @@ public class AppUserDto : IAppUserDto
         var result = await _appUserService.UpdateEmailAsyncWithIdentityUser(user, request.Password);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<AppUser>(response, user);
+            return ResponseFactory.CreateSuccessResponse<AppUser>(user, response);
         }
         else
         {
@@ -86,7 +93,7 @@ public class AppUserDto : IAppUserDto
         var result = await _appUserService.ChangePasswordAsyncWithIdentityUser(request);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<AppUser>(response, user);
+            return ResponseFactory.CreateSuccessResponse<AppUser>(user, response);
         }
         else
         {
@@ -100,7 +107,7 @@ public class AppUserDto : IAppUserDto
         var result = await _appUserService.ChangeProfileImageAsyncWithIdentityUser(request);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<AppUser>(response, user);
+            return ResponseFactory.CreateSuccessResponse<AppUser>(user, response);
         }
         else
         {
@@ -113,7 +120,7 @@ public class AppUserDto : IAppUserDto
         if (result.Success)
         {
             var response = _mapper.Map<GetAllAppUserResponse>(result.Data);
-            return ResponseFactory.CreateSuccessResponse<AppUser>(response, result.Data);
+            return ResponseFactory.CreateSuccessResponse<AppUser>(result.Data, response);
         }
         else
         {
@@ -126,7 +133,7 @@ public class AppUserDto : IAppUserDto
         if (result.Success)
         {
             var response = _mapper.Map<GetAllAppUserResponse>(result.Data);
-            return ResponseFactory.CreateSuccessResponse<AppUser>(response, result.Data);
+            return ResponseFactory.CreateSuccessResponse<AppUser>(result.Data, response);
         }
         else
         {
@@ -139,7 +146,7 @@ public class AppUserDto : IAppUserDto
         if (result.Success)
         {
             var response = _mapper.Map<GetAllAppUserResponse>(result.Data);
-            return ResponseFactory.CreateSuccessResponse<AppUser>(response, result.Data);
+            return ResponseFactory.CreateSuccessResponse<AppUser>(result.Data, response);
         }
         else
         {
@@ -155,9 +162,53 @@ public class AppUserDto : IAppUserDto
     {
         throw new NotImplementedException();
     }
-
-    public Task<List<GetAllAppUserResponse>> GetAllAsync()
+    public Task<IGetAllResponse<IGetAppUserResponse>> GetAllAsync()
     {
         throw new NotImplementedException();
+    }
+    public async Task<IResponse> LoginAsync(LoginRequest loginRequest)
+    {
+        // Kullanıcı adı ve şifre doğrulama
+        var signInResult = await _signInService.PasswordSignInAsync(loginRequest.Username, loginRequest.Password, true, true);
+        if (!signInResult.Succeeded)
+        {
+            return ResponseFactory.CreateErrorResponse("Kullanıcı adı veya şifre hatalı.");
+        }
+
+        // Kullanıcı bilgilerini alma
+        var userResult = await _appUserService.GetUserByNameAsyncWithIdentityUser(loginRequest.Username);
+        if (!userResult.Success)
+        {
+            return ResponseFactory.CreateErrorResponse(userResult, "Kullanıcı bulunamadı.");
+        }
+
+        var user = (userResult as SuccessResponse<AppUser>)?.Entity;
+        if (user == null)
+        {
+            return ResponseFactory.CreateErrorResponse(userResult, "Kullanıcı bilgisi getirilemedi.");
+        }
+        // E-posta doğrulama kontrolü
+        if (!user.EmailConfirmed)
+        {
+            // Kullanıcının doğrulama kodunu üret
+            _appUserService.GenerateCodeFromUser(user);
+
+            // Yanıt olarak doğrulama işlemi gerektiğini belirt
+            return ResponseFactory.CreateErrorResponse(userResult.Exception, new
+            {
+                RedirectUrl = "/ConfirmMail/Index",
+                Email = user.Email
+            }, "E-posta doğrulaması gerekiyor.");
+        }
+
+        var universeImage = await _universeImageService.GetAsync(user.UniverseImageId);
+        var ImageUrl = universeImage.Data.ImageURL;
+        // Kullanıcı doğrulandı, başarılı giriş
+        return ResponseFactory.CreateSuccessResponse(new
+        {
+            RedirectUrl = "/MainPage/Index",
+            UserName = user.UserName,
+            ImageUrl = ImageUrl
+        });
     }
 }

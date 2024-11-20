@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
 using NLayer.Core.Entities.Authentication;
+using NLayer.Entities.Concretes;
 using NLayer.Mapper.Requests.AppUser;
-using NLayer.Mapper.Responses.AppUser;
+using NLayer.Mapper.Responses.Abstract;
+using NLayer.Mapper.Responses.Concrete.Adventure;
+using NLayer.Mapper.Responses.Concrete.AppUser;
 
 namespace NLayer.Mapper.AutoMapper.Profiles;
 
@@ -19,7 +22,15 @@ public class AppUserProfile : Profile
         CreateMap<AppUser, UpdatedAppUserResponse>().ReverseMap();
         CreateMap<AppUser, DeleteAppUserRequest>().ReverseMap();
         CreateMap<AppUser, DeletedAppUserResponse>().ReverseMap();
+        CreateMap<AppUser, GetAppUserResponse>().ReverseMap();
         CreateMap<AppUser, GetAllAppUserResponse>().ReverseMap();
         CreateMap<AppUser, ConfirmMailRequest>().ReverseMap();
+        CreateMap<AppUser, LoginRequest>().ReverseMap();
+
+        CreateMap<AppUser, IGetAppUserResponse>().As<GetAppUserResponse>();
+
+        CreateMap<ICollection<AppUser>, GetAllAppUserResponse>()
+            .ForMember(dest => dest.Responses, opt => opt.MapFrom(src => src));
+
     }
 }

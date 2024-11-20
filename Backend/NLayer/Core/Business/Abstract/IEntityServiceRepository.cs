@@ -9,6 +9,6 @@ public interface IEntityServiceRepository<T>
     IReturnType Add(T entity);
     IReturnType Update(T entity);
     IReturnType Delete(T entity);
-    IDataReturnType<List<T>> GetAll();
+    IDataReturnType<ICollection<T>> GetAll();
     IDataReturnType<T> Get(object id);
 }

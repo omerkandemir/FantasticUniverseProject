@@ -5,7 +5,8 @@ using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Entities.Concretes;
 using NLayer.Mapper.Requests.Star;
-using NLayer.Mapper.Responses.Star;
+using NLayer.Mapper.Responses.Abstract;
+using NLayer.Mapper.Responses.Concrete.Star;
 
 namespace NLayer.Dto.Managers.Concrete;
 
@@ -25,7 +26,7 @@ public class StarDto : IStarDto
         var response = _mapper.Map<CreatedStarResponse>(star);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Star>(response, star);
+            return ResponseFactory.CreateSuccessResponse<Star>(star, response);
         }
         else
         {
@@ -39,7 +40,7 @@ public class StarDto : IStarDto
         var response = _mapper.Map<UpdatedStarResponse>(star);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Star>(response, star);
+            return ResponseFactory.CreateSuccessResponse<Star>(star, response);
         }
         else
         {
@@ -53,7 +54,7 @@ public class StarDto : IStarDto
         var response = _mapper.Map<DeletedStarResponse>(star);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Star>(response, star);
+            return ResponseFactory.CreateSuccessResponse<Star>(star, response);
         }
         else
         {
@@ -64,14 +65,14 @@ public class StarDto : IStarDto
     public async Task<IGetResponse> GetAsync(object id)
     {
         var value = await _starService.GetAsync(id);
-        var response = _mapper.Map<GetAllStarResponse>(value.Data);
+        var response = _mapper.Map<GetStarResponse>(value.Data);
         return response;
     }
 
-    public async Task<List<GetAllStarResponse>> GetAllAsync()
+    public async Task<IGetAllResponse<IGetStarResponse>> GetAllAsync()
     {
         var value = await _starService.GetAllAsync();
-        var response = _mapper.Map<List<GetAllStarResponse>>(value.Data);
+        var response = _mapper.Map<GetAllStarResponse>(value.Data);
         return response;
     }
 }

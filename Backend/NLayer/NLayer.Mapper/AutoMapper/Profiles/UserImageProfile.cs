@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using NLayer.Core.Entities.Concrete;
 using NLayer.Mapper.Requests.UserImage;
-using NLayer.Mapper.Responses.UserImage;
-
+using NLayer.Mapper.Responses.Abstract;
+using NLayer.Mapper.Responses.Concrete.UserImage;
 
 namespace NLayer.Mapper.AutoMapper.Profiles;
 
@@ -16,6 +16,12 @@ public class UserImageProfile : Profile
         CreateMap<UserImage, UpdatedUserImageResponse>().ReverseMap();
         CreateMap<UserImage, DeleteUserImageRequest>().ReverseMap();
         CreateMap<UserImage, DeletedUserImageResponse>().ReverseMap();
+        CreateMap<UserImage, GetUserImageResponse>().ReverseMap();
         CreateMap<UserImage, GetAllUserImageResponse>().ReverseMap();
+
+        CreateMap<UserImage, IGetUserImageResponse>().As<GetUserImageResponse>();
+
+        CreateMap<ICollection<UserImage>, GetAllUserImageResponse>()
+            .ForMember(dest => dest.Responses, opt => opt.MapFrom(src => src));
     }
 }

@@ -14,33 +14,39 @@ public class AdventureCharactersController : ControllerBase
         _adventureCharacterDto = adventureCharacterDto;
     }
     [HttpPost("Ekle")]
-    public IActionResult Add(CreateAdventureCharacterRequest createRequest)
+    public async Task<IActionResult> Add([FromBody] CreateAdventureCharacterRequest createRequest)
     {
-        var response = _adventureCharacterDto.AddAsync(createRequest);
-        return Ok(response);
+        var response = await _adventureCharacterDto.AddAsync(createRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
-    [HttpPost("Güncelle")]
-    public IActionResult Update(UpdateAdventureCharacterRequest updateRequest)
+    [HttpPut("Güncelle")]
+    public async Task<IActionResult> Update([FromBody] UpdateAdventureCharacterRequest updateRequest)
     {
-        var response = _adventureCharacterDto.UpdateAsync(updateRequest);
-        return Ok(response);
+        var response = await _adventureCharacterDto.UpdateAsync(updateRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
-    [HttpDelete("Sil")]
-    public IActionResult Delete(DeleteAdventureCharacterRequest deleteRequest)
+    [HttpDelete("Sil{id}")]
+    public async Task<IActionResult> Delete(DeleteAdventureCharacterRequest deleteRequest)
     {
-        var response = _adventureCharacterDto.DeleteAsync(deleteRequest);
-        return Ok(response);
+        var response = await _adventureCharacterDto.DeleteAsync(deleteRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
     [HttpGet("Listele")]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll()
     {
-        var response = _adventureCharacterDto.GetAllAsync();
+        var response = await _adventureCharacterDto.GetAllAsync();
         return Ok(response);
     }
-    [HttpGet("Getir")]
-    public IActionResult Get(int Id = 1)
+    [HttpGet("Getir{id}")]
+    public async Task<IActionResult> Get(int id)
     {
-        var response = _adventureCharacterDto.GetAsync(Id);
+        var response = await _adventureCharacterDto.GetAsync(id);
         return Ok(response);
     }
 }

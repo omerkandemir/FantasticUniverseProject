@@ -1,18 +1,4 @@
-﻿// Tema modalini aç/kapat
-function toggleThemeModal() {
-    const modal = document.getElementById("themeModal");
-    modal.style.display = (modal.style.display === "block") ? "none" : "block";
-}
-
-// Arka planı değiştir ve veriyi gizli alana aktar
-function changeBackground() {
-    const selectedTheme = document.getElementById('background-select').value.toLowerCase();
-    applyTheme(document.body, selectedTheme);  // Seçili temayı uygula
-    document.getElementById("themeBackground").value = selectedTheme;
-}
-
-
-// Kart Temaları Uygulama
+﻿// Kart Temaları Uygulama
 document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.universe-card').forEach(card => {
         const themeName = card.dataset.background ? card.dataset.background.toLowerCase() : 'default';

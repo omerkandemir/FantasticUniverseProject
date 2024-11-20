@@ -6,12 +6,26 @@ namespace NLayer.Core.Dto.ReturnTypes;
 
 public static class ResponseFactory
 {
-    public static ISuccessResponse<T> CreateSuccessResponse<T>(object data, T entity) where T : class, IEntity, new()
+    public static ISuccessResponse CreateSuccessResponse(object data, string message = "İşlem başarılı.")
     {
-        return new SuccessResponse<T>(data, entity);
+        return new SuccessResponse(data, message);
     }
-
-    public static IErrorResponse CreateErrorResponse(IReturnType result)
+    public static ISuccessResponse<T> CreateSuccessResponse<T>(T entity, object data, string message = "İşlem başarılı.") where T : class, IEntity, new()
+    {
+        return new SuccessResponse<T>(entity, data, message);
+    }
+    public static ISuccessListResponse<T> CreateSuccessListResponse<T>(ICollection<T> entities, object data, string message = "Liste başarıyla döndürüldü.") where T : IGetResponse
+    {
+        return new SuccessListResponse<T>(entities, data, message);
+    }
+    public static IErrorResponse CreateErrorResponse(Exception exceptionMessage, object additionalData = null, string message = "Bir hata oluştu.")
+    {
+        var errors = new List<string>();
+        errors.Add(exceptionMessage.Message);
+        var errorMessage = string.Join(", ", errors);
+        return new ErrorResponse(errorMessage, additionalData, message);
+    }
+    public static IErrorResponse CreateErrorResponse(IReturnType result, string message = "Bir hata oluştu.")
     {
         var errors = new List<string>();
 
@@ -25,26 +39,10 @@ public static class ResponseFactory
         }
 
         var errorMessage = string.Join(", ", errors);
-        return new ErrorResponse(errorMessage);
+        return new ErrorResponse(errorMessage, null, message);
     }
-    public static ISuccessResponse<T> CreateSuccessListResponse<T>(object data, T entity) where T: class, IEntity, new()
+    public static IErrorResponse CreateErrorResponse(string message = "Bir hata oluştu.")
     {
-        return new SuccessListResponse<T>(data, entity);
-    }
-    public static IErrorResponse CreateErrorListResponse(IReturnType result)
-    {
-        var errors = new List<string>();
-
-        if (result.Exception != null)
-        {
-            errors.Add(result.Exception.Message);
-        }
-        else if (!string.IsNullOrEmpty(result.Message))
-        {
-            errors.Add(result.Message);
-        }
-
-        var errorMessage = string.Join(", ", errors);
-        return new ErrorListResponse(errorMessage);
+        return new ErrorResponse(message);
     }
 }

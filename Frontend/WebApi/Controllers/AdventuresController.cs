@@ -14,34 +14,40 @@ public class AdventuresController : ControllerBase
         _adventureDto = adventureDto;
     }
     [HttpPost("Ekle")]
-    public IActionResult Add(CreateAdventureRequest createRequest)
+    public async Task<IActionResult> Add([FromBody] CreateAdventureRequest createRequest)
     {
-        var response = _adventureDto.AddAsync(createRequest);
-        return Ok(response);
+        var response = await _adventureDto.AddAsync(createRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
-    [HttpPost("Güncelle")]
-    public IActionResult Update(UpdateAdventureRequest updateRequest)
+    [HttpPut("Güncelle")]
+    public async Task<IActionResult> Update([FromBody] UpdateAdventureRequest updateRequest)
     {
-        var response = _adventureDto.UpdateAsync(updateRequest);
-        return Ok(response);
+        var response = await _adventureDto.UpdateAsync(updateRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
-    [HttpDelete("Sil")]
-    public IActionResult Delete(DeleteAdventureRequest deleteRequest)
+    [HttpDelete("Sil{id}")]
+    public async Task<IActionResult> Delete(DeleteAdventureRequest deleteRequest)
     {
-        var response = _adventureDto.DeleteAsync(deleteRequest);
-        return Ok(response);
+        var response = await _adventureDto.DeleteAsync(deleteRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
 
     [HttpGet("Listele")]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll()
     {
-        var response = _adventureDto.GetAllAsync();
+        var response = await _adventureDto.GetAllAsync();
         return Ok(response);
     }
-    [HttpGet("Getir")]
-    public IActionResult Get(int Id = 1)
+    [HttpGet("Getir{id}")]
+    public async Task<IActionResult> Get(int id)
     {
-        var response = _adventureDto.GetAsync(Id);
+        var response = await _adventureDto.GetAsync(id);
         return Ok(response);
     }
 }

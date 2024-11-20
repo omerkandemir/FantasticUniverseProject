@@ -5,7 +5,8 @@ using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Entities.Concretes;
 using NLayer.Mapper.Requests.Planet;
-using NLayer.Mapper.Responses.Planet;
+using NLayer.Mapper.Responses.Abstract;
+using NLayer.Mapper.Responses.Concrete.Planet;
 
 namespace NLayer.Dto.Managers.Concrete;
 
@@ -25,7 +26,7 @@ public class PlanetDto : IPlanetDto
         var response = _mapper.Map<CreatedPlanetResponse>(planet);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Planet>(response, planet);
+            return ResponseFactory.CreateSuccessResponse<Planet>(planet, response);
         }
         else
         {
@@ -39,7 +40,7 @@ public class PlanetDto : IPlanetDto
         var response = _mapper.Map<UpdatedPlanetResponse>(planet);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Planet>(response, planet);
+            return ResponseFactory.CreateSuccessResponse<Planet>(planet, response);
         }
         else
         {
@@ -53,7 +54,7 @@ public class PlanetDto : IPlanetDto
         var response = _mapper.Map<DeletedPlanetResponse>(planet);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Planet>(response, planet);
+            return ResponseFactory.CreateSuccessResponse<Planet>(planet, response);
         }
         else
         {
@@ -64,14 +65,14 @@ public class PlanetDto : IPlanetDto
     public async Task<IGetResponse> GetAsync(object id)
     {
         var value = await _planetService.GetAsync(id);
-        var response = _mapper.Map<GetAllPlanetResponse>(value.Data);
+        var response = _mapper.Map<GetPlanetResponse>(value.Data);
         return response;
     }
 
-    public async Task<List<GetAllPlanetResponse>> GetAllAsync()
+    public async Task<IGetAllResponse<IGetPlanetResponse>> GetAllAsync()
     {
         var value = await _planetService.GetAllAsync();
-        var response = _mapper.Map<List<GetAllPlanetResponse>>(value.Data);
+        var response = _mapper.Map<GetAllPlanetResponse>(value.Data);
         return response;
     }
 }

@@ -3,6 +3,7 @@ using NLayer.Business.Abstracts;
 using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.UniverseValidation.Create;
 using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.UniverseValidation.Delete;
 using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.UniverseValidation.Update;
+using NLayer.Core.Aspect.Autofac.Caching;
 using NLayer.Core.Aspect.Autofac.Transaction;
 using NLayer.Core.Aspect.Autofac.Validation;
 using NLayer.Core.Utilities.Infos;
@@ -138,6 +139,8 @@ public class UniverseManager : BaseManagerAsync<Universe, IUniverseDal>, IUniver
     {
         return base.DeleteAsync(value);
     }
+
+    [CacheAspect(duration: 60)]
     public async Task<IDataReturnType<ICollection<Universe>>> GetUserUniversesAsync(int userId)
     {
         try
@@ -149,6 +152,19 @@ public class UniverseManager : BaseManagerAsync<Universe, IUniverseDal>, IUniver
         catch (Exception ex)
         {
             return new DataReturnType<ICollection<Universe>>(GetDatasInfo.FailedListData, CrudOperation.List, ex);
+        }
+    }
+    [CacheAspect(duration: 60)]
+    public override async Task<IDataReturnType<Universe>> GetAsync(object id)
+    {
+        try
+        {
+            var result = await _tdal.GetAsync(x => x.Id == Convert.ToInt32(id), include: query => query.Include(query => query.ThemeSetting));
+            return new DataReturnType<Universe>(result, GetDatasInfo.SuccessGetData, CrudOperation.Get);
+        }
+        catch (Exception ex)
+        {
+            return new DataReturnType<Universe>(GetDatasInfo.FailedGetData, CrudOperation.Get, ex);
         }
     }
 }

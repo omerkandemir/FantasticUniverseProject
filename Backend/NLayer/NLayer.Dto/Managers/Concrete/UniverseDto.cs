@@ -5,7 +5,8 @@ using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Entities.Concretes;
 using NLayer.Mapper.Requests.Universe;
-using NLayer.Mapper.Responses.Universe;
+using NLayer.Mapper.Responses.Abstract;
+using NLayer.Mapper.Responses.Concrete.Universe;
 
 namespace NLayer.Dto.Managers.Concrete;
 
@@ -25,7 +26,7 @@ public class UniverseDto : IUniverseDto
         var response = _mapper.Map<CreatedUniverseResponse>(universe);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Universe>(response, universe);
+            return ResponseFactory.CreateSuccessResponse<Universe>(universe, response);
         }
         else
         {
@@ -40,7 +41,7 @@ public class UniverseDto : IUniverseDto
         var response = _mapper.Map<CreatedUniverseResponse>(universe);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Universe>(response, universe);
+            return ResponseFactory.CreateSuccessResponse<Universe>(universe, response);
         }
         else
         {
@@ -55,7 +56,7 @@ public class UniverseDto : IUniverseDto
         var response = _mapper.Map<UpdatedUniverseResponse>(universe);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Universe>(response, universe);
+            return ResponseFactory.CreateSuccessResponse<Universe>(universe, response);
         }
         else
         {
@@ -69,7 +70,7 @@ public class UniverseDto : IUniverseDto
         var response = _mapper.Map<DeletedUniverseResponse>(universe);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Universe>(response, universe);
+            return ResponseFactory.CreateSuccessResponse<Universe>(universe, response);
         }
         else
         {
@@ -80,28 +81,28 @@ public class UniverseDto : IUniverseDto
     public async Task<IGetResponse> GetAsync(object id)
     {
         var value = await _universeService.GetAsync(id);
-        var response = _mapper.Map<GetAllUniverseResponse>(value.Data);
+        var response = _mapper.Map<GetUniverseResponse>(value.Data);
         return response;
     }
 
-    public async Task<List<GetAllUniverseResponse>> GetAllAsync()
+    public async Task<IGetAllResponse<IGetUniverseResponse>> GetAllAsync()
     {
         var value = await _universeService.GetAllAsync();
-        var response = _mapper.Map<List<GetAllUniverseResponse>>(value.Data);
+        var response = _mapper.Map<GetAllUniverseResponse>(value.Data);
         return response;
     }
 
     public async Task<IGetResponse> GetUniverseDetailAsync(int id)
     {
         var value = await _universeService.GetAsync(id);
-        var response = _mapper.Map<GetAllUniverseResponse>(value.Data);
+        var response = _mapper.Map<GetUniverseResponse>(value.Data);
         return response;
     }
 
-    public async Task<ICollection<GetAllUniverseResponse>> GetUserUniversesAsync(int userId)
+    public async Task<IGetAllResponse<IGetUniverseResponse>> GetUserUniversesAsync(int userId)
     {
         var value = await _universeService.GetUserUniversesAsync(userId);
-        var response = _mapper.Map<ICollection<GetAllUniverseResponse>>(value.Data);
+        var response = _mapper.Map<GetAllUniverseResponse>(value.Data);
         return response;
     }
 }

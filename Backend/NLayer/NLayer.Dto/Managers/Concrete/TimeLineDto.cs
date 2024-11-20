@@ -5,7 +5,8 @@ using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Entities.Concretes;
 using NLayer.Mapper.Requests.TimeLine;
-using NLayer.Mapper.Responses.TimeLine;
+using NLayer.Mapper.Responses.Abstract;
+using NLayer.Mapper.Responses.Concrete.TimeLine;
 
 namespace NLayer.Dto.Managers.Concrete;
 
@@ -25,7 +26,7 @@ public class TimeLineDto : ITimeLineDto
         var response = _mapper.Map<CreatedTimeLineResponse>(timeLine);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<TimeLine>(response, timeLine);
+            return ResponseFactory.CreateSuccessResponse<TimeLine>(timeLine, response);
         }
         else
         {
@@ -39,7 +40,7 @@ public class TimeLineDto : ITimeLineDto
         var response = _mapper.Map<UpdatedTimeLineResponse>(timeLine);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<TimeLine>(response, timeLine);
+            return ResponseFactory.CreateSuccessResponse<TimeLine>(timeLine, response);
         }
         else
         {
@@ -53,7 +54,7 @@ public class TimeLineDto : ITimeLineDto
         var response = _mapper.Map<DeletedTimeLineResponse>(timeLine);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<TimeLine>(response, timeLine);
+            return ResponseFactory.CreateSuccessResponse<TimeLine>(timeLine, response);
         }
         else
         {
@@ -64,14 +65,14 @@ public class TimeLineDto : ITimeLineDto
     public async Task<IGetResponse> GetAsync(object id)
     {
         var value = await _timeLineService.GetAsync(id);
-        var response = _mapper.Map<GetAllTimeLineResponse>(value.Data);
+        var response = _mapper.Map<GetTimeLineResponse>(value.Data);
         return response;
     }
 
-    public async Task<List<GetAllTimeLineResponse>> GetAllAsync()
+    public async Task<IGetAllResponse<IGetTimeLineResponse>> GetAllAsync()
     {
         var value = await _timeLineService.GetAllAsync();
-        var response = _mapper.Map<List<GetAllTimeLineResponse>>(value.Data);
+        var response = _mapper.Map<GetAllTimeLineResponse>(value.Data);
         return response;
     }
 }

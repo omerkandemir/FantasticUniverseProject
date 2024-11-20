@@ -9,6 +9,6 @@ public interface IEntityServiceRepositoryAsync<T>
     Task<IReturnType> AddAsync(T entity);
     Task<IReturnType> UpdateAsync(T entity);
     Task<IReturnType> DeleteAsync(T entity);
-    Task<IDataReturnType<List<T>>> GetAllAsync();
+    Task<IDataReturnType<ICollection<T>>> GetAllAsync();
     Task<IDataReturnType<T>> GetAsync(object id);
 }

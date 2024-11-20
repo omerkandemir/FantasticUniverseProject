@@ -70,15 +70,15 @@ public abstract class BaseManager<T, Tdal>
     }
 
     [CacheAspect(duration: 60)] 
-    public virtual IDataReturnType<List<T>> GetAll()
+    public virtual IDataReturnType<ICollection<T>> GetAll()
     {
         try
         {
-            return new DataReturnType<List<T>>(_tdal.GetAll().ToList(), GetDatasInfo.SuccessListData, CrudOperation.List);
+            return new DataReturnType<ICollection<T>>(_tdal.GetAll().ToList(), GetDatasInfo.SuccessListData, CrudOperation.List);
         }
         catch (Exception ex)
         {
-            return new DataReturnType<List<T>>(GetDatasInfo.FailedListData, CrudOperation.List, ex);
+            return new DataReturnType<ICollection<T>>(GetDatasInfo.FailedListData, CrudOperation.List, ex);
         }
     }
 }

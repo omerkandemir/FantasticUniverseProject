@@ -4,7 +4,7 @@ using NLayer.Core.Dto.Abstracts;
 using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Core.Entities.Authentication;
 using NLayer.Dto.Managers.Abstract;
-using NLayer.Mapper.Responses.UniverseImage;
+using NLayer.Mapper.Responses.Concrete.UniverseImage;
 using Test.PresentationLayer.Models.AppUser;
 
 namespace Test.PresentationLayer.Controllers;
@@ -14,9 +14,9 @@ public class LoginController : Controller
     private readonly IAppUserDto _appUserDto;
     private readonly ISignInService<AppUser> _signInService;
     private readonly IUniverseImageDto _universeImageDto;
-    private readonly IAppUserService _appUserService;
+    private readonly IAppUserService<AppUser> _appUserService;
 
-    public LoginController(IUniverseImageDto universeImageDto, IAppUserDto appUserDto, ISignInService<AppUser> signInService, IAppUserService appUserService)
+    public LoginController(IUniverseImageDto universeImageDto, IAppUserDto appUserDto, ISignInService<AppUser> signInService, IAppUserService<AppUser> appUserService)
     {
         _universeImageDto = universeImageDto;
         _appUserDto = appUserDto;
@@ -75,7 +75,7 @@ public class LoginController : Controller
 
     private async Task<IActionResult> ConfimedMailProcess(SuccessResponse<AppUser>? user)
     {
-        var universeImage = await _universeImageDto.GetAsync(user.Entity.UniverseImageId) as GetAllUniverseImageResponse;
+        var universeImage = await _universeImageDto.GetAsync(user.Entity.UniverseImageId) as GetUniverseImageResponse;
         byte[] imageURL = universeImage.ImageURL;
         HttpContext.Session.SetString("UserName", user.Entity.UserName);
         HttpContext.Session.Set("ImageURL", imageURL);

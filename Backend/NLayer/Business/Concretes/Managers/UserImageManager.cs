@@ -6,6 +6,7 @@ using NLayer.Core.Utilities.ReturnTypes;
 using NLayer.Core.Utilities.UserOperations;
 using NLayer.DataAccess.Abstracts;
 using NLayer.Entities.Concretes;
+using System.Collections.ObjectModel;
 
 namespace NLayer.Business.Concretes.Managers;
 
@@ -33,13 +34,13 @@ public class UserImageManager : BaseManagerAsync<UserImage, IUserImageDal>, IUse
         }
     }
 
-    public async Task<IDataReturnType<List<UniverseImage>>> GetUsersImage()
+    public async Task<IDataReturnType<ICollection<UniverseImage>>> GetUsersImage()
     {
         try
         {
             int UserId = AccessUser.GetUserId();
-            List<UserImage> userImages = (await _tdal.GetAllAsync(x => x.UserId == UserId)).ToList();
-            List<UniverseImage> universeImages = new List<UniverseImage>();
+            ICollection<UserImage> userImages = (await _tdal.GetAllAsync(x => x.UserId == UserId)).ToList();
+            ICollection<UniverseImage> universeImages = new Collection<UniverseImage>();
             foreach (var item in userImages)
             {
                 var universeImage = await _universeImageDal.GetAsync(x => x.Id == item.UniverseImageId);
@@ -48,11 +49,11 @@ public class UserImageManager : BaseManagerAsync<UserImage, IUserImageDal>, IUse
                     universeImages.Add(universeImage);
                 }
             }
-            return new DataReturnType<List<UniverseImage>>(universeImages, GetDatasInfo.SuccessListData, CrudOperation.List);
+            return new DataReturnType<ICollection<UniverseImage>>(universeImages, GetDatasInfo.SuccessListData, CrudOperation.List);
         }
         catch (Exception ex)
         {
-            return new DataReturnType<List<UniverseImage>>(GetDatasInfo.FailedListData, CrudOperation.List, ex);
+            return new DataReturnType<ICollection<UniverseImage>>(GetDatasInfo.FailedListData, CrudOperation.List, ex);
         }
     }
 }

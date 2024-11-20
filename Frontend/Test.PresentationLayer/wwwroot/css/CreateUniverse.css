@@ -139,3 +139,24 @@ body, html {
     justify-content: center;
     margin-top: 20px;
 }
+
+/* Küçük Ekranlar Ýçin Ortalama */
+@media (max-width: 768px) {
+    .theme-modal, .galaxy-modal {
+        top: 65%;
+        left: 50%;
+        right: auto;
+        transform: translate(-50%, -50%); /* Ekranýn ortasýna alýr */
+        width: 90vw; /* Küçük ekranlarda geniþliði ekranýn %90'ý kadar */
+        max-width: 400px; /* Küçük ekranlarda maksimum geniþlik */
+    }
+
+        .theme-modal h3, .galaxy-modal h3 {
+            font-size: 1.2em;
+        }
+
+        .theme-modal button, .galaxy-modal button {
+            padding: 8px;
+            font-size: 0.9em;
+        }
+}

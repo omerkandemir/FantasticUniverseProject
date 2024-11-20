@@ -6,5 +6,5 @@ namespace NLayer.Business.Abstracts;
 
 public interface IAdventureService : IEntityServiceRepositoryAsync<Adventure>
 {
-    Task<IDataReturnType<List<Adventure>>> GetAdventuresByPlanetId(int planetId);
+    Task<IDataReturnType<ICollection<Adventure>>> GetAdventuresByPlanetId(int planetId);
 }

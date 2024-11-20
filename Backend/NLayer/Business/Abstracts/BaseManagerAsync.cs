@@ -72,16 +72,16 @@ public abstract class BaseManagerAsync<T, Tdal>
     }
 
     [CacheAspect(duration: 60)]
-    public virtual async Task<IDataReturnType<List<T>>> GetAllAsync()
+    public virtual async Task<IDataReturnType<ICollection<T>>> GetAllAsync()
     {
         try
         {
             var result = await _tdal.GetAllAsync();
-            return new DataReturnType<List<T>>(result.ToList(), GetDatasInfo.SuccessListData, CrudOperation.List);
+            return new DataReturnType<ICollection<T>>(result.ToList(), GetDatasInfo.SuccessListData, CrudOperation.List);
         }
         catch (Exception ex)
         {
-            return new DataReturnType<List<T>>(GetDatasInfo.FailedListData, CrudOperation.List, ex);
+            return new DataReturnType<ICollection<T>>(GetDatasInfo.FailedListData, CrudOperation.List, ex);
         }
     }
 }

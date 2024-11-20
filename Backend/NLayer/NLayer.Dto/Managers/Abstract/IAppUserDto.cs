@@ -1,13 +1,16 @@
 ﻿using NLayer.Core.Dto.Abstracts;
 using NLayer.Mapper.Requests.AppUser;
-using NLayer.Mapper.Responses.AppUser;
+using NLayer.Mapper.Responses.Abstract;
+using NLayer.Mapper.Responses.Concrete.AppUser;
 
 namespace NLayer.Dto.Managers.Abstract;
 
 public interface IAppUserDto : IEntityRepositoryAsyncDto<
+    IGetAppUserResponse,
     CreateAppUserRequest,
     UpdateAppUserRequest,
     DeleteAppUserRequest,
+    GetAppUserResponse,
     GetAllAppUserResponse>
 {
     Task<IResponse> UpdateEmailAsync(UpdateAppUserEmailRequest request);
@@ -17,4 +20,5 @@ public interface IAppUserDto : IEntityRepositoryAsyncDto<
     Task<IResponse> GetUserByNameAsync(string name);
     Task<IResponse> GetUserByMailAsync(string email);
     Task<IResponse> GetUserAsync(System.Security.Claims.ClaimsPrincipal claimsPrincipal);
+    Task<IResponse> LoginAsync(LoginRequest loginRequest);
 }

@@ -5,7 +5,8 @@ using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Entities.Concretes;
 using NLayer.Mapper.Requests.Character;
-using NLayer.Mapper.Responses.Character;
+using NLayer.Mapper.Responses.Abstract;
+using NLayer.Mapper.Responses.Concrete.Character;
 
 namespace NLayer.Dto.Managers.Concrete;
 
@@ -25,7 +26,7 @@ public class CharacterDto : ICharacterDto
         var response = _mapper.Map<CreatedCharacterResponse>(character);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Character>(response, character);
+            return ResponseFactory.CreateSuccessResponse<Character>(character, response);
         }
         else
         {
@@ -39,7 +40,7 @@ public class CharacterDto : ICharacterDto
         var response = _mapper.Map<UpdatedCharacterResponse>(character);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Character>(response, character);
+            return ResponseFactory.CreateSuccessResponse<Character>(character, response);
         }
         else
         {
@@ -53,7 +54,7 @@ public class CharacterDto : ICharacterDto
         var response = _mapper.Map<DeletedCharacterResponse>(character);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Character>(response, character);
+            return ResponseFactory.CreateSuccessResponse<Character>(character, response);
         }
         else
         {
@@ -64,14 +65,14 @@ public class CharacterDto : ICharacterDto
     public async Task<IGetResponse> GetAsync(object id)
     {
         var value = await _characterService.GetAsync(id);
-        var response = _mapper.Map<GetAllCharacterResponse>(value.Data);
+        var response = _mapper.Map<GetCharacterResponse>(value.Data);
         return response;
     }
 
-    public async Task<List<GetAllCharacterResponse>> GetAllAsync()
+    public async Task<IGetAllResponse<IGetCharacterResponse>> GetAllAsync()
     {
         var value = await _characterService.GetAllAsync();
-        var response = _mapper.Map<List<GetAllCharacterResponse>>(value.Data);
+        var response = _mapper.Map<GetAllCharacterResponse>(value.Data);
         return response;
     }
 }

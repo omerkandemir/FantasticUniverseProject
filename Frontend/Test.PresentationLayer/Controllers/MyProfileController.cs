@@ -7,7 +7,7 @@ using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Core.Entities.Authentication;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Mapper.Requests.AppUser;
-using NLayer.Mapper.Responses.UniverseImage;
+using NLayer.Mapper.Responses.Concrete.UniverseImage;
 using Test.PresentationLayer.Models.AppUser;
 
 namespace Test.PresentationLayer.Controllers;
@@ -223,7 +223,7 @@ public class MyProfileController : Controller
         ChangeProfileImageViewModel profileImageViewModel = new ChangeProfileImageViewModel()
         {
             SelectedImageId = userResponse.Entity.UniverseImageId,
-            GetAllUniverseImageResponses = await _userImageDto.GetUsersImage()
+            GetAllUniverseImageResponses = await _userImageDto.GetUsersImage() as GetAllUniverseImageResponse
         };
         return View(profileImageViewModel);
     }
@@ -256,7 +256,7 @@ public class MyProfileController : Controller
                         if (result.Success)
                         {
                             await _signInService.RefreshSignInAsync(user.Entity);
-                            var newUniverseImage = await _universeImageDto.GetAsync(profileImageViewModel.SelectedImageId) as GetAllUniverseImageResponse;
+                            var newUniverseImage = await _universeImageDto.GetAsync(profileImageViewModel.SelectedImageId) as GetUniverseImageResponse;
                             if (newUniverseImage != null)
                             {
                                 HttpContext.Session.Set("ImageURL", newUniverseImage.ImageURL);
@@ -316,6 +316,6 @@ public class MyProfileController : Controller
     }
     private async void PrepareChangeProfileImageViewModelForView(ChangeProfileImageViewModel profileImageViewModel)
     {
-        profileImageViewModel.GetAllUniverseImageResponses = await _userImageDto.GetUsersImage();
+        profileImageViewModel.GetAllUniverseImageResponses = await _userImageDto.GetUsersImage() as GetAllUniverseImageResponse;
     }
 }

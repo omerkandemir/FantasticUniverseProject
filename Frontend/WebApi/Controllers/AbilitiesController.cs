@@ -14,34 +14,41 @@ public class AbilitiesController : ControllerBase
         _abilityDto = abilityDto;
     }
     [HttpPost("Ekle")]
-    public IActionResult Add(CreateAbilityRequest createRequest)
+    public async Task<IActionResult> Add([FromBody] CreateAbilityRequest createRequest)
     {
-        var response = _abilityDto.AddAsync(createRequest);
-        return Ok(response);
+        var response = await _abilityDto.AddAsync(createRequest);
+        if (response.Success)
+            return Ok(response);
+
+        return BadRequest(response);
     }
-    [HttpPost("Güncelle")]
-    public IActionResult Update(UpdateAbilityRequest updateRequest)
+    [HttpPut("Güncelle")]
+    public async Task<IActionResult> UpdateAsync([FromBody] UpdateAbilityRequest updateRequest)
     {
-        var response = _abilityDto.UpdateAsync(updateRequest);
-        return Ok(response);
+        var response = await _abilityDto.UpdateAsync(updateRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
-    [HttpDelete("Sil")]
-    public IActionResult Delete(DeleteAbilityRequest deleteRequest)
+    [HttpDelete("Sil{id}")]
+    public async Task<IActionResult> Delete(DeleteAbilityRequest deleteRequest)
     {
-        var response = _abilityDto.DeleteAsync(deleteRequest);
-        return Ok(response);
+        var response = await _abilityDto.DeleteAsync(deleteRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
 
     [HttpGet("Listele")]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll()
     {
-        var response = _abilityDto.GetAllAsync();    
+        var response = await _abilityDto.GetAllAsync();
         return Ok(response);
     }
-    [HttpGet("Getir")]
-    public IActionResult Get(int Id = 1)
+    [HttpGet("Getir{id}")]
+    public async Task<IActionResult> Get(int id)
     {
-        var response = _abilityDto.GetAsync(Id);
+        var response = await _abilityDto.GetAsync(id);
         return Ok(response);
     }
 }

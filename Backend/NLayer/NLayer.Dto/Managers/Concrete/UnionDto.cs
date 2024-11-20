@@ -5,7 +5,8 @@ using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Entities.Concretes;
 using NLayer.Mapper.Requests.Union;
-using NLayer.Mapper.Responses.Union;
+using NLayer.Mapper.Responses.Abstract;
+using NLayer.Mapper.Responses.Concrete.Union;
 
 namespace NLayer.Dto.Managers.Concrete;
 
@@ -25,7 +26,7 @@ public class UnionDto : IUnionDto
         var response = _mapper.Map<CreatedUnionResponse>(union);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Union>(response, union);
+            return ResponseFactory.CreateSuccessResponse<Union>(union, response);
         }
         else
         {
@@ -39,7 +40,7 @@ public class UnionDto : IUnionDto
         var response = _mapper.Map<UpdatedUnionResponse>(union);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Union>(response, union);
+            return ResponseFactory.CreateSuccessResponse<Union>(union, response);
         }
         else
         {
@@ -53,7 +54,7 @@ public class UnionDto : IUnionDto
         var response = _mapper.Map<DeletedUnionResponse>(union);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Union>(response, union);
+            return ResponseFactory.CreateSuccessResponse<Union>(union, response);
         }
         else
         {
@@ -64,14 +65,14 @@ public class UnionDto : IUnionDto
     public async Task<IGetResponse> GetAsync(object id)
     {
         var value = await _unionService.GetAsync(id);
-        var response = _mapper.Map<GetAllUnionResponse>(value.Data);
+        var response = _mapper.Map<GetUnionResponse>(value.Data);
         return response;
     }
 
-    public async Task<List<GetAllUnionResponse>> GetAllAsync()
+    public async Task<IGetAllResponse<IGetUnionResponse>> GetAllAsync()
     {
         var value = await _unionService.GetAllAsync();
-        var response = _mapper.Map<List<GetAllUnionResponse>>(value.Data);
+        var response = _mapper.Map<GetAllUnionResponse>(value.Data);
         return response;
     }
 }

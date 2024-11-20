@@ -8,5 +8,5 @@ namespace NLayer.Business.Abstracts;
 public interface IUserImageService : IEntityServiceRepositoryAsync<UserImage>
 {
     Task AddUserFirstImages();
-    Task<IDataReturnType<List<UniverseImage>>> GetUsersImage();
+    Task<IDataReturnType<ICollection<UniverseImage>>> GetUsersImage();
 }

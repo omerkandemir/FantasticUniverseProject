@@ -5,7 +5,8 @@ using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Entities.Concretes;
 using NLayer.Mapper.Requests.Species;
-using NLayer.Mapper.Responses.Species;
+using NLayer.Mapper.Responses.Abstract;
+using NLayer.Mapper.Responses.Concrete.Species;
 
 namespace NLayer.Dto.Managers.Concrete;
 
@@ -25,7 +26,7 @@ public class SpeciesDto : ISpeciesDto
         var response = _mapper.Map<CreatedSpeciesResponse>(species);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Species>(response, species);
+            return ResponseFactory.CreateSuccessResponse<Species>(species, response);
         }
         else
         {
@@ -39,7 +40,7 @@ public class SpeciesDto : ISpeciesDto
         var response = _mapper.Map<UpdatedSpeciesResponse>(species);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Species>(response, species);
+            return ResponseFactory.CreateSuccessResponse<Species>(species, response);
         }
         else
         {
@@ -53,7 +54,7 @@ public class SpeciesDto : ISpeciesDto
         var response = _mapper.Map<DeletedSpeciesResponse>(species);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Species>(response, species);
+            return ResponseFactory.CreateSuccessResponse<Species>(species, response);
         }
         else
         {
@@ -64,14 +65,14 @@ public class SpeciesDto : ISpeciesDto
     public async Task<IGetResponse> GetAsync(object id)
     {
         var value = await _speciesService.GetAsync(id);
-        var response = _mapper.Map<GetAllSpeciesResponse>(value.Data);
+        var response = _mapper.Map<GetSpeciesResponse>(value.Data);
         return response;
     }
 
-    public async Task<List<GetAllSpeciesResponse>> GetAllAsync()
+    public async Task<IGetAllResponse<IGetSpeciesResponse>> GetAllAsync()
     {
         var value = await _speciesService.GetAllAsync();
-        var response = _mapper.Map<List<GetAllSpeciesResponse>>(value.Data);
+        var response = _mapper.Map<GetAllSpeciesResponse>(value.Data);
         return response;
     }
 }

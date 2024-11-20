@@ -5,7 +5,8 @@ using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Entities.Concretes;
 using NLayer.Mapper.Requests.UnionCharacter;
-using NLayer.Mapper.Responses.UnionCharacter;
+using NLayer.Mapper.Responses.Abstract;
+using NLayer.Mapper.Responses.Concrete.UnionCharacter;
 
 namespace NLayer.Dto.Managers.Concrete;
 
@@ -25,7 +26,7 @@ public class UnionCharacterDto : IUnionCharacterDto
         var response = _mapper.Map<CreatedUnionCharacterResponse>(unionCharacter);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<UnionCharacter>(response, unionCharacter);
+            return ResponseFactory.CreateSuccessResponse<UnionCharacter>(unionCharacter, response);
         }
         else
         {
@@ -39,7 +40,7 @@ public class UnionCharacterDto : IUnionCharacterDto
         var response = _mapper.Map<UpdatedUnionCharacterResponse>(unionCharacter);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<UnionCharacter>(response, unionCharacter);
+            return ResponseFactory.CreateSuccessResponse<UnionCharacter>(unionCharacter, response);
         }
         else
         {
@@ -53,7 +54,7 @@ public class UnionCharacterDto : IUnionCharacterDto
         var response = _mapper.Map<DeletedUnionCharacterResponse>(unionCharacter);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<UnionCharacter>(response, unionCharacter);
+            return ResponseFactory.CreateSuccessResponse<UnionCharacter>(unionCharacter, response);
         }
         else
         {
@@ -64,14 +65,14 @@ public class UnionCharacterDto : IUnionCharacterDto
     public async Task<IGetResponse> GetAsync(object id)
     {
         var value = await _unionCharacterService.GetAsync(id);
-        var response = _mapper.Map<GetAllUnionCharacterResponse>(value.Data);
+        var response = _mapper.Map<GetUnionCharacterResponse>(value.Data);
         return response;
     }
 
-    public async Task<List<GetAllUnionCharacterResponse>> GetAllAsync()
+    public async Task<IGetAllResponse<IGetUnionCharacterResponse>> GetAllAsync()
     {
         var value = await _unionCharacterService.GetAllAsync();
-        var response = _mapper.Map<List<GetAllUnionCharacterResponse>>(value.Data);
+        var response = _mapper.Map<GetAllUnionCharacterResponse>(value.Data);
         return response;
     }
 }

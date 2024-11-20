@@ -14,35 +14,59 @@ public class UniversesController : ControllerBase
         _universeDto = universeDto;
     }
     [HttpPost("Ekle")]
-    public IActionResult Add(CreateUniverseRequest createRequest)
+    public async Task<IActionResult> Add([FromBody] CreateUniverseRequest createRequest)
     {
-        var response = _universeDto.AddAsync(createRequest);
-        return Ok(response);
+        var response = await _universeDto.AddAsync(createRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
 
-    [HttpPost("Güncelle")]
-    public IActionResult Update(UpdateUniverseRequest updateRequest)
+    [HttpPut("Güncelle")]
+    public async Task<IActionResult> Update([FromBody] UpdateUniverseRequest updateRequest)
     {
-        var response = _universeDto.UpdateAsync(updateRequest);
-        return Ok(response);
+        var response = await _universeDto.UpdateAsync(updateRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
-    [HttpDelete("Sil")]
-    public IActionResult Delete(DeleteUniverseRequest deleteRequest)
+    [HttpDelete("Sil{id}")]
+    public async Task<IActionResult> Delete(DeleteUniverseRequest deleteRequest)
     {
-        var response = _universeDto.DeleteAsync(deleteRequest);
-        return Ok(response);
+        var response = await _universeDto.DeleteAsync(deleteRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
 
     [HttpGet("Listele")]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll()
     {
-        var response = _universeDto.GetAllAsync();
+        var response = await _universeDto.GetAllAsync();
         return Ok(response);
     }
-    [HttpGet("Getir")]
-    public IActionResult Get(int Id = 1)
+    [HttpGet("Getir{id}")]
+    public async Task<IActionResult> Get(int id)
     {
-        var response = _universeDto.GetAsync(Id);
+        var response = await _universeDto.GetAsync(id);
         return Ok(response);
+    }
+
+    [HttpGet("UserUniverses/{userId}")]
+    public async Task<IActionResult> GetUserUniverses(int userId)
+    {
+        var response = await _universeDto.GetUserUniversesAsync(userId);
+        if (response != null)
+            return Ok(response);
+        return NotFound("No universes found for the user.");
+    }
+
+    [HttpGet("Details/{id}")]
+    public async Task<IActionResult> GetUniverseDetails(int id)
+    {
+        var response = await _universeDto.GetUniverseDetailAsync(id);
+        if (response != null)
+            return Ok(response);
+        return NotFound("Universe not found.");
     }
 }

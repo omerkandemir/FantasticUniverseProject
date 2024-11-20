@@ -5,8 +5,9 @@ using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Core.Entities.Concrete;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Mapper.Requests.UserImage;
-using NLayer.Mapper.Responses.UniverseImage;
-using NLayer.Mapper.Responses.UserImage;
+using NLayer.Mapper.Responses.Abstract;
+using NLayer.Mapper.Responses.Concrete.UniverseImage;
+using NLayer.Mapper.Responses.Concrete.UserImage;
 
 namespace NLayer.Dto.Managers.Concrete;
 
@@ -26,7 +27,7 @@ public class UserImageDto : IUserImageDto
         var response = _mapper.Map<CreatedUserImageResponse>(userImage);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<UserImage>(response, userImage);
+            return ResponseFactory.CreateSuccessResponse<UserImage>(userImage, response);
         }
         else
         {
@@ -41,7 +42,7 @@ public class UserImageDto : IUserImageDto
         var response = _mapper.Map<UpdatedUserImageResponse>(userImage);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<UserImage>(response, userImage);
+            return ResponseFactory.CreateSuccessResponse<UserImage>(userImage, response);
         }
         else
         {
@@ -56,7 +57,7 @@ public class UserImageDto : IUserImageDto
         var response = _mapper.Map<DeletedUserImageResponse>(userImage);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<UserImage>(response, userImage);
+            return ResponseFactory.CreateSuccessResponse<UserImage>(userImage, response);
         }
         else
         {
@@ -67,20 +68,20 @@ public class UserImageDto : IUserImageDto
     public async Task<IGetResponse> GetAsync(object id)
     {
         var value = await _userImageService.GetAsync(id);
-        var response = _mapper.Map<GetAllUserImageResponse>(value.Data);
+        var response = _mapper.Map<GetUserImageResponse>(value.Data);
         return response;
     }
 
-    public async Task<List<GetAllUserImageResponse>> GetAllAsync()
+    public async Task<IGetAllResponse<IGetUserImageResponse>> GetAllAsync()
     {
         var value = await _userImageService.GetAllAsync();
-        var response = _mapper.Map<List<GetAllUserImageResponse>>(value.Data);
+        var response = _mapper.Map<GetAllUserImageResponse>(value.Data);
         return response;
     }
-    public async Task<List<GetAllUniverseImageResponse>> GetUsersImage()
+    public async Task<IGetAllResponse<IGetUniverseImageResponse>> GetUsersImage()
     {
         var value = await _userImageService.GetUsersImage();
-        var response = _mapper.Map<List<GetAllUniverseImageResponse>>(value.Data);
+        var response = _mapper.Map<GetAllUniverseImageResponse>(value.Data);
         return response;
     }
     public async Task AddUserFirstImages()

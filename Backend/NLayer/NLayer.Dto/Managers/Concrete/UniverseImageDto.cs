@@ -5,7 +5,8 @@ using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Entities.Concretes;
 using NLayer.Mapper.Requests.UniverseImage;
-using NLayer.Mapper.Responses.UniverseImage;
+using NLayer.Mapper.Responses.Abstract;
+using NLayer.Mapper.Responses.Concrete.UniverseImage;
 
 namespace NLayer.Dto.Managers.Concrete;
 
@@ -36,7 +37,7 @@ public class UniverseImageDto : IUniverseImageDto
         var response = _mapper.Map<CreatedUniverseImageResponse>(universeImage);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<UniverseImage>(response, universeImage);
+            return ResponseFactory.CreateSuccessResponse<UniverseImage>(universeImage, response);
         }
         else
         {
@@ -51,7 +52,7 @@ public class UniverseImageDto : IUniverseImageDto
         var response = _mapper.Map<UpdatedUniverseImageResponse>(universeImage);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<UniverseImage>(response, universeImage);
+            return ResponseFactory.CreateSuccessResponse<UniverseImage>(universeImage, response);
         }
         else
         {
@@ -66,7 +67,7 @@ public class UniverseImageDto : IUniverseImageDto
         var response = _mapper.Map<DeletedUniverseImageResponse>(universeImage);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<UniverseImage>(response, universeImage);
+            return ResponseFactory.CreateSuccessResponse<UniverseImage>(universeImage, response);
         }
         else
         {
@@ -77,14 +78,14 @@ public class UniverseImageDto : IUniverseImageDto
     public async Task<IGetResponse> GetAsync(object id)
     {
         var value = await _universeImageService.GetAsync(id);
-        var response = _mapper.Map<GetAllUniverseImageResponse>(value.Data);
+        var response = _mapper.Map<GetUniverseImageResponse>(value.Data);
         return response;
     }
 
-    public async Task<List<GetAllUniverseImageResponse>> GetAllAsync()
+    public async Task<IGetAllResponse<IGetUniverseImageResponse>> GetAllAsync()
     {
         var value = await _universeImageService.GetAllAsync();
-        var response = _mapper.Map<List<GetAllUniverseImageResponse>>(value.Data);
+        var response = _mapper.Map<GetAllUniverseImageResponse>(value.Data);
         return response;
     }
 }

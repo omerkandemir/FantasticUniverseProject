@@ -31,16 +31,16 @@ public class AdventureManager : BaseManagerAsync<Adventure, IAdventureDal>, IAdv
         return base.DeleteAsync(value);
     }
 
-    public async Task<IDataReturnType<List<Adventure>>> GetAdventuresByPlanetId(int planetId)
+    public async Task<IDataReturnType<ICollection<Adventure>>> GetAdventuresByPlanetId(int planetId)
     {
         try
         {
             var adventures = (await _tdal.GetAllAsync()).Where(a => a.PlanetId == planetId).ToList();
-            return new DataReturnType<List<Adventure>>(adventures, GetDatasInfo.SuccessListData, CrudOperation.List);
+            return new DataReturnType<ICollection<Adventure>>(adventures, GetDatasInfo.SuccessListData, CrudOperation.List);
         }
         catch (Exception ex)
         {
-            return new DataReturnType<List<Adventure>>(GetDatasInfo.FailedListData, CrudOperation.List, ex);
+            return new DataReturnType<ICollection<Adventure>>(GetDatasInfo.FailedListData, CrudOperation.List, ex);
         }
     }
 }

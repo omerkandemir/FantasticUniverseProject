@@ -34,7 +34,7 @@ public class AbilityManager : BaseManagerAsync<Ability, IAbilityDal>, IAbilitySe
     }
 
     [LogAspect]
-    public override Task<IDataReturnType<List<Ability>>> GetAllAsync()
+    public override Task<IDataReturnType<ICollection<Ability>>> GetAllAsync()
     {
         return base.GetAllAsync();
     }
