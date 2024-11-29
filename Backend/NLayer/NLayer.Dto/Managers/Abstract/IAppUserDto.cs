@@ -1,7 +1,9 @@
 ﻿using NLayer.Core.Dto.Abstracts;
+using NLayer.Core.Entities.Authentication;
 using NLayer.Mapper.Requests.AppUser;
 using NLayer.Mapper.Responses.Abstract;
 using NLayer.Mapper.Responses.Concrete.AppUser;
+using System.Security.Claims;
 
 namespace NLayer.Dto.Managers.Abstract;
 
@@ -19,6 +21,9 @@ public interface IAppUserDto : IEntityRepositoryAsyncDto<
     Task<IResponse> ConfirmMailAsync(ConfirmMailRequest request);
     Task<IResponse> GetUserByNameAsync(string name);
     Task<IResponse> GetUserByMailAsync(string email);
-    Task<IResponse> GetUserAsync(System.Security.Claims.ClaimsPrincipal claimsPrincipal);
-    Task<IResponse> LoginAsync(LoginRequest loginRequest);
+    Task<IResponse> GetUserAsync(ClaimsPrincipal claimsPrincipal);
+    Task<IResponse> GetUserRolesAsync(AppUser user);
+    Task<LoginResponse> LoginAsync(LoginRequest loginRequest);
+    Task<IResponse> SignOutAsync();
+    Task<IResponse> Register(CreateAppUserRequest request);
 }

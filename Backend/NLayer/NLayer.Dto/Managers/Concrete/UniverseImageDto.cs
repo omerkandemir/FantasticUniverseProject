@@ -21,14 +21,9 @@ public class UniverseImageDto : IUniverseImageDto
         _mapper = mapper;
         _universeService = universeService;
     }
-    public async Task AddFirstUserDatas()
+    public async Task<ICollection<UniverseImage>> PrepareUserForRegister()
     {
-        await _universeService.AddFirstUniverseData();
-        await _universeImageService.UpdateDatabaseWithNewImages();
-    }
-    public async Task<ICollection<UniverseImage>> GetFirstUserImages()
-    {
-        return await _universeImageService.GetFirstImagesFromDatabase();
+        return await _universeImageService.PrepareUserForRegister();
     }
     public async Task<IResponse> AddAsync(CreateUniverseImageRequest request)
     {

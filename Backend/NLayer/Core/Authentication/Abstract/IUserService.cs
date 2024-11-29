@@ -2,7 +2,7 @@
 using NLayer.Core.Entities.Abstract;
 using System.Security.Claims;
 
-namespace NLayer.Business.Abstracts;
+namespace NLayer.Core.Authentication.Abstracts;
 
 public interface IUserService<TUser> where TUser : class, IEntity, new()
 {
@@ -14,4 +14,5 @@ public interface IUserService<TUser> where TUser : class, IEntity, new()
     Task<IdentityResult> ChangePasswordAsync(TUser user, string currentPassword, string newPassword);
     Task<IdentityResult> UpdateAsync(TUser user);
     Task<TUser> GetUserAsync(ClaimsPrincipal principal);
+    Task<ICollection<string>> GetUserRolesAsync(TUser user);
 }

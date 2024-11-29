@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Mapper.Requests.Universe;
+using NLayer.Mapper.Responses.Concrete.Universe;
 
 namespace WebApi.Controllers;
 
@@ -13,10 +14,10 @@ public class UniversesController : ControllerBase
     {
         _universeDto = universeDto;
     }
-    [HttpPost("Ekle")]
-    public async Task<IActionResult> Add([FromBody] CreateUniverseRequest createRequest)
+    [HttpPost("CreateUniverseAsync")]
+    public async Task<IActionResult> CreateUniverseAsync([FromBody] CreateUniverseRequest createRequest)
     {
-        var response = await _universeDto.AddAsync(createRequest);
+        var response = await _universeDto.CreateUniverseAsync(createRequest);
         if (response.Success)
             return Ok(response);
         return BadRequest(response);
@@ -52,16 +53,17 @@ public class UniversesController : ControllerBase
         return Ok(response);
     }
 
-    [HttpGet("UserUniverses/{userId}")]
+    [HttpGet("GetUserUniverses/{userId}")]
     public async Task<IActionResult> GetUserUniverses(int userId)
     {
-        var response = await _universeDto.GetUserUniversesAsync(userId);
-        if (response != null)
-            return Ok(response);
+        var response = (await _universeDto.GetUserUniversesAsync(userId)).Responses.ToList();
+        var universeList = response.Cast<GetUniverseResponse>().ToList(); 
+        if (universeList != null)
+            return Ok(universeList);
         return NotFound("No universes found for the user.");
     }
 
-    [HttpGet("Details/{id}")]
+    [HttpGet("GetUniverseDetails/{id}")]
     public async Task<IActionResult> GetUniverseDetails(int id)
     {
         var response = await _universeDto.GetUniverseDetailAsync(id);

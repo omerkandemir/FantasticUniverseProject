@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using NLayer.Business.Abstracts;
-using NLayer.Business.Concretes.Authentication.IdentityUser;
+using NLayer.Core.Authentication.Abstracts;
+using NLayer.Core.Authentication.Concrete.IdentityUser;
 using NLayer.Core.Entities.Authentication;
 
-namespace NLayer.Business.Concretes.Authentication;
+namespace NLayer.Core.Authentication.Concrete;
 
 public class SignInManagerAdapter : SignInManagerIdentityUser, ISignInService<AppUser>
 {

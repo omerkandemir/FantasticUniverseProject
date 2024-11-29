@@ -16,74 +16,63 @@ public abstract class BaseManagerAsync<T, Tdal>
         _tdal = tdal;
     }
 
-    [CacheRemoveAspect("GetAllAsync")]
-    public virtual async Task<IReturnType> AddAsync(T value)
+    /// <summary>
+    /// Güvenli bir şekilde bir CRUD işlemi gerçekleştirir.
+    /// </summary>
+    /// <param name="action">Gerçekleştirilecek işlem (asenkron bir işlem)</param>
+    /// <param name="operation">CRUD işlemi türü</param>
+    /// <returns>Başarı ya da hata durumu döner</returns>
+    protected async Task<IReturnType> ExecuteSafely(Func<Task> action, CrudOperation operation)
     {
         try
         {
-            await _tdal.AddAsync(value);
-            return new ReturnType(GetDatasInfo.Added, CrudOperation.Add);
+            await action();
+            return new ReturnType(GetDatasInfo.SuccessfulOperation(operation), operation);
         }
         catch (Exception ex)
         {
-            return new ReturnType(GetDatasInfo.AddedFailed, CrudOperation.Add, ex);
+            return new ReturnType(GetDatasInfo.FailedOperation(operation), operation, ex);
         }
     }
 
-    [CacheRemoveAspect("GetAllAsync")]
-    public virtual async Task<IReturnType> UpdateAsync(T value)
+    /// <summary>
+    /// Veri döndüren işlemleri güvenli bir şekilde gerçekleştirir.
+    /// </summary>
+    /// <typeparam name="TResult">Dönen verinin türü</typeparam>
+    /// <param name="query">Gerçekleştirilecek sorgu (asenkron bir işlem)</param>
+    /// <param name="operation">CRUD işlemi türü (örneğin, Listeleme, Getirme)</param>
+    /// <returns>İşlemin sonucunu ve başarı durumu hakkında bilgi dönen bir IDataReturnType nesnesi</returns>
+    protected async Task<IDataReturnType<TResult>> ExecuteQuerySafelyWithResult<TResult>(Func<Task<TResult>> query, CrudOperation operation)
     {
         try
         {
-            await _tdal.UpdateAsync(value);
-            return new ReturnType(GetDatasInfo.Updated, CrudOperation.Update);
+            var result = await query();
+            return new DataReturnType<TResult>(result, GetDatasInfo.SuccessfulOperation(operation), operation);
         }
         catch (Exception ex)
         {
-            return new ReturnType(GetDatasInfo.UpdatedFailed, CrudOperation.Update, ex);
-        }
-    }
-    [CacheRemoveAspect("GetAllAsync")]
-    public virtual async Task<IReturnType> DeleteAsync(T value)
-    {
-        try
-        {
-            await _tdal.DeleteAsync(value);
-            return new ReturnType(GetDatasInfo.Deleted, CrudOperation.Delete);
-        }
-        catch (Exception ex)
-        {
-            return new ReturnType(GetDatasInfo.DeletedFailed, CrudOperation.Delete, ex);
+            return new DataReturnType<TResult>(GetDatasInfo.FailedOperation(operation), operation, ex);
         }
     }
 
-    [CacheAspect(duration: 60)]
-    public virtual async Task<IDataReturnType<T>> GetAsync(object id)
-    {
-        try
-        {
-            var result = await _tdal.GetAsync(x => x.Id == id);
-            return new DataReturnType<T>(result, GetDatasInfo.SuccessGetData, CrudOperation.Get);
-        }
-        catch (Exception ex)
-        {
-            return new DataReturnType<T>(GetDatasInfo.FailedGetData, CrudOperation.Get, ex);
-        }
-    }
+
+    [CacheRemoveAspect("GetAllAsync")]
+    public virtual Task<IReturnType> AddAsync(T value) => ExecuteSafely(() => _tdal.AddAsync(value), CrudOperation.Add);
+
+
+    [CacheRemoveAspect("GetAllAsync")]
+    public virtual Task<IReturnType> UpdateAsync(T value) => ExecuteSafely(() => _tdal.UpdateAsync(value), CrudOperation.Update);
+
+    [CacheRemoveAspect("GetAllAsync")]
+    public virtual Task<IReturnType> DeleteAsync(T value) => ExecuteSafely(() => _tdal.DeleteAsync(value), CrudOperation.Delete);
+
 
     [CacheAspect(duration: 60)]
-    public virtual async Task<IDataReturnType<ICollection<T>>> GetAllAsync()
-    {
-        try
-        {
-            var result = await _tdal.GetAllAsync();
-            return new DataReturnType<ICollection<T>>(result.ToList(), GetDatasInfo.SuccessListData, CrudOperation.List);
-        }
-        catch (Exception ex)
-        {
-            return new DataReturnType<ICollection<T>>(GetDatasInfo.FailedListData, CrudOperation.List, ex);
-        }
-    }
+    public virtual async Task<IDataReturnType<T>> GetAsync(object id) => await ExecuteQuerySafelyWithResult(() => _tdal.GetAsync(x => x.Id == id), CrudOperation.Get);
+
+
+    [CacheAspect(duration: 60)]
+    public virtual async Task<IDataReturnType<ICollection<T>>> GetAllAsync() => await ExecuteQuerySafelyWithResult(() => _tdal.GetAllAsync(), CrudOperation.List);
 }
 
 

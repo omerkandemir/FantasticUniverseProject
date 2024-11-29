@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using NLayer.Core.Dto.ReturnTypes;
-using NLayer.Core.Entities.Authentication;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using NLayer.Core.Exceptions;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Mapper.Requests.AppUser;
+
 
 namespace WebApi.Controllers;
 
@@ -11,13 +13,13 @@ namespace WebApi.Controllers;
 public class AppUserController : ControllerBase
 {
     private readonly IAppUserDto _appUserDto;
-
     public AppUserController(IAppUserDto appUserDto)
     {
         _appUserDto = appUserDto;
     }
 
-    [HttpPost("Ekle")]
+    #region Add
+    [HttpGet("Ekle")]
     public async Task<IActionResult> Add([FromBody] CreateAppUserRequest createRequest)
     {
         var response = await _appUserDto.AddAsync(createRequest);
@@ -25,14 +27,42 @@ public class AppUserController : ControllerBase
             return Ok(response);
         return BadRequest(response);
     }
-    [HttpPut("Güncelle")]
-    public async Task<IActionResult> Update([FromBody] UpdateAppUserRequest updateRequest)
+
+    [HttpGet("Register")]
+    public async Task<IActionResult> Register([FromBody] CreateAppUserRequest createRequest)
     {
-        var response = await _appUserDto.UpdateAsync(updateRequest);
+        var response = await _appUserDto.Register(createRequest);
         if (response.Success)
             return Ok(response);
         return BadRequest(response);
     }
+    #endregion
+
+    #region UpdateUser
+    [HttpPut("UpdateUser")]
+    public async Task<IActionResult> UpdateUser([FromBody] UpdateAppUserRequest updateRequest)
+    {
+        try
+        {
+            var response = await _appUserDto.UpdateAsync(updateRequest);
+            if (response.Success)
+                return Ok(response);
+
+            return BadRequest(response);
+        }
+        catch (ValidationException ex)
+        {
+            var errors = ex.Errors.Select(e => new { e.PropertyName, e.ErrorMessage }).ToList();
+            return BadRequest(new { Message = "Validation hatası oluştu", Errors = errors });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    #endregion
+
+    #region Delete
     [HttpDelete("Sil{id}")]
     public async Task<IActionResult> Delete(DeleteAppUserRequest deleteRequest)
     {
@@ -41,67 +71,187 @@ public class AppUserController : ControllerBase
             return Ok(response);
         return BadRequest(response);
     }
+    #endregion
 
+    #region GetAll
+    [Authorize]
     [HttpGet("Listele")]
     public async Task<IActionResult> GetAll()
     {
         var response = await _appUserDto.GetAllAsync();
         return Ok(response);
     }
+    #endregion
+
+    #region Get
     [HttpGet("Getir{id}")]
     public async Task<IActionResult> Get(int id)
     {
         var response = await _appUserDto.GetAsync(id);
         return Ok(response);
     }
+    #endregion
 
+    #region GetUserByName
+    [HttpGet("GetUserByName/{username}")]
+    public async Task<IActionResult> GetUserByName(string username)
+    {
+        var userResponse = await _appUserDto.GetUserByNameAsync(username);
+        if (userResponse.Success)
+            return Ok(userResponse);
+
+        return BadRequest(userResponse);
+    }
+    #endregion
+
+    
+
+    
+
+    #region ConfirmMail
     [HttpPost("ConfirmMail")]
     public async Task<IActionResult> ConfirmMail([FromBody] ConfirmMailRequest confirmMailRequest)
     {
-        var response = await _appUserDto.ConfirmMailAsync(confirmMailRequest);
-        if (response.Success)
-            return Ok(response);
-        return BadRequest(response);
-    }
+        try
+        {
+            var response = await _appUserDto.ConfirmMailAsync(confirmMailRequest);
+            if (response.Success)
+                return Ok(response);
 
+            return BadRequest(response);
+        }
+        catch (ValidationException ex)
+        {
+            var errors = ex.Errors.Select(e => new { e.PropertyName, e.ErrorMessage }).ToList();
+            return BadRequest(new { Message = "Validation hatası oluştu", Errors = errors });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    #endregion
+
+    #region Login
     [HttpPost("Login")]
     public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
     {
-        var result = await _appUserDto.GetUserByNameAsync(loginRequest.Username);
-        if (!result.Success)
-            return BadRequest(result);
+        try
+        {
+            var response = await _appUserDto.LoginAsync(loginRequest);
 
-        var user = result as SuccessResponse<AppUser>;
-        if (user?.Entity.EmailConfirmed == false)
-            return Unauthorized("Email not confirmed");
-
-        return Ok(user.Entity);
+            return Ok(new
+            {
+                Id = response.Id,
+                RedirectTo = response.RedirectTo,
+                Email = response.Email,
+                IsEmailConfirmed = response.IsEmailConfirmed,
+                UserName = response.UserName,
+                ImageUrl = response.ImageURL,
+                Token = response.Token,
+                Message = response.Message,
+            });
+        }
+        catch (UserException ex)
+        {
+            return BadRequest(new { Message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            // Genel bir hata oluşursa
+            return StatusCode(500, new { Message = "Sunucuda bir hata oluştu.", Detail = ex.Message });
+        }
     }
+    #endregion
 
-    [HttpPut("ChangePassword")]
+    #region LogOut
+    [Authorize]
+    [HttpPost("Logout")]
+    public async Task<IActionResult> Logout()
+    {
+        try
+        {
+            var response = await _appUserDto.SignOutAsync();
+            //HttpContext.SignOutAsync(); // Kullanıcı oturumunu kapat
+            return response.Success ? Ok(new { Message = response.Message }) : BadRequest(new { Message = response.Message });
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { Message = "Çıkış işlemi sırasında bir hata oluştu.", Error = ex.Message });
+        }
+    }
+    #endregion
+
+    #region ChangePassword
+    [HttpPut("UpdatePassword")]
     public async Task<IActionResult> ChangePassword([FromBody] UpdateAppUserPasswordRequest updatePasswordRequest)
     {
-        var response = await _appUserDto.UpdatePasswordAsync(updatePasswordRequest);
-        if (response.Success)
-            return Ok(response);
-        return BadRequest(response);
-    }
+        try
+        {
+            var response = await _appUserDto.UpdatePasswordAsync(updatePasswordRequest);
+            if (response.Success)
+                return Ok(response);
 
-    [HttpPut("UpdateProfile")]
-    public async Task<IActionResult> UpdateProfile([FromBody] UpdateAppUserRequest updateProfileRequest)
-    {
-        var response = await _appUserDto.UpdateAsync(updateProfileRequest);
-        if (response.Success)
-            return Ok(response);
-        return BadRequest(response);
+            return BadRequest(response);
+        }
+        catch (ValidationException ex)
+        {
+            var errors = ex.Errors.Select(e => new { e.PropertyName, e.ErrorMessage }).ToList();
+            return BadRequest(new { Message = "Validation hatası oluştu", Errors = errors });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
+    #endregion
 
-    [HttpPut("ChangeProfileImage")]
-    public async Task<IActionResult> ChangeProfileImage([FromBody] UpdateAppUserProfileImageRequest profileImageRequest)
+
+    #region UpdateProfileImage
+    [HttpPut("UpdateProfileImage")]
+    public async Task<IActionResult> UpdateProfileImage([FromBody] UpdateAppUserProfileImageRequest profileImageRequest)
     {
-        var response = await _appUserDto.UpdateProfilePhotoAsync(profileImageRequest);
-        if (response.Success)
-            return Ok(response);
-        return BadRequest(response);
+        try
+        {
+            var response = await _appUserDto.UpdateProfilePhotoAsync(profileImageRequest);
+            if (response.Success)
+                return Ok(response);
+
+            return BadRequest(response);
+        }
+        catch (ValidationException ex)
+        {
+            var errors = ex.Errors.Select(e => new { e.PropertyName, e.ErrorMessage }).ToList();
+            return BadRequest(new { Message = "Validation hatası oluştu", Errors = errors });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
+    #endregion
+
+    #region UpdateUserEmail
+    [HttpPut("UpdateUserEmail")]
+    public async Task<IActionResult> UpdateUserEmail([FromBody] UpdateAppUserEmailRequest updateAppUserEmailRequest)
+    {
+        try
+        {
+            var response = await _appUserDto.UpdateEmailAsync(updateAppUserEmailRequest);
+            if (response.Success)
+                return Ok(response);
+
+            return BadRequest(response);
+        }
+        catch (ValidationException ex)
+        {
+            var errors = ex.Errors.Select(e => new { e.PropertyName, e.ErrorMessage }).ToList();
+            return BadRequest(new { Message = "Validation hatası oluştu", Errors = errors });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    #endregion
 }

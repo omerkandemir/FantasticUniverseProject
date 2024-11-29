@@ -1,11 +1,8 @@
-﻿using FluentValidation;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using NLayer.Business.Abstracts;
-using NLayer.Core.Dto.Abstracts;
+using Newtonsoft.Json;
 using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Core.Entities.Authentication;
-using NLayer.Dto.Managers.Abstract;
 using NLayer.Mapper.Requests.AppUser;
 using NLayer.Mapper.Responses.Concrete.UniverseImage;
 using Test.PresentationLayer.Models.AppUser;
@@ -13,159 +10,109 @@ using Test.PresentationLayer.Models.AppUser;
 namespace Test.PresentationLayer.Controllers;
 
 [Authorize]
-public class MyProfileController : Controller
+public class MyProfileController : BaseController
 {
-    private readonly IUserImageDto _userImageDto;
-    private readonly IUniverseImageDto _universeImageDto;
-    private readonly IAppUserDto _appUserDto;
-    private readonly ISignInService<AppUser> _signInService;
-
-    public MyProfileController(IUserImageDto userImageDto, IUniverseImageDto universeImageDto, IAppUserDto appUserDto, ISignInService<AppUser> signInService)
+    private readonly IHttpClientFactory _httpClientFactory;
+    public MyProfileController(IHttpClientFactory httpClientFactory)
     {
-        _userImageDto = userImageDto;
-        _universeImageDto = universeImageDto;
-        _appUserDto = appUserDto;
-        _signInService = signInService;
+        _httpClientFactory = httpClientFactory;
     }
     #region UserInfos
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        var values = await _appUserDto.GetUserByNameAsync(User.Identity.Name) as SuccessResponse<AppUser>;
+        var username = User.Identity.Name;
+        var client = _httpClientFactory.CreateClient("APIClient");
+        var response = await client.GetAsync($"/api/AppUser/GetUserByName/{username}");
 
-        UpdateAppUserRequest updateAppUserRequest = new UpdateAppUserRequest()
+        if (response.IsSuccessStatusCode)
         {
-            Id = values.Entity.Id,
-            Name = values.Entity.Name,
-            Surname = values.Entity.Surname,
-            City = values.Entity.City,
-            District = values.Entity.District,
-            UserName = values.Entity.UserName,
-        };
-        return View(updateAppUserRequest);
+            var userResponse = JsonConvert.DeserializeObject<SuccessResponse<AppUser>>(await response.Content.ReadAsStringAsync());
+            var model = new UpdateAppUserRequest
+            {
+                Id = userResponse.Entity.Id,
+                Name = userResponse.Entity.Name,
+                Surname = userResponse.Entity.Surname,
+                City = userResponse.Entity.City,
+                District = userResponse.Entity.District,
+                UserName = userResponse.Entity.UserName
+            };
+            return View(model);
+        }
+
+        ModelState.AddModelError(string.Empty, "Kullanıcı bilgileri yüklenemedi.");
+        return View(new UpdateAppUserRequest());
     }
 
     [HttpPost]
     public async Task<IActionResult> Index(UpdateAppUserRequest updateAppUserRequest)
     {
-        try
+        if (!ModelState.IsValid)
         {
-            // Model geçerli değilse, hata mesajlarını göster
-            if (!ModelState.IsValid)
-            {
-                return View(updateAppUserRequest);
-            }
-            var userResponse = await _appUserDto.GetUserByNameAsync(User.Identity.Name);
-            if (userResponse.Success)
-            {
-                var user = userResponse as SuccessResponse<AppUser>;
-                //Güncellendiğinde Kullanıcı bilgilerinin güncel olması için
-                user.Entity.Name = updateAppUserRequest.Name;
-                user.Entity.Surname = updateAppUserRequest.Surname;
-                user.Entity.City = updateAppUserRequest.City;
-                user.Entity.District = updateAppUserRequest.District;
-                user.Entity.UserName = updateAppUserRequest.UserName;
+            return View(updateAppUserRequest);
+        }
+        updateAppUserRequest.Id = GetCurrentUserId();
+        var client = _httpClientFactory.CreateClient("APIClient");
+        var response = await client.PutAsJsonAsync("/api/AppUser/UpdateUser", updateAppUserRequest);
 
-                //Güncelllenecek nesnenin Id si
-                updateAppUserRequest.Id = user.Entity.Id;
+        if (response.IsSuccessStatusCode)
+        {
+            var responseContent = await response.Content.ReadAsStringAsync();
+            var successResponse = JsonConvert.DeserializeObject<dynamic>(responseContent);
 
-                var result = await _appUserDto.UpdateAsync(updateAppUserRequest);
-                if (result.Success)
-                {
-                    await _signInService.RefreshSignInAsync(user.Entity); // oturumu yenile
-                    HttpContext.Session.SetString("UserName", updateAppUserRequest.UserName);
-                    ViewBag.SuccessMessage = "Kullanıcı Bilgileri Başarıyla Güncellendi";
-                    return View(updateAppUserRequest);
-                }
-                else
-                {
-                    var errorResponse = result as IErrorResponse;
-                    if (errorResponse != null)
-                    {
-                        ModelState.AddModelError(string.Empty, errorResponse.ErrorMessage);
-                    }
-                }
-            }
-            else
-            {
-                ErrorMessage(userResponse);
-            }
+            HttpContext.Session.SetString("UserName", updateAppUserRequest.UserName);
+            ViewBag.SuccessMessage = successResponse.message;
+
+            return View(updateAppUserRequest);
         }
-        catch (ValidationException ex)
-        {
-            foreach (var error in ex.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.ErrorMessage);
-            }
-        }
-        catch (Exception ex)
-        {
-            ModelState.AddModelError(string.Empty, "Bir hata oluştu: " + ex.Message);
-        }
+        await AddErrorsToModelStateAsync(response);
+
         return View(updateAppUserRequest);
     }
-
-    
     #endregion
 
     #region UserEmail
     [HttpGet]
     public async Task<IActionResult> ChangeEmail()
     {
-        var user = await _appUserDto.GetUserByNameAsync(User.Identity.Name) as SuccessResponse<AppUser>;
+        var username = User.Identity.Name;
+        var client = _httpClientFactory.CreateClient("APIClient");
 
-        UpdateAppUserEmailRequest updateAppUserEmailRequest = new UpdateAppUserEmailRequest()
+        var response = await client.GetAsync($"/api/AppUser/GetUserByName/{username}");
+        if (response.IsSuccessStatusCode)
         {
-            Email = user.Entity.Email,
-        };
-        return View(updateAppUserEmailRequest);
+            var userResponse = JsonConvert.DeserializeObject<SuccessResponse<AppUser>>(await response.Content.ReadAsStringAsync());
+            var model = new UpdateAppUserEmailRequest
+            {
+                Email = userResponse.Entity.Email
+            };
+            return View(model);
+        }
+
+        await AddErrorsToModelStateAsync(response);
+        return View(new UpdateAppUserEmailRequest());
     }
 
     [HttpPost]
     public async Task<IActionResult> ChangeEmail(UpdateAppUserEmailRequest updateAppUserRequest)
     {
-        try
+        updateAppUserRequest.Id = GetCurrentUserId();
+        if (!ModelState.IsValid)
         {
-            var userResponse = await _appUserDto.GetUserByNameAsync(User.Identity.Name);
-
-            if (userResponse.Success)
-            {
-                var user = userResponse as SuccessResponse<AppUser>;
-
-                updateAppUserRequest.Id = user.Entity.Id;
-
-                var result = await _appUserDto.UpdateEmailAsync(updateAppUserRequest);
-                if (result.Success)
-                {
-                    return RedirectToAction("Index", "ConfirmMail");
-                }
-                else
-                {
-                    var errorResponse = result as IErrorResponse;
-                    if (errorResponse != null)
-                    {
-                        ModelState.AddModelError(string.Empty, errorResponse.ErrorMessage);
-                    }
-                }
-            }
-            else
-            {
-                ErrorMessage(userResponse);
-            }
-            
+            return View(updateAppUserRequest);
         }
-        catch (ValidationException ex)
+
+        var client = _httpClientFactory.CreateClient("APIClient");
+        var response = await client.PutAsJsonAsync("/api/AppUser/UpdateUserEmail", updateAppUserRequest);
+
+
+        if (response.IsSuccessStatusCode)
         {
-            foreach (var error in ex.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.ErrorMessage);
-            }
+            HttpContext.Session.SetString("Email", updateAppUserRequest.Email);
+            return RedirectToAction("Index", "ConfirmMail");
         }
-        catch (Exception ex)
-        {
-            ModelState.AddModelError(string.Empty, "Bir hata oluştu: " + ex.Message);
-        }
-        
+        await AddErrorsToModelStateAsync(response);
+
         return View(updateAppUserRequest);
     }
     #endregion
@@ -174,42 +121,41 @@ public class MyProfileController : Controller
     [HttpGet]
     public async Task<IActionResult> ChangePassword()
     {
-        await _appUserDto.GetUserByNameAsync(User.Identity.Name);
-
         return View();
     }
     [HttpPost]
     public async Task<IActionResult> ChangePassword(UpdateAppUserPasswordRequest updateAppUserPasswordRequest)
     {
-        try
+        if (!ModelState.IsValid)
         {
-            var userResult = await _appUserDto.GetUserByNameAsync(User.Identity.Name);
-            if (userResult.Success)
-            {
-                var user = userResult as SuccessResponse<AppUser>;
-                updateAppUserPasswordRequest.Id = user.Entity.Id;
-                var result = await _appUserDto.UpdatePasswordAsync(updateAppUserPasswordRequest);
-                if (result.Success)
-                {
-                    ViewBag.SuccessMessage = "Şifre başarıyla güncellendi.";
-                }
-            }
-            else
-            {
-                ErrorMessage(userResult);
-            }
+            return View(updateAppUserPasswordRequest);
         }
-        catch (ValidationException ex)
+
+        var client = _httpClientFactory.CreateClient("APIClient");
+
+        var username = User.Identity.Name;
+        var userResponse = await client.GetAsync($"/api/AppUser/GetUserByName/{username}");
+
+        if (userResponse.IsSuccessStatusCode)
         {
-            foreach (var error in ex.Errors)
+            var userData = JsonConvert.DeserializeObject<SuccessResponse<AppUser>>(await userResponse.Content.ReadAsStringAsync());
+            updateAppUserPasswordRequest.Id = GetCurrentUserId();
+
+            var response = await client.PutAsJsonAsync("/api/AppUser/UpdatePassword", updateAppUserPasswordRequest);
+
+            if (response.IsSuccessStatusCode)
             {
-                ModelState.AddModelError(string.Empty, error.ErrorMessage);
+                ViewBag.SuccessMessage = "Şifre başarıyla güncellendi.";
+                return View(new UpdateAppUserPasswordRequest());
             }
+
+            await AddErrorsToModelStateAsync(response);
         }
-        catch (Exception ex)
+        else
         {
-            ModelState.AddModelError(string.Empty, "Bir hata oluştu: " + ex.Message);
+            await AddErrorsToModelStateAsync(userResponse);
         }
+
         return View(updateAppUserPasswordRequest);
     }
     #endregion
@@ -218,78 +164,103 @@ public class MyProfileController : Controller
     [HttpGet]
     public async Task<IActionResult> ChangeProfileImage()
     {
-        var userResponse = await _appUserDto.GetUserByNameAsync(User.Identity.Name) as SuccessResponse<AppUser>;
 
-        ChangeProfileImageViewModel profileImageViewModel = new ChangeProfileImageViewModel()
+        var username = User.Identity.Name;
+
+        var profileData = await GetProfileImageDataAsync(username);
+
+        if (profileData == null)
         {
-            SelectedImageId = userResponse.Entity.UniverseImageId,
-            GetAllUniverseImageResponses = await _userImageDto.GetUsersImage() as GetAllUniverseImageResponse
-        };
-        return View(profileImageViewModel);
+            ModelState.AddModelError(string.Empty, "Profil verileri alınamadı.");
+            return View(new ChangeProfileImageViewModel());
+        }
+        ViewBag.SuccessMessage = TempData["SuccessProfileImageMessage"];
+        return View(profileData);
     }
     [HttpPost]
     public async Task<IActionResult> ChangeProfileImage(ChangeProfileImageViewModel profileImageViewModel)
     {
-        try
+
+        if (!ModelState.IsValid)
         {
-            var userResponse = await _appUserDto.GetUserByNameAsync(User.Identity.Name);
-            if (userResponse.Success)
-            {
-                var user = userResponse as SuccessResponse<AppUser>;
-                if (ModelState.IsValid)
-                {
-                    if (profileImageViewModel.SelectedImageId == user.Entity.UniverseImageId)
-                    {
-                        ModelState.Clear(); // ModelState'i temizle
-                        ModelState.AddModelError(string.Empty, "Seçtiğiniz profil resmi zaten mevcut profil resminizle aynı!");
-                        PrepareChangeProfileImageViewModelForView(profileImageViewModel);
-                        return View(profileImageViewModel);
-                    }
-                    else
-                    {
-                        UpdateAppUserProfileImageRequest updateAppUserProfileImageRequest = new UpdateAppUserProfileImageRequest()
-                        {
-                            SelectedImageId = profileImageViewModel.SelectedImageId,
-                            Id = user.Entity.Id
-                        };
-                        var result = await _appUserDto.UpdateProfilePhotoAsync(updateAppUserProfileImageRequest);
-                        if (result.Success)
-                        {
-                            await _signInService.RefreshSignInAsync(user.Entity);
-                            var newUniverseImage = await _universeImageDto.GetAsync(profileImageViewModel.SelectedImageId) as GetUniverseImageResponse;
-                            if (newUniverseImage != null)
-                            {
-                                HttpContext.Session.Set("ImageURL", newUniverseImage.ImageURL);
-                            }
-                            return RedirectToAction("Index", "MainPage");
-                        }
-                    }
-                }
-                else
-                {
-                    ModelState.AddModelError(string.Empty, "Profil Resmi Değiştirilemedi");
-                    PrepareChangeProfileImageViewModelForView(profileImageViewModel);
-                }
-            }
-            else
-            {
-                ErrorMessage(userResponse);
-            }
-            
+            await PrepareChangeProfileImageViewModel(profileImageViewModel);
+            return View(profileImageViewModel);
         }
-        catch (ValidationException ex)
+
+        var client = _httpClientFactory.CreateClient("APIClient");
+
+        var updateRequest = new UpdateAppUserProfileImageRequest
         {
-            foreach (var error in ex.Errors)
-            {
-                ModelState.AddModelError(string.Empty, error.ErrorMessage);
-            }
-        }
-        catch (Exception ex)
+            Id = GetCurrentUserId(),
+            SelectedImageId = profileImageViewModel.SelectedImageId
+        };
+
+        var response = await client.PutAsJsonAsync("/api/AppUser/UpdateProfileImage", updateRequest);
+        if (response.IsSuccessStatusCode)
         {
-            ModelState.AddModelError(string.Empty, "Bir hata oluştu: " + ex.Message);
+            var sessionClient = _httpClientFactory.CreateClient("APIClient");
+            var imageResponse = await sessionClient.GetAsync($"/api/UniverseImages/GetUserCurrentProfileImage/{profileImageViewModel.SelectedImageId}");
+            if (imageResponse.IsSuccessStatusCode)
+            {
+                ViewBag.SuccessMessage = "Profil resmi başarıyla güncellendi.";
+                var imageUrl = JsonConvert.DeserializeObject<GetUniverseImageResponse>(await imageResponse.Content.ReadAsStringAsync()).ImageURL;
+                HttpContext.Session.Set("ImageURL", imageUrl);
+            }
+
+            TempData["SuccessProfileImageMessage"] = "Profil resmi başarıyla güncellendi.";
+            return RedirectToAction(nameof(ChangeProfileImage));
         }
-        
+
+        await AddErrorsToModelStateAsync(response);
+        var fallbackData = await GetProfileImageDataAsync(User.Identity.Name);
+        profileImageViewModel.GetAllUniverseImageResponses = fallbackData.GetAllUniverseImageResponses;
+        profileImageViewModel.CurrentImageBase64 = fallbackData.CurrentImageBase64;
+        await PrepareChangeProfileImageViewModel(profileImageViewModel);
         return View(profileImageViewModel);
+    }
+    private async Task PrepareChangeProfileImageViewModel(ChangeProfileImageViewModel profileImageViewModel)
+    {
+        var client = _httpClientFactory.CreateClient("APIClient");
+        var response = await client.GetAsync("/api/UserImage/GetAll");
+
+        if (response.IsSuccessStatusCode)
+        {
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            var allImagesResponse = JsonConvert.DeserializeObject<GetAllUniverseImageResponse>(jsonResponse);
+
+            if (allImagesResponse?.Responses != null && allImagesResponse.Responses.Any())
+            {
+                profileImageViewModel.GetAllUniverseImageResponses = allImagesResponse.Responses
+                    .Select(image => new GetUniverseImageResponse
+                    {
+                        Id = image.Id,
+                        ImageURL = image.ImageURL
+                    }).ToList();
+            }
+        }
+    }
+    private async Task<ChangeProfileImageViewModel> GetProfileImageDataAsync(string username)
+    {
+        var client = _httpClientFactory.CreateClient("APIClient");
+
+        var response = await client.GetAsync($"/api/UserImages/GetAllUsersProfileImages/{username}");
+        if (response.IsSuccessStatusCode)
+        {
+            var jsonResponse = await response.Content.ReadAsStringAsync();
+            var dynamicData = JsonConvert.DeserializeObject<ChangeProfileImageViewModel>(jsonResponse);
+
+            if (dynamicData?.GetAllUniverseImageResponses == null || !dynamicData.GetAllUniverseImageResponses.Any())
+            {
+                ModelState.AddModelError(string.Empty, "Profil resimleri yüklenemedi.");
+                return new ChangeProfileImageViewModel(); 
+            }
+
+            var currentImage = dynamicData.GetAllUniverseImageResponses.FirstOrDefault(x => x.Id == dynamicData.SelectedImageId);
+            dynamicData.CurrentImageBase64 = currentImage != null ? Convert.ToBase64String(currentImage.ImageURL) : null;
+
+            return dynamicData;
+        }
+        return null;
     }
     #endregion
 
@@ -299,23 +270,16 @@ public class MyProfileController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Logout()
     {
-        await _signInService.SignOutAsync();
-        HttpContext.Session.Clear(); // Oturum bilgilerini temizler
-        return RedirectToAction("Index", "Login");
+        var client = _httpClientFactory.CreateClient("APIClient");
+        var response = await client.PostAsync("/api/AppUser/Logout", null);
+
+        if (response.IsSuccessStatusCode)
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Login");
+        }
+        TempData["ErrorMessage"] = "Çıkış işlemi başarısız oldu!";
+        return View();
     }
     #endregion
-
-
-    private void ErrorMessage(IResponse response)
-    {
-        var errorResponse = response as IErrorResponse;
-        if (errorResponse != null)
-        {
-            ModelState.AddModelError(string.Empty, errorResponse.ErrorMessage);
-        }
-    }
-    private async void PrepareChangeProfileImageViewModelForView(ChangeProfileImageViewModel profileImageViewModel)
-    {
-        profileImageViewModel.GetAllUniverseImageResponses = await _userImageDto.GetUsersImage() as GetAllUniverseImageResponse;
-    }
 }

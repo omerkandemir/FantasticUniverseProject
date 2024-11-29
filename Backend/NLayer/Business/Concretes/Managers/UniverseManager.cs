@@ -27,35 +27,11 @@ public class UniverseManager : BaseManagerAsync<Universe, IUniverseDal>, IUniver
         _themeSettingDal = themeSettingDal;
     }
 
-    public async Task AddFirstUniverseData()
-    {
-        if ((await _tdal.GetAllAsync(ui => ui.Name == "Fantastic Universe")).Any())
-        {
-            return;
-        }
-        var themeSetting = new ThemeSetting()
-        {
-            Background = BackgroundType.Default,
-            FontColorR = 0.ToString(),
-            FontColorB = 0.ToString(),
-            FontColorG = 0.ToString(),
-            FontFamily = string.Empty,
-        };
-        await _themeSettingDal.AddAsync(themeSetting);
-        var universe = new Universe()
-        {
-            Name = "Fantastic Universe",
-            ThemeSetting = themeSetting,
-            ThemeSettingId = themeSetting.Id,
-        };
-        await _tdal.AddAsync(universe);
-    }
-
     [TransactionScopeAspect(Priority = 2)]
     [ValidationAspect(typeof(CreateUniverseValidator), Priority = 1)]
     public async Task<IReturnType> CreateUniverseAsync(Universe universe)
     {
-        try
+        return await ExecuteSafely(async () =>
         {
             await AddThemeSettingAsync(universe);
             await _tdal.AddAsync(universe);
@@ -64,13 +40,7 @@ public class UniverseManager : BaseManagerAsync<Universe, IUniverseDal>, IUniver
             {
                 await AddGalaxyAsync(galaxy, universe.Id);
             }
-
-            return new ReturnType(GetDatasInfo.Added, CrudOperation.Add);
-        }
-        catch (Exception ex)
-        {
-            return new ReturnType(GetDatasInfo.AddedFailed, CrudOperation.Add, ex);
-        }
+        }, CrudOperation.Add);
     }
 
     private async Task AddThemeSettingAsync(Universe universe)
@@ -143,28 +113,16 @@ public class UniverseManager : BaseManagerAsync<Universe, IUniverseDal>, IUniver
     [CacheAspect(duration: 60)]
     public async Task<IDataReturnType<ICollection<Universe>>> GetUserUniversesAsync(int userId)
     {
-        try
-        {
-            var userUniverseList = await _tdal.GetAllAsync(x => x.CreatedBy == userId, include: query => query.Include(query => query.ThemeSetting));
-
-            return new DataReturnType<ICollection<Universe>>(userUniverseList, GetDatasInfo.SuccessListData, CrudOperation.List);
-        }
-        catch (Exception ex)
-        {
-            return new DataReturnType<ICollection<Universe>>(GetDatasInfo.FailedListData, CrudOperation.List, ex);
-        }
+        return await ExecuteQuerySafelyWithResult(() => 
+        _tdal.GetAllAsync(x => x.CreatedBy == userId, include: query => query.Include(q => q.ThemeSetting)),
+            CrudOperation.List
+        );
     }
     [CacheAspect(duration: 60)]
     public override async Task<IDataReturnType<Universe>> GetAsync(object id)
     {
-        try
-        {
-            var result = await _tdal.GetAsync(x => x.Id == Convert.ToInt32(id), include: query => query.Include(query => query.ThemeSetting));
-            return new DataReturnType<Universe>(result, GetDatasInfo.SuccessGetData, CrudOperation.Get);
-        }
-        catch (Exception ex)
-        {
-            return new DataReturnType<Universe>(GetDatasInfo.FailedGetData, CrudOperation.Get, ex);
-        }
+        return await ExecuteQuerySafelyWithResult(() => _tdal.GetAsync(x => x.Id == Convert.ToInt32(id), include: query => query.Include(q => q.ThemeSetting)),
+            CrudOperation.Get
+        );
     }
 }

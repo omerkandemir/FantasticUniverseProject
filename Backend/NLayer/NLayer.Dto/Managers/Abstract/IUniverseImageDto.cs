@@ -14,6 +14,5 @@ public interface IUniverseImageDto : IEntityRepositoryAsyncDto<
     GetUniverseImageResponse,
     GetAllUniverseImageResponse>
 {
-    Task AddFirstUserDatas();
-    Task<ICollection<UniverseImage>> GetFirstUserImages();
+    Task<ICollection<UniverseImage>> PrepareUserForRegister();
 }

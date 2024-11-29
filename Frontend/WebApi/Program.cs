@@ -1,12 +1,10 @@
 using Autofac.Extensions.DependencyInjection;
 using Autofac;
-using WebApi;
 using NLayer.Dto.Autofac;
 using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.AppUserValidation;
 using NLayer.Core.Entities.Authentication;
 using NLayer.Core.Middleware;
 using NLayer.DataAccess.Concretes.EntityFramework;
-using Autofac.Core;
 using NLayer.Core.Utilities.UserOperations;
 
 internal class Program
@@ -49,6 +47,15 @@ internal class Program
             });
         });
 
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAll", policy =>
+            {
+                policy.WithOrigins("https://localhost:7184")
+                      .AllowAnyHeader()
+                      .AllowAnyMethod();
+            });
+        });
         var app = builder.Build();
 
         // IHttpContextAccessor yapýlandýrmasý
@@ -66,6 +73,7 @@ internal class Program
         app.UseHttpsRedirection();
         app.UseStaticFiles();
         app.UseRouting();
+        app.UseCors("AllowAll");
         app.UseSession();
         app.UseAuthentication();
         app.UseAuthorization();

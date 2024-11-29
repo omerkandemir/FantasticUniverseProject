@@ -5,6 +5,5 @@ namespace NLayer.Business.Abstracts;
 
 public interface IUniverseImageService : IEntityServiceRepositoryAsync<UniverseImage>
 {
-    Task UpdateDatabaseWithNewImages();
-    Task<ICollection<UniverseImage>> GetFirstImagesFromDatabase();
+    Task<ICollection<UniverseImage>> PrepareUserForRegister();
 }

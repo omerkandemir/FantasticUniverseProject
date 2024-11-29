@@ -7,7 +7,6 @@ using NLayer.Core.Utilities.MailOperations.MailKit;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Mapper.Requests.AppUser;
 using NLayer.Mapper.Responses.Abstract;
-using NLayer.Mapper.Responses.Concrete.Ability;
 using NLayer.Mapper.Responses.Concrete.AppUser;
 
 namespace NLayer.Dto.Managers.Concrete;
@@ -16,14 +15,12 @@ public class AppUserDto : IAppUserDto
 {
     private readonly IAppUserService<AppUser> _appUserService;
     private readonly IMapper _mapper;
-    private readonly ISignInService<AppUser> _signInService;
     private readonly IUniverseImageService _universeImageService;
 
-    public AppUserDto(IAppUserService<AppUser> appUserService, IMapper mapper, ISignInService<AppUser> signInService, IUniverseImageService universeImageService)
+    public AppUserDto(IAppUserService<AppUser> appUserService, IMapper mapper, IUniverseImageService universeImageService)
     {
         _appUserService = appUserService;
         _mapper = mapper;
-        _signInService = signInService;
         _universeImageService = universeImageService;
     }
     public async Task<IResponse> AddAsync(CreateAppUserRequest request)
@@ -35,6 +32,24 @@ public class AppUserDto : IAppUserDto
         if (result.Success)
         {
             SendMail.SendConfirmCodeMail(user.ConfirmCode, user);
+            return ResponseFactory.CreateSuccessResponse<AppUser>(user, response);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
+    }
+    public async Task<IResponse> Register(CreateAppUserRequest request)
+    {
+        if (request.Password != request.ConfirmPassword)
+            return ResponseFactory.CreateErrorResponse("Parolalar eşleşmiyor.");
+
+
+        AppUser user = _mapper.Map<AppUser>(request);
+        var result = await _appUserService.Register(user, request.Password, true);
+        var response = _mapper.Map<CreatedAppUserResponse>(user);
+        if (result.Success)
+        {
             return ResponseFactory.CreateSuccessResponse<AppUser>(user, response);
         }
         else
@@ -114,6 +129,25 @@ public class AppUserDto : IAppUserDto
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
+    public async Task<IResponse> GetUserRolesAsync(AppUser user)
+    {
+        try
+        {
+            var result = await _appUserService.GetUserRolesAsync(user);
+            if (result.Success)
+            {
+                return ResponseFactory.CreateSuccessResponse(result);
+            }
+            else
+            {
+                return ResponseFactory.CreateErrorResponse(result, result.Message);
+            }
+        }
+        catch (Exception ex)
+        {
+            return ResponseFactory.CreateErrorResponse(ex);
+        }
+    }
     public async Task<IResponse> GetUserByNameAsync(string name)
     {
         var result = await _appUserService.GetUserByNameAsyncWithIdentityUser(name);
@@ -153,6 +187,18 @@ public class AppUserDto : IAppUserDto
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
+    public async Task<LoginResponse> LoginAsync(LoginRequest loginRequest)
+    {
+        return await _appUserService.LoginProcessAsync(loginRequest);
+    }
+    public async Task<IResponse> SignOutAsync()
+    {
+        var result = await _appUserService.SignOutAsync();
+        return result.Success
+            ? ResponseFactory.CreateSuccessResponse(result.Message)
+            : ResponseFactory.CreateErrorResponse(result.Message);
+    }
+
     public Task<IResponse> DeleteAsync(DeleteAppUserRequest request)
     {
         throw new NotImplementedException();
@@ -165,50 +211,5 @@ public class AppUserDto : IAppUserDto
     public Task<IGetAllResponse<IGetAppUserResponse>> GetAllAsync()
     {
         throw new NotImplementedException();
-    }
-    public async Task<IResponse> LoginAsync(LoginRequest loginRequest)
-    {
-        // Kullanıcı adı ve şifre doğrulama
-        var signInResult = await _signInService.PasswordSignInAsync(loginRequest.Username, loginRequest.Password, true, true);
-        if (!signInResult.Succeeded)
-        {
-            return ResponseFactory.CreateErrorResponse("Kullanıcı adı veya şifre hatalı.");
-        }
-
-        // Kullanıcı bilgilerini alma
-        var userResult = await _appUserService.GetUserByNameAsyncWithIdentityUser(loginRequest.Username);
-        if (!userResult.Success)
-        {
-            return ResponseFactory.CreateErrorResponse(userResult, "Kullanıcı bulunamadı.");
-        }
-
-        var user = (userResult as SuccessResponse<AppUser>)?.Entity;
-        if (user == null)
-        {
-            return ResponseFactory.CreateErrorResponse(userResult, "Kullanıcı bilgisi getirilemedi.");
-        }
-        // E-posta doğrulama kontrolü
-        if (!user.EmailConfirmed)
-        {
-            // Kullanıcının doğrulama kodunu üret
-            _appUserService.GenerateCodeFromUser(user);
-
-            // Yanıt olarak doğrulama işlemi gerektiğini belirt
-            return ResponseFactory.CreateErrorResponse(userResult.Exception, new
-            {
-                RedirectUrl = "/ConfirmMail/Index",
-                Email = user.Email
-            }, "E-posta doğrulaması gerekiyor.");
-        }
-
-        var universeImage = await _universeImageService.GetAsync(user.UniverseImageId);
-        var ImageUrl = universeImage.Data.ImageURL;
-        // Kullanıcı doğrulandı, başarılı giriş
-        return ResponseFactory.CreateSuccessResponse(new
-        {
-            RedirectUrl = "/MainPage/Index",
-            UserName = user.UserName,
-            ImageUrl = ImageUrl
-        });
     }
 }

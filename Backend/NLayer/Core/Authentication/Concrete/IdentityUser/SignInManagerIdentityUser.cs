@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using NLayer.Core.Entities.Authentication;
 
-namespace NLayer.Business.Concretes.Authentication.IdentityUser;
+namespace NLayer.Core.Authentication.Concrete.IdentityUser;
 
 public abstract class SignInManagerIdentityUser
 {
@@ -22,7 +22,7 @@ public abstract class SignInManagerIdentityUser
     {
         return _signInManager.SignOutAsync();
     }
-    public Task<SignInResult> PasswordSignInAsync(string username, string password, bool isPersistent, bool lockoutOnFailure)
+    public Task<SignInResult> LoginAsync(string username, string password, bool isPersistent, bool lockoutOnFailure)
     {
         return _signInManager.PasswordSignInAsync(username, password, isPersistent, lockoutOnFailure);
     }

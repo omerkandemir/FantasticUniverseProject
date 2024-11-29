@@ -10,13 +10,21 @@ public class UniverseImageManager : BaseManagerAsync<UniverseImage, IUniverseIma
 {
     private readonly IUniverseDal _universeDal;
     private readonly IGetDefaultImages _getDefaultImages;
-    public UniverseImageManager(IUniverseImageDal tdal, IUniverseDal universeDal, IGetDefaultImages getDefaultImages) : base(tdal)
+    private readonly IThemeSettingDal _themeSettingDal;
+    public UniverseImageManager(IUniverseImageDal tdal, IUniverseDal universeDal, IGetDefaultImages getDefaultImages, IThemeSettingDal themeSettingDal) : base(tdal)
     {
         _universeDal = universeDal;
         _getDefaultImages = getDefaultImages;
+        _themeSettingDal = themeSettingDal;
     }
 
-    public async Task UpdateDatabaseWithNewImages()
+    public async Task<ICollection<UniverseImage>> PrepareUserForRegister()
+    {
+        await AddFirstUniverseData();
+        await UpdateDatabaseWithNewImages();
+        return await GetFirstUsersImages();
+    }
+    private async Task UpdateDatabaseWithNewImages()
     {
         string universeName = "Fantastic Universe";
         var universe = await _universeDal.GetAsync(x => x.Name == universeName);
@@ -65,9 +73,36 @@ public class UniverseImageManager : BaseManagerAsync<UniverseImage, IUniverseIma
         }
     }
 
-    public async Task<ICollection<UniverseImage>> GetFirstImagesFromDatabase()
+    private async Task<ICollection<UniverseImage>> GetFirstUsersImages()
     {
         var universeImages = await _tdal.GetAllAsync(x => x.Universe.Name == "Fantastic Universe", x => x.Include(x => x.Universe));
         return universeImages;
+    }
+
+    private async Task AddFirstUniverseData()
+    {
+        var firstUniverse = await _universeDal.GetAsync(u => u.Name == "Fantastic Universe");
+        if (firstUniverse != null)
+        {
+            return;
+        }
+
+        var themeSetting = new ThemeSetting()
+        {
+            Background = BackgroundType.Default,
+            FontColorR = 0.ToString(),
+            FontColorB = 0.ToString(),
+            FontColorG = 0.ToString(),
+            FontFamily = string.Empty,
+        };
+        await _themeSettingDal.AddAsync(themeSetting);
+
+        var universe = new Universe()
+        {
+            Name = "Fantastic Universe",
+            ThemeSetting = themeSetting,
+            ThemeSettingId = themeSetting.Id,
+        };
+        await _universeDal.AddAsync(universe);
     }
 }

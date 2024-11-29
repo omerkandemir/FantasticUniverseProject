@@ -6,7 +6,6 @@ namespace NLayer.Business.Abstracts;
 
 public interface IUniverseService : IEntityServiceRepositoryAsync<Universe>
 {
-    Task AddFirstUniverseData();
     Task<IReturnType> CreateUniverseAsync(Universe universe);
     Task<IDataReturnType<ICollection<Universe>>> GetUserUniversesAsync(int userId);
 }

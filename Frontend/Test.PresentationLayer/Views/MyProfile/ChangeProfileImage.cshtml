@@ -10,7 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profil Resmini Değiştir</title>
-    <link href="~/css/UpdateImageForm.css?v=1.3" rel="stylesheet" />
+    <link href="~/css/UpdateImageForm.css?v=1.5" rel="stylesheet" />
     <script src="~/js/userImageUpdate.js"></script>
 </head>
 <body>
@@ -18,12 +18,18 @@
         <h2>Profil Resmini Değiştir</h2>
         <br />
         <div asp-validation-summary="ModelOnly" class="validation-summary-errors"></div>
+        @if (ViewBag.SuccessMessage != null)
+        {
+            <div class="alert alert-success">
+                @ViewBag.SuccessMessage
+            </div>
+        }
         <br />
         <form method="post">
             <div class="form-group">
                 <label for="currentProfileImage">Mevcut Profil Resminiz:</label>
                 <div class="img-container"></div>
-                <img id="current-profile-image" src="data:image/jpg;base64,@Convert.ToBase64String(Model.GetAllUniverseImageResponses.Responses.FirstOrDefault(x => x.Id == Model.SelectedImageId)?.ImageURL)" alt="Mevcut Profil Resmi" class="img-thumbnail" />
+                <img id="current-profile-image" src="data:image/jpg;base64,@Model.CurrentImageBase64" alt="Mevcut Profil Resmi" class="img-thumbnail" />
             </div>
             <div class="form-group">
                 <label for="profileImage">Yeni Profil Resmi Seç:</label>
@@ -32,12 +38,15 @@
                 <span asp-validation-for="SelectedImageId" class="text-danger"></span>
                 <div id="image-gallery-container" style="display: none;">
                     <div id="image-gallery">
-                        @foreach (var image in Model.GetAllUniverseImageResponses.Responses)
+                        @if (Model.GetAllUniverseImageResponses != null && Model.GetAllUniverseImageResponses.Any())
                         {
-                            var base64Image = Convert.ToBase64String(image.ImageURL);
-                            <div class="image-item" data-id="@image.Id" onclick="selectImage(@image.Id, 'data:image/jpg;base64,@base64Image')">
-                                <img src="data:image/jpg;base64,@base64Image" alt="Image" class="img-thumbnail selectable-image" />
-                            </div>
+                            @foreach (var image in Model.GetAllUniverseImageResponses)
+                            {
+                                var base64Image = Convert.ToBase64String(image.ImageURL);
+                                <div class="image-item" data-id="@image.Id" onclick="selectImage(@image.Id, 'data:image/jpg;base64,@base64Image')">
+                                    <img src="data:image/jpg;base64,@base64Image" alt="Image" class="img-thumbnail selectable-image" />
+                                </div>
+                            }
                         }
                     </div>
                 </div>

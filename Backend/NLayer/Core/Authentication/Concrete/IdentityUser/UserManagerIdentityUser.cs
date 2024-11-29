@@ -2,7 +2,7 @@
 using NLayer.Core.Entities.Abstract;
 using System.Security.Claims;
 
-namespace NLayer.Business.Concretes.Authentication.IdentityUser;
+namespace NLayer.Core.Authentication.Concrete.IdentityUser;
 
 public abstract class UserManagerIdentityUser<TUser> where TUser : class, IEntity, new()
 {
@@ -34,6 +34,10 @@ public abstract class UserManagerIdentityUser<TUser> where TUser : class, IEntit
     public async Task<TUser> GetUserAsync(ClaimsPrincipal principal)
     {
         return await _userManager.GetUserAsync(principal);
+    }
+    public async Task<ICollection<string>> GetUserRolesAsync(TUser user)
+    {
+        return await _userManager.GetRolesAsync(user);
     }
     public async Task<bool> CheckPasswordAsync(TUser user, string password)
     {

@@ -100,9 +100,12 @@ public class CacheAspect : MethodInterception
                 }
             }
         }
-        // Eğer önbellekte yoksa, orijinal metodu çağır ve sonucu invocation.ReturnValue olarak ata
-        await invocation.ProceedAsync();
-        await _cacheManager.AddAsync(key, invocation.ReturnValue, _duration);
+        else
+        {
+            // Eğer önbellekte yoksa, orijinal metodu çağır ve sonucu invocation.ReturnValue olarak ata
+            await invocation.ProceedAsync();
+            await _cacheManager.AddAsync(key, invocation.ReturnValue, _duration);
+            await InterceptAsync(invocation, key); // recursion kendini tekrar et Cache e veri eklendikten sonra Cachedeki veriyi dön
+        }
     }
-
 }

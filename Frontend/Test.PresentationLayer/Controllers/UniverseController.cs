@@ -1,24 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NLayer.Business.Abstracts;
-using NLayer.Core.Dto.ReturnTypes;
-using NLayer.Core.Entities.Authentication;
-using NLayer.Dto.Managers.Abstract;
 using NLayer.Mapper.Requests.Universe;
+using NLayer.Mapper.Responses.Concrete.Universe;
 using System.Text.Json;
 
 namespace Test.PresentationLayer.Controllers;
 
-public class UniverseController : Controller
+public class UniverseController : BaseController
 {
-    private readonly IUniverseDto _universeDto;
-    private readonly IUniverseService _universeService;
-    private readonly IAppUserDto _appUserDto;
-    public UniverseController(IUniverseDto universeDto, IUniverseService universeService, IAppUserDto appUserDto)
+    private readonly IHttpClientFactory _httpClientFactory;
+    public UniverseController(IHttpClientFactory httpClientFactory)
     {
-        _universeDto = universeDto;
-        _universeService = universeService;
-        _appUserDto = appUserDto;
+        _httpClientFactory = httpClientFactory;
     }
+
 
     [HttpGet]
     public IActionResult Index()
@@ -48,17 +42,14 @@ public class UniverseController : Controller
         if (!ModelState.IsValid)
             return View(createUniverseRequest);
 
-        var result = await _universeDto.CreateUniverseAsync(createUniverseRequest);
-
-        if (result.Success)
+        var client = _httpClientFactory.CreateClient("APIClient");
+        var response = await client.PostAsJsonAsync("/api/Universes/CreateUniverseAsync", createUniverseRequest);
+        if (response.IsSuccessStatusCode)
         {
             ViewBag.SuccessMessage = "Evren başarıyla oluşturuldu.";
             return RedirectToAction("Index");
         }
-        else
-        {
-            ModelState.AddModelError(string.Empty, "Evren oluşturulurken bir hata oluştu.");
-        }
+        await AddErrorsToModelStateAsync(response);
         return View(createUniverseRequest);
     }
 
@@ -66,29 +57,35 @@ public class UniverseController : Controller
     [HttpGet]
     public async Task<IActionResult> MyUniverses()
     {
+        int userId = GetCurrentUserId();
 
-        // Giriş yapan kullanıcının ID'sini alıyoruz
-        var user = await _appUserDto.GetUserByNameAsync(User.Identity.Name) as SuccessResponse<AppUser>;
-        
-        if (user == null)
+        var client = _httpClientFactory.CreateClient("APIClient");
+        var response = await client.GetAsync($"/api/Universes/GetUserUniverses/{userId}");
+
+        if (response.IsSuccessStatusCode)
         {
-            return Unauthorized(); // Giriş yapılmamışsa yetkisiz durumu
+            var universeList = await response.Content.ReadFromJsonAsync<List<GetUniverseResponse>>();
+
+            return View(universeList);
         }
-
-        var universeList = await _universeDto.GetUserUniversesAsync(user.Entity.Id);
-
-        return View(universeList);
+        await AddErrorsToModelStateAsync(response);
+        return View(new List<GetUniverseResponse>());
     }
 
-    // Seçilen evrenin detay sayfası
     [HttpGet]
-    public async Task<IActionResult> Detail(int id)
+    public async Task<IActionResult> Detail()
     {
-        var universe = await _universeDto.GetUniverseDetailAsync(id);
-        if (universe == null)
+        int id = GetCurrentUserId();
+        var client = _httpClientFactory.CreateClient("APIClient");
+        var response = await client.GetAsync($"/api/Universes/GetUniverseDetails/{id}");
+
+        if (!response.IsSuccessStatusCode)
         {
             return NotFound();
         }
+
+        var universe = await response.Content.ReadFromJsonAsync<GetUniverseResponse>();
         return Json(universe);
+
     }
 }
