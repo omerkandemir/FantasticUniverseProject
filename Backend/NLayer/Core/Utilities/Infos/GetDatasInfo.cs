@@ -15,4 +15,30 @@ public static class GetDatasInfo
 
     public static string FailedGetData = "Veri getirilemedi";
     public static string FailedListData = "Listeleme başarısız";
+
+    public static string SuccessfulOperation(CrudOperation operation)
+    {
+        return operation switch
+        {
+            CrudOperation.Add => Added,
+            CrudOperation.Update => Updated,
+            CrudOperation.Delete => Deleted,
+            CrudOperation.Get => SuccessGetData,
+            CrudOperation.List => SuccessListData,
+            _ => "İşlem başarılı" 
+        };
+    }
+
+    public static string FailedOperation(CrudOperation operation)
+    {
+        return operation switch
+        {
+            CrudOperation.Add => AddedFailed,
+            CrudOperation.Update => UpdatedFailed,
+            CrudOperation.Delete => DeletedFailed,
+            CrudOperation.Get => FailedGetData,
+            CrudOperation.List => FailedListData,
+            _ => "İşlem başarısız" 
+        };
+    }
 }

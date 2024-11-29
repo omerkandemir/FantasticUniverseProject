@@ -1,12 +1,8 @@
 ﻿using Autofac;
-using FluentValidation;
 using NLayer.Business.Abstracts;
-using NLayer.Business.Concretes.Authentication;
-using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.AbilityCharacterValidation.Create;
 using NLayer.Business.Concretes.Managers;
 using NLayer.Core.Entities.Authentication;
 using NLayer.Core.Utilities.IOC;
-using NLayer.Mapper.Requests.AbilityCharacter;
 
 namespace NLayer.Business.Concretes.DependencyResolvers.Autofac.Modules;
 
@@ -29,11 +25,6 @@ public class BusinessModule : IModule
         builder.RegisterType<UniverseManager>().As<IUniverseService>().SingleInstance();
         builder.RegisterType<UniverseImageManager>().As<IUniverseImageService>().SingleInstance();
         builder.RegisterType<UserImageManager>().As<IUserImageService>().SingleInstance();
-        builder.RegisterType<AppUserManager>().As<IAppUserService>().SingleInstance();
-
-        builder.RegisterType<CreateAbilityCharacterValidator>().As<IValidator<CreateAbilityCharacterRequest>>();
-
-        builder.RegisterType<SignInManagerAdapter>().As<ISignInService<AppUser>>();
-        builder.RegisterType<UserManagerAdapter>().As<IUserService<AppUser>>();
+        builder.RegisterType<AppUserManager>().As<IAppUserService<AppUser>>().SingleInstance();
     }
 }

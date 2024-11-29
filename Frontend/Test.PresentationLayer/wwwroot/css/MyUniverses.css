@@ -1,0 +1,54 @@
+.universe-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.universe-card {
+    width: 350px; 
+    height: 300px; 
+    padding: 20px;
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    position: relative;
+    background-size: cover;
+    color: inherit;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+    /* Tema seçilmediðinde arka plan yok */
+    .universe-card:not([data-background="stars"]):not([data-background="galaxy"]):not([data-background="night"]):not([data-background="mist"]) {
+        background-color: transparent;
+    }
+    .universe-card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    }
+
+    .universe-card h3 {
+        font-size: 22px;
+        margin: 0;
+        font-weight: bold;
+        text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.7);
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .universe-card .creation-date {
+        font-size: 14px;
+        font-weight: normal;
+        opacity: 0.8;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+    }

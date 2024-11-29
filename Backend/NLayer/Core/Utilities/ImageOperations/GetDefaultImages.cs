@@ -14,9 +14,10 @@ public class GetDefaultImages : IGetDefaultImages
     }
     private string GetFolderPath()
     {
-        var currentDirectory = Directory.GetCurrentDirectory();
-        var projectDirectory = Directory.GetParent(currentDirectory).FullName;
-        var imagesDirectory = Path.Combine(projectDirectory, "Backend", "NLayer", "Core", "FirstDatas", "Images").Replace("\\", "/");
-        return imagesDirectory;
+        // Projenin ana dizinini al
+        var projectDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName; 
+        // Gerekli alt dizinleri ekle
+        var imagesDirectory = Path.Combine(projectDirectory, "Backend", "NLayer", "Core", "FirstDatas", "Images");
+        return imagesDirectory; // Tam yolu döndür
     }
 }

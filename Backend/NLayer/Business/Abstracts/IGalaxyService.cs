@@ -3,6 +3,6 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Abstracts;
 
-public interface IGalaxyService : IEntityServiceRepository<Galaxy>
+public interface IGalaxyService : IEntityServiceRepositoryAsync<Galaxy>
 {
 }

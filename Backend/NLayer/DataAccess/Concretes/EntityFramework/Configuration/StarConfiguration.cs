@@ -5,17 +5,17 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.DataAccess.Concretes.EntityFramework.Configuration;
 
-public class StarConfiguration : BaseEntityConfiguration<Star>
-{
-    public override void Configure(EntityTypeBuilder<Star> builder)
+    public class StarConfiguration : BaseEntityConfiguration<Star>
     {
-        base.Configure(builder);
-        builder.ToTable("Stars");
-        builder.Property(x => x.GalaxyId).HasColumnName("GalaxyId");
-        builder.Property(x => x.Name).HasColumnName("Name");
-        builder.
-            HasMany(x => x.Planets).
-            WithOne(x => x.Star).
-            HasForeignKey(x => x.StarId);
+        public override void Configure(EntityTypeBuilder<Star> builder)
+        {
+            base.Configure(builder);
+            builder.ToTable("Stars");
+            builder.Property(x => x.GalaxyId).HasColumnName("GalaxyId");
+            builder.Property(x => x.Name).HasColumnName("Name");
+            builder.
+                HasMany(x => x.Planets).
+                WithOne(x => x.Star).
+                HasForeignKey(x => x.StarId);
+        }
     }
-}

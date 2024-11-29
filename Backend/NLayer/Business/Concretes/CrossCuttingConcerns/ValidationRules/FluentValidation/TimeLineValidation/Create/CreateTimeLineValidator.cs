@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.AdventureValidation;
-using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.UniverseValidation;
 using NLayer.Core.CrossCuttingConcern.Validation.FluentValidation;
 using NLayer.Mapper.Requests.TimeLine;
 

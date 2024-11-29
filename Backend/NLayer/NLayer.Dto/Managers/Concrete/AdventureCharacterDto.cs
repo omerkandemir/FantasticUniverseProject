@@ -5,7 +5,8 @@ using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Entities.Concretes;
 using NLayer.Mapper.Requests.AdventureCharacter;
-using NLayer.Mapper.Responses.AdventureCharacter;
+using NLayer.Mapper.Responses.Abstract;
+using NLayer.Mapper.Responses.Concrete.AdventureCharacter;
 
 namespace NLayer.Dto.Managers.Concrete;
 
@@ -18,42 +19,42 @@ public class AdventureCharacterDto : IAdventureCharacterDto
         _adventureCharacterService = adventureCharacterService;
         _mapper = mapper;
     }
-    public IResponse Add(CreateAdventureCharacterRequest request)
+    public async Task<IResponse> AddAsync(CreateAdventureCharacterRequest request)
     {
         AdventureCharacter adventureCharacter = _mapper.Map<AdventureCharacter>(request);
-        var result = _adventureCharacterService.Add(adventureCharacter);
+        var result =  await _adventureCharacterService.AddAsync(adventureCharacter);
         var response = _mapper.Map<CreatedAdventureCharacterResponse>(adventureCharacter);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<AdventureCharacter>(response, adventureCharacter);
+            return ResponseFactory.CreateSuccessResponse<AdventureCharacter>(adventureCharacter, response);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IResponse Update(UpdateAdventureCharacterRequest request)
+    public async Task<IResponse> UpdateAsync(UpdateAdventureCharacterRequest request)
     {
         AdventureCharacter adventureCharacter = _mapper.Map<AdventureCharacter>(request);
-        var result = _adventureCharacterService.Update(adventureCharacter);
+        var result = await _adventureCharacterService.UpdateAsync(adventureCharacter);
         var response = _mapper.Map<UpdatedAdventureCharacterResponse>(adventureCharacter);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<AdventureCharacter>(response, adventureCharacter);
+            return ResponseFactory.CreateSuccessResponse<AdventureCharacter>(adventureCharacter, response);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IResponse Delete(DeleteAdventureCharacterRequest request)
+    public async Task<IResponse> DeleteAsync(DeleteAdventureCharacterRequest request)
     {
         AdventureCharacter adventureCharacter = _mapper.Map<AdventureCharacter>(request);
-        var result = _adventureCharacterService.Delete(adventureCharacter);
+        var result = await _adventureCharacterService.DeleteAsync(adventureCharacter);
         var response = _mapper.Map<DeletedAdventureCharacterResponse>(adventureCharacter);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<AdventureCharacter>(response, adventureCharacter);
+            return ResponseFactory.CreateSuccessResponse<AdventureCharacter>(adventureCharacter, response);
         }
         else
         {
@@ -61,17 +62,17 @@ public class AdventureCharacterDto : IAdventureCharacterDto
         }
     }
 
-    public IGetResponse Get(object id)
+    public async Task<IGetResponse> GetAsync(object id)
     {
-        var value = _adventureCharacterService.Get(id);
-        var response = _mapper.Map<GetAllAdventureCharacterResponse>(value.Data);
+        var value = await _adventureCharacterService.GetAsync(id);
+        var response = _mapper.Map<GetAdventureCharacterResponse>(value.Data);
         return response;
     }
 
-    public List<GetAllAdventureCharacterResponse> GetAll()
+    public async Task<IGetAllResponse<IGetAdventureCharacterResponse>> GetAllAsync()
     {
-        var value = _adventureCharacterService.GetAll();
-        var response = _mapper.Map<List<GetAllAdventureCharacterResponse>>(value.Data);
+        var value = await _adventureCharacterService.GetAllAsync();
+        var response = _mapper.Map<GetAllAdventureCharacterResponse>(value.Data);
         return response;
     }
 }

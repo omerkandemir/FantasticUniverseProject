@@ -12,4 +12,5 @@ public class Adventure : BaseEntity<int>
     public DateTime? EndTime { get; set; }
     public ICollection<TimeLine> TimeLines { get; set; }
     public ICollection<AdventureCharacter> AdventureCharacters { get; set; }
+    public ICollection<AdventureCollectionItem> AdventureCollectionItems { get; set; } // Koleksiyon bağlantısı
 }

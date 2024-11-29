@@ -9,10 +9,10 @@ public static class CustomAdventureValidator
     public static IRuleBuilderOptions<T, TProperty> IsAdventureIdExists<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, bool allowNull)
     {
         var adventureService = InstanceFactory.GetInstance<IAdventureService>();
-        var adventures = adventureService.GetAll().Data;
 
-        return ruleBuilder.Must((rootObject, Id, context) =>
+        return ruleBuilder.MustAsync(async(rootObject, Id, context) =>
         {
+            var adventures = (await adventureService.GetAllAsync()).Data;
             if (allowNull && EqualityComparer<TProperty>.Default.Equals(Id, default))
             {
                 return true; // Null değer kabul edilir.

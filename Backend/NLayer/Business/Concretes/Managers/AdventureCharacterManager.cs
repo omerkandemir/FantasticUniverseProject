@@ -9,24 +9,24 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes.Managers;
 
-public class AdventureCharacterManager : BaseManager<AdventureCharacter, IAdventureCharacterDal>, IAdventureCharacterService
+public class AdventureCharacterManager : BaseManagerAsync<AdventureCharacter, IAdventureCharacterDal>, IAdventureCharacterService
 {
     public AdventureCharacterManager(IAdventureCharacterDal tdal) : base(tdal)
     {
     }
     [ValidationAspect(typeof(CreateAdventureCharacterValidator), Priority = 1)]
-    public override IReturnType Add(AdventureCharacter Value)
+    public override Task<IReturnType> AddAsync(AdventureCharacter value)
     {
-        return base.Add(Value);
+        return base.AddAsync(value);
     }
     [ValidationAspect(typeof(UpdateAdventureCharacterValidator), Priority = 1)]
-    public override IReturnType Update(AdventureCharacter Value)
+    public override Task<IReturnType> UpdateAsync(AdventureCharacter value)
     {
-        return base.Update(Value);
+        return base.UpdateAsync(value);
     }
     [ValidationAspect(typeof(DeleteAdventureCharacterValidator), Priority = 1)]
-    public override IReturnType Delete(AdventureCharacter Value)
+    public override Task<IReturnType> DeleteAsync(AdventureCharacter value)
     {
-        return base.Delete(Value);
+        return base.DeleteAsync(value);
     }
 }

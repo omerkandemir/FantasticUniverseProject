@@ -5,7 +5,8 @@ using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Entities.Concretes;
 using NLayer.Mapper.Requests.Species;
-using NLayer.Mapper.Responses.Species;
+using NLayer.Mapper.Responses.Abstract;
+using NLayer.Mapper.Responses.Concrete.Species;
 
 namespace NLayer.Dto.Managers.Concrete;
 
@@ -18,42 +19,42 @@ public class SpeciesDto : ISpeciesDto
         _speciesService = speciesService;
         _mapper = mapper;
     }
-    public IResponse Add(CreateSpeciesRequest request)
+    public async Task<IResponse> AddAsync(CreateSpeciesRequest request)
     {
         Species species = _mapper.Map<Species>(request);
-        var result = _speciesService.Add(species);
+        var result = await _speciesService.AddAsync(species);
         var response = _mapper.Map<CreatedSpeciesResponse>(species);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Species>(response, species);
+            return ResponseFactory.CreateSuccessResponse<Species>(species, response);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IResponse Update(UpdateSpeciesRequest request)
+    public async Task<IResponse> UpdateAsync(UpdateSpeciesRequest request)
     {
         Species species = _mapper.Map<Species>(request);
-        var result = _speciesService.Update(species);
+        var result = await _speciesService.UpdateAsync(species);
         var response = _mapper.Map<UpdatedSpeciesResponse>(species);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Species>(response, species);
+            return ResponseFactory.CreateSuccessResponse<Species>(species, response);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IResponse Delete(DeleteSpeciesRequest request)
+    public async Task<IResponse> DeleteAsync(DeleteSpeciesRequest request)
     {
         Species species = _mapper.Map<Species>(request);
-        var result = _speciesService.Delete(species);
+        var result = await _speciesService.DeleteAsync(species);
         var response = _mapper.Map<DeletedSpeciesResponse>(species);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Species>(response, species);
+            return ResponseFactory.CreateSuccessResponse<Species>(species, response);
         }
         else
         {
@@ -61,17 +62,17 @@ public class SpeciesDto : ISpeciesDto
         }
     }
 
-    public IGetResponse Get(object id)
+    public async Task<IGetResponse> GetAsync(object id)
     {
-        var value = _speciesService.Get(id);
-        var response = _mapper.Map<GetAllSpeciesResponse>(value.Data);
+        var value = await _speciesService.GetAsync(id);
+        var response = _mapper.Map<GetSpeciesResponse>(value.Data);
         return response;
     }
 
-    public List<GetAllSpeciesResponse> GetAll()
+    public async Task<IGetAllResponse<IGetSpeciesResponse>> GetAllAsync()
     {
-        var value = _speciesService.GetAll();
-        var response = _mapper.Map<List<GetAllSpeciesResponse>>(value.Data);
+        var value = await _speciesService.GetAllAsync();
+        var response = _mapper.Map<GetAllSpeciesResponse>(value.Data);
         return response;
     }
 }

@@ -6,18 +6,22 @@ using NLayer.Core.Entities.Authentication;
 using NLayer.Core.Utilities.MailOperations.MailKit;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Mapper.Requests.AppUser;
-using NLayer.Mapper.Responses.AppUser;
+using NLayer.Mapper.Responses.Abstract;
+using NLayer.Mapper.Responses.Concrete.AppUser;
 
 namespace NLayer.Dto.Managers.Concrete;
 
 public class AppUserDto : IAppUserDto
 {
-    private readonly IAppUserService _appUserService;
+    private readonly IAppUserService<AppUser> _appUserService;
     private readonly IMapper _mapper;
-    public AppUserDto(IAppUserService appUserService, IMapper mapper)
+    private readonly IUniverseImageService _universeImageService;
+
+    public AppUserDto(IAppUserService<AppUser> appUserService, IMapper mapper, IUniverseImageService universeImageService)
     {
         _appUserService = appUserService;
         _mapper = mapper;
+        _universeImageService = universeImageService;
     }
     public async Task<IResponse> AddAsync(CreateAppUserRequest request)
     {
@@ -28,7 +32,25 @@ public class AppUserDto : IAppUserDto
         if (result.Success)
         {
             SendMail.SendConfirmCodeMail(user.ConfirmCode, user);
-            return ResponseFactory.CreateSuccessResponse<AppUser>(response, user);
+            return ResponseFactory.CreateSuccessResponse<AppUser>(user, response);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
+    }
+    public async Task<IResponse> Register(CreateAppUserRequest request)
+    {
+        if (request.Password != request.ConfirmPassword)
+            return ResponseFactory.CreateErrorResponse("Parolalar eşleşmiyor.");
+
+
+        AppUser user = _mapper.Map<AppUser>(request);
+        var result = await _appUserService.Register(user, request.Password, true);
+        var response = _mapper.Map<CreatedAppUserResponse>(user);
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessResponse<AppUser>(user, response);
         }
         else
         {
@@ -43,7 +65,7 @@ public class AppUserDto : IAppUserDto
         var result = await _appUserService.UpdateAsyncWithIdentityUser(user);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<AppUser>(response, user);
+            return ResponseFactory.CreateSuccessResponse<AppUser>(user, response);
         }
         else
         {
@@ -54,10 +76,10 @@ public class AppUserDto : IAppUserDto
     {
         AppUser user = _mapper.Map<AppUser>(request);
         var result = await _appUserService.ConfirmEmailAsyncWithIdentityUser(request);
-        if(result.Success)
+        if (result.Success)
         {
             var response = _mapper.Map<UpdatedAppUserResponse>(user);
-            return ResponseFactory.CreateSuccessResponse<AppUser>(response, user);
+            return ResponseFactory.CreateSuccessResponse<AppUser>(user, response);
         }
         else
         {
@@ -71,7 +93,7 @@ public class AppUserDto : IAppUserDto
         var result = await _appUserService.UpdateEmailAsyncWithIdentityUser(user, request.Password);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<AppUser>(response, user);
+            return ResponseFactory.CreateSuccessResponse<AppUser>(user, response);
         }
         else
         {
@@ -86,7 +108,7 @@ public class AppUserDto : IAppUserDto
         var result = await _appUserService.ChangePasswordAsyncWithIdentityUser(request);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<AppUser>(response, user);
+            return ResponseFactory.CreateSuccessResponse<AppUser>(user, response);
         }
         else
         {
@@ -100,11 +122,30 @@ public class AppUserDto : IAppUserDto
         var result = await _appUserService.ChangeProfileImageAsyncWithIdentityUser(request);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<AppUser>(response, user);
+            return ResponseFactory.CreateSuccessResponse<AppUser>(user, response);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
+        }
+    }
+    public async Task<IResponse> GetUserRolesAsync(AppUser user)
+    {
+        try
+        {
+            var result = await _appUserService.GetUserRolesAsync(user);
+            if (result.Success)
+            {
+                return ResponseFactory.CreateSuccessResponse(result);
+            }
+            else
+            {
+                return ResponseFactory.CreateErrorResponse(result, result.Message);
+            }
+        }
+        catch (Exception ex)
+        {
+            return ResponseFactory.CreateErrorResponse(ex);
         }
     }
     public async Task<IResponse> GetUserByNameAsync(string name)
@@ -113,7 +154,7 @@ public class AppUserDto : IAppUserDto
         if (result.Success)
         {
             var response = _mapper.Map<GetAllAppUserResponse>(result.Data);
-            return ResponseFactory.CreateSuccessResponse<AppUser>(response, result.Data);
+            return ResponseFactory.CreateSuccessResponse<AppUser>(result.Data, response);
         }
         else
         {
@@ -126,7 +167,7 @@ public class AppUserDto : IAppUserDto
         if (result.Success)
         {
             var response = _mapper.Map<GetAllAppUserResponse>(result.Data);
-            return ResponseFactory.CreateSuccessResponse<AppUser>(response, result.Data);
+            return ResponseFactory.CreateSuccessResponse<AppUser>(result.Data, response);
         }
         else
         {
@@ -139,32 +180,35 @@ public class AppUserDto : IAppUserDto
         if (result.Success)
         {
             var response = _mapper.Map<GetAllAppUserResponse>(result.Data);
-            return ResponseFactory.CreateSuccessResponse<AppUser>(response, result.Data);
+            return ResponseFactory.CreateSuccessResponse<AppUser>(result.Data, response);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IResponse Delete(DeleteAppUserRequest request)
+    public async Task<LoginResponse> LoginAsync(LoginRequest loginRequest)
+    {
+        return await _appUserService.LoginProcessAsync(loginRequest);
+    }
+    public async Task<IResponse> SignOutAsync()
+    {
+        var result = await _appUserService.SignOutAsync();
+        return result.Success
+            ? ResponseFactory.CreateSuccessResponse(result.Message)
+            : ResponseFactory.CreateErrorResponse(result.Message);
+    }
+
+    public Task<IResponse> DeleteAsync(DeleteAppUserRequest request)
     {
         throw new NotImplementedException();
     }
 
-    public IGetResponse Get(object id)
+    public Task<IGetResponse> GetAsync(object id)
     {
         throw new NotImplementedException();
     }
-
-    public List<GetAllAppUserResponse> GetAll()
-    {
-        throw new NotImplementedException();
-    }
-    public IResponse Add(CreateAppUserRequest request)
-    {
-        throw new NotImplementedException();
-    }
-    public IResponse Update(UpdateAppUserRequest request)
+    public Task<IGetAllResponse<IGetAppUserResponse>> GetAllAsync()
     {
         throw new NotImplementedException();
     }

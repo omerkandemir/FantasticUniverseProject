@@ -14,35 +14,41 @@ public class UnionsController : ControllerBase
         _unionDto = unionDto;
     }
     [HttpPost("Ekle")]
-    public IActionResult Add(CreateUnionRequest createRequest)
+    public async Task<IActionResult> Add([FromBody] CreateUnionRequest createRequest)
     {
-        var response = _unionDto.Add(createRequest);
-        return Ok(response);
+        var response = await _unionDto.AddAsync(createRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
 
-    [HttpPost("Güncelle")]
-    public IActionResult Update(UpdateUnionRequest updateRequest)
+    [HttpPut("Güncelle")]
+    public async Task<IActionResult> Update([FromBody] UpdateUnionRequest updateRequest)
     {
-        var response = _unionDto.Update(updateRequest);
-        return Ok(response);
+        var response = await _unionDto.UpdateAsync(updateRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
-    [HttpDelete("Sil")]
-    public IActionResult Delete(DeleteUnionRequest deleteRequest)
+    [HttpDelete("Sil{id}")]
+    public async Task<IActionResult> Delete(DeleteUnionRequest deleteRequest)
     {
-        var response = _unionDto.Delete(deleteRequest);
-        return Ok(response);
+        var response = await _unionDto.DeleteAsync(deleteRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
 
     [HttpGet("Listele")]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll()
     {
-        var response = _unionDto.GetAll();
+        var response = await _unionDto.GetAllAsync();
         return Ok(response);
     }
-    [HttpGet("Getir")]
-    public IActionResult Get(int Id = 1)
+    [HttpGet("Getir{id}")]
+    public async Task<IActionResult> Get(int id)
     {
-        var response = _unionDto.Get(Id);
+        var response = await _unionDto.GetAsync(id);
         return Ok(response);
     }
 }

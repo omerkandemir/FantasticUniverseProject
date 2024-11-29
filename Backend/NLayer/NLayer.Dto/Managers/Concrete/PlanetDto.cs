@@ -5,7 +5,8 @@ using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Entities.Concretes;
 using NLayer.Mapper.Requests.Planet;
-using NLayer.Mapper.Responses.Planet;
+using NLayer.Mapper.Responses.Abstract;
+using NLayer.Mapper.Responses.Concrete.Planet;
 
 namespace NLayer.Dto.Managers.Concrete;
 
@@ -18,42 +19,42 @@ public class PlanetDto : IPlanetDto
         _planetService = planetService;
         _mapper = mapper;
     }
-    public IResponse Add(CreatePlanetRequest request)
+    public async Task<IResponse> AddAsync(CreatePlanetRequest request)
     {
         Planet planet = _mapper.Map<Planet>(request);
-        var result = _planetService.Add(planet);
+        var result = await _planetService.AddAsync(planet);
         var response = _mapper.Map<CreatedPlanetResponse>(planet);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Planet>(response, planet);
+            return ResponseFactory.CreateSuccessResponse<Planet>(planet, response);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IResponse Update(UpdatePlanetRequest request)
+    public async Task<IResponse> UpdateAsync(UpdatePlanetRequest request)
     {
         Planet planet = _mapper.Map<Planet>(request);
-        var result = _planetService.Update(planet);
+        var result = await _planetService.UpdateAsync(planet);
         var response = _mapper.Map<UpdatedPlanetResponse>(planet);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Planet>(response, planet);
+            return ResponseFactory.CreateSuccessResponse<Planet>(planet, response);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IResponse Delete(DeletePlanetRequest request)
+    public async Task<IResponse> DeleteAsync(DeletePlanetRequest request)
     {
         Planet planet = _mapper.Map<Planet>(request);
-        var result = _planetService.Delete(planet);
+        var result = await _planetService.DeleteAsync(planet);
         var response = _mapper.Map<DeletedPlanetResponse>(planet);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Planet>(response, planet);
+            return ResponseFactory.CreateSuccessResponse<Planet>(planet, response);
         }
         else
         {
@@ -61,17 +62,17 @@ public class PlanetDto : IPlanetDto
         }
     }
 
-    public IGetResponse Get(object id)
+    public async Task<IGetResponse> GetAsync(object id)
     {
-        var value = _planetService.Get(id);
-        var response = _mapper.Map<GetAllPlanetResponse>(value.Data);
+        var value = await _planetService.GetAsync(id);
+        var response = _mapper.Map<GetPlanetResponse>(value.Data);
         return response;
     }
 
-    public List<GetAllPlanetResponse> GetAll()
+    public async Task<IGetAllResponse<IGetPlanetResponse>> GetAllAsync()
     {
-        var value = _planetService.GetAll();
-        var response = _mapper.Map<List<GetAllPlanetResponse>>(value.Data);
+        var value = await _planetService.GetAllAsync();
+        var response = _mapper.Map<GetAllPlanetResponse>(value.Data);
         return response;
     }
 }

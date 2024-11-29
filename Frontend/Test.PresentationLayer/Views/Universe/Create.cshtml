@@ -1,0 +1,111 @@
+﻿@model CreateUniverseRequest
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fantastik Evren Oluştur</title>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300;400;700&family=Uncial+Antiqua&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="~/css/createuniverse.css?v=1.0.7" rel="stylesheet" />
+    <link href="~/css/theme.css" rel="stylesheet" />
+</head>
+<body class="background-default">
+    <div class="stars-container" id="starsContainer"></div>
+
+    <div class="mystic-content">
+        <h2 class="mystic-text">FANTASTİK EVRENİNİ YARAT</h2>
+
+        <form asp-action="Create" method="post" id="universeForm">
+            <label for="universeName">Evren Adı:</label>
+            <input type="text" id="universeName" name="Name" asp-for="Name" required />
+
+            <!-- Galaksi Ekleme Butonu -->
+            <button type="button" onclick="toggleGalaxyModal()" class="galaxy-button">Galaksi Ekle</button>
+
+            <!-- Tema Ayarları Butonu -->
+            <button type="button" onclick="toggleThemeModal()" class="theme-button">
+                <i class="fas fa-cog"></i> Tema Ayarları
+            </button>
+
+            <!-- Oluştur Butonu -->
+            <button type="submit" class="create-button">Oluştur</button>
+
+            <!-- Tema ayarları gizli alanları -->
+            <input type="hidden" id="themeBackground" name="ThemeSetting.Background" asp-for="ThemeSetting.Background" />
+            <input type="hidden" id="themeFontFamily" name="ThemeSetting.FontFamily" asp-for="ThemeSetting.FontFamily" />
+            <input type="hidden" id="themeFontColorR" name="ThemeSetting.FontColorR" asp-for="ThemeSetting.FontColorR" />
+            <input type="hidden" id="themeFontColorG" name="ThemeSetting.FontColorG" asp-for="ThemeSetting.FontColorG" />
+            <input type="hidden" id="themeFontColorB" name="ThemeSetting.FontColorB" asp-for="ThemeSetting.FontColorB" />
+
+            <!-- Galaksiler listesini JSON formatında saklama -->
+            <input type="hidden" id="galaxies" name="GalaxiesJson"/>
+        </form>
+
+        <!-- Galaksi Kartları Gösterim Alanı -->
+        <div id="galaxyListContainer" class="galaxy-list"></div>
+    </div>
+
+    <!-- Tema Ayarları Modalı -->
+    <div id="themeModal" class="theme-modal">
+        <h3>Tema Ayarları</h3>
+        <label>Arka Plan Seçimi:</label>
+        <select id="background-select" onchange="changeBackground()">
+            <option value="default">Varsayılan</option>
+            <option value="stars">Yıldızlar</option>
+            <option value="galaxy">Galaksi</option>
+            <option value="night">Gece Gökyüzü</option>
+            <option value="mist">Sisli</option>
+        </select>
+
+        <label>Yazı Tipi Seçimi:</label>
+        <select id="font-select" onchange="changeFontStyle()">
+            <option value="Lato">Varsayılan</option>
+            <option value="'Uncial Antiqua', cursive">Fantastik Eski</option>
+            <option value="'Cinzel', serif">Gotik</option>
+            <option value="'MedievalSharp', cursive">Orta Çağ</option>
+        </select>
+
+        <label>Yazı Rengi:</label>
+        <input type="color" id="font-color-picker" onchange="changeFontColor()" />
+
+        <button onclick="toggleThemeModal()" class="create-button">Kapat</button>
+    </div>
+
+    <!-- Galaksi Ekle Modalı -->
+    <div id="galaxyModal" class="galaxy-modal">
+        <h3>Galaksi, Yıldız ve Gezegen Ekle</h3>
+        <label for="galaxyName">Galaksi Adı:</label>
+        <input type="text" id="galaxyName" required />
+
+        <button type="button" onclick="addStar()" class="create-button">Yıldız Ekle</button>
+        <div id="starContainer"></div>
+
+        <button onclick="saveGalaxy()" id="saveGalaxyButton" class="create-button">Galaksiyi Kaydet</button>
+        <button onclick="toggleGalaxyModal()" class="create-button">Kapat</button>
+    </div>
+
+    <!-- Gezegen Ekle Modalı -->
+    <div id="planetModal" class="galaxy-modal">
+        <h3>Gezegen Özellikleri</h3>
+        <label for="planetName">Gezegen Adı:</label>
+        <input type="text" id="planetName" name="planetName" required />
+
+        <label for="PlanetAge">Gezegen Yaşı (milyon yıl):</label>
+        <input type="number" id="planetAge" name="planetAge" placeholder="Opsiyonel" />
+
+        <label for="PlanetTemperature">Gezegen Sıcaklığı (°C):</label>
+        <input type="number" id="planetTemperature" name="planetTemperature" placeholder="Opsiyonel" />
+
+        <label for="PlanetMass">Gezegen Kütlesi (10^24 kg):</label>
+        <input type="number" id="planetMass" name="planetMass" placeholder="Opsiyonel" />
+
+        <button onclick="addPlanetToStar()" class="create-button">Ekle</button>
+        <button onclick="togglePlanetModal()" class="create-button">Kapat</button>
+    </div>
+
+    <script src="~/js/theme.js"></script>
+    <script src="~/js/createUniverse.js"></script>
+</body>
+</html>

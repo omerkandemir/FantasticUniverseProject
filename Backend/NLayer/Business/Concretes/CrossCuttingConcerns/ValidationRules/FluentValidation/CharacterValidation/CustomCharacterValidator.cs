@@ -17,10 +17,10 @@ public static class CustomCharacterValidator
     public static IRuleBuilderOptions<T, TProperty> IsCharacterIdExists<T, TProperty>(this IRuleBuilder<T, TProperty> ruleBuilder, bool allowNull)
     {
         var characterService = InstanceFactory.GetInstance<ICharacterService>();
-        var characters = characterService.GetAll().Data;
-
-        return ruleBuilder.Must((rootObject, Id, context) =>
+        
+        return ruleBuilder.MustAsync(async(rootObject, Id, context) =>
         {
+            var characters = (await characterService.GetAllAsync()).Data;
             if (allowNull && EqualityComparer<TProperty>.Default.Equals(Id, default))
             {
                 return true; // Null değer kabul edilir.

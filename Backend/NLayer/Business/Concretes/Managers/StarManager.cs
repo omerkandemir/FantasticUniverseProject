@@ -9,24 +9,24 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes.Managers;
 
-public class StarManager : BaseManager<Star, IStarDal>, IStarService
+public class StarManager : BaseManagerAsync<Star, IStarDal>, IStarService
 {
     public StarManager(IStarDal tdal) : base(tdal)
     {
     }
     [ValidationAspect(typeof(CreateStarValidator), Priority = 1)]
-    public override IReturnType Add(Star Value)
+    public override Task<IReturnType> AddAsync(Star value)
     {
-        return base.Add(Value);
+        return base.AddAsync(value);
     }
     [ValidationAspect(typeof(UpdateStarValidator), Priority = 1)]
-    public override IReturnType Update(Star Value)
+    public override Task<IReturnType> UpdateAsync(Star value)
     {
-        return base.Update(Value);
+        return base.UpdateAsync(value);
     }
     [ValidationAspect(typeof(DeleteStarValidator), Priority = 1)]
-    public override IReturnType Delete(Star Value)
+    public override Task<IReturnType> DeleteAsync(Star value)
     {
-        return base.Delete(Value);
+        return base.DeleteAsync(value);
     }
 }

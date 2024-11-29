@@ -14,35 +14,41 @@ public class TimeLinesController : ControllerBase
         _timeLineDto = timeLineDto;
     }
     [HttpPost("Ekle")]
-    public IActionResult Add(CreateTimeLineRequest createRequest)
+    public async Task<IActionResult> Add([FromBody] CreateTimeLineRequest createRequest)
     {
-        var response = _timeLineDto.Add(createRequest);
-        return Ok(response);
+        var response = await _timeLineDto.AddAsync(createRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
 
-    [HttpPost("Güncelle")]
-    public IActionResult Update(UpdateTimeLineRequest updateRequest)
+    [HttpPut("Güncelle")]
+    public async Task<IActionResult> Update([FromBody] UpdateTimeLineRequest updateRequest)
     {
-        var response = _timeLineDto.Update(updateRequest);
-        return Ok(response);
+        var response = await _timeLineDto.UpdateAsync(updateRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
-    [HttpDelete("Sil")]
-    public IActionResult Delete(DeleteTimeLineRequest deleteRequest)
+    [HttpDelete("Sil{id}")]
+    public async Task<IActionResult> Delete(DeleteTimeLineRequest deleteRequest)
     {
-        var response = _timeLineDto.Delete(deleteRequest);
-        return Ok(response);
+        var response = await _timeLineDto.DeleteAsync(deleteRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
 
     [HttpGet("Listele")]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll()
     {
-        var response = _timeLineDto.GetAll();
+        var response = await _timeLineDto.GetAllAsync();
         return Ok(response);
     }
-    [HttpGet("Getir")]
-    public IActionResult Get(int Id = 1)
+    [HttpGet("Getir{id}")]
+    public async Task<IActionResult> Get(int id)
     {
-        var response = _timeLineDto.Get(Id);
+        var response = await _timeLineDto.GetAsync(id);
         return Ok(response);
     }
 }

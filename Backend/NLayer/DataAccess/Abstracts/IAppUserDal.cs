@@ -5,6 +5,4 @@ namespace NLayer.DataAccess.Abstracts;
 
 public interface IAppUserDal : IEntityRepository<AppUser>
 {
-    Task<AppUser> GetByIdAsync(int id);
-    Task<bool> UpdateAsync(AppUser user);
 }

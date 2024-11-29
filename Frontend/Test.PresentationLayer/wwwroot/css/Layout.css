@@ -1,5 +1,8 @@
 /* Genel stiller */
 body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
     font-family: 'Arial', sans-serif; /* Tüm sayfa için varsayýlan font ailesi */
     margin: 0; /* Sayfanýn kenar boþluðunu sýfýrlar */
     padding: 0; /* Sayfanýn iç boþluðunu sýfýrlar */
@@ -192,4 +195,5 @@ footer {
     position: fixed; /* Pozisyonu belirler */
     width: 100%; /* Geniþlik ayarlarý */
     bottom: 0; /* Alt kenara hizalar */
+    z-index: 1;
 }

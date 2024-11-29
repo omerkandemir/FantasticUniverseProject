@@ -27,6 +27,15 @@ public class ValidationAspect : MethodInterception
 
         foreach (var argument in invocation.Arguments)
         {
+
+            // Argument'in türü ile hedef türün eşleşip eşleşmediğinin kontrolü
+            if (argument != null && entityType.IsAssignableFrom(argument.GetType()))
+            {
+                combinedArguments = argument; // Tür aynıysa 
+                break;
+            }
+
+
             var argumentType = argument.GetType();
 
             foreach (var property in argumentType.GetProperties())

@@ -1,16 +1,18 @@
 ﻿using NLayer.Core.Dto.Abstracts;
 using NLayer.Mapper.Requests.UserImage;
-using NLayer.Mapper.Responses.UniverseImage;
-using NLayer.Mapper.Responses.UserImage;
+using NLayer.Mapper.Responses.Abstract;
+using NLayer.Mapper.Responses.Concrete.UserImage;
 
 namespace NLayer.Dto.Managers.Abstract;
 
-public interface IUserImageDto : IEntityRepositoryDto<
+public interface IUserImageDto : IEntityRepositoryAsyncDto<
+    IGetUserImageResponse,
     CreateUserImageRequest,
     UpdateUserImageRequest,
     DeleteUserImageRequest,
+    GetUserImageResponse,
     GetAllUserImageResponse>
 {
-    void AddUserFirstImages();
-    List<GetAllUniverseImageResponse> GetUsersImage();
+    Task AddUserFirstImages();
+    Task<IGetAllResponse<IGetUniverseImageResponse>> GetUsersImage();
 }

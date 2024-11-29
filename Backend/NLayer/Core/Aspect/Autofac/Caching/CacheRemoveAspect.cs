@@ -2,6 +2,7 @@
 using NLayer.Core.CrossCuttingConcern.Caching;
 using NLayer.Core.Utilities.Interceptors;
 using NLayer.Core.Utilities.IOC;
+using System.Reflection;
 
 namespace NLayer.Core.Aspect.Autofac.Caching;
 
@@ -16,6 +17,25 @@ public class CacheRemoveAspect : MethodInterception
     }
     protected override void OnSuccess(IInvocation invocation)
     {
-        _cacheManager.RemoveByPattern(_pattern);
+        if (IsAsyncMethod(invocation.Method))
+        {
+            RemoveCacheAsync().ConfigureAwait(false);
+        }
+        else
+        {
+            _cacheManager.RemoveByPattern(_pattern);
+        }
+    }
+
+
+    private bool IsAsyncMethod(MethodInfo methodInfo)
+    {
+        return (methodInfo.ReturnType == typeof(Task) ||
+                (methodInfo.ReturnType.IsGenericType && methodInfo.ReturnType.GetGenericTypeDefinition() == typeof(Task<>)));
+    }
+
+    private async Task RemoveCacheAsync()
+    {
+        await _cacheManager.RemoveByPatternAsync(_pattern);
     }
 }

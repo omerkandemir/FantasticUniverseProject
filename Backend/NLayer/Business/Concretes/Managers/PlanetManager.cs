@@ -9,24 +9,24 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes.Managers;
 
-public class PlanetManager : BaseManager<Planet, IPlanetDal>, IPlanetService
+public class PlanetManager : BaseManagerAsync<Planet, IPlanetDal>, IPlanetService
 {
     public PlanetManager(IPlanetDal tdal) : base(tdal)
     {
     }
     [ValidationAspect(typeof(CreatePlanetValidator), Priority = 1)]
-    public override IReturnType Add(Planet Value)
+    public override Task<IReturnType> AddAsync(Planet value)
     {
-        return base.Add(Value);
+        return base.AddAsync(value);
     }
     [ValidationAspect(typeof(UpdatePlanetValidator), Priority = 1)]
-    public override IReturnType Update(Planet Value)
+    public override Task<IReturnType> UpdateAsync(Planet value)
     {
-        return base.Update(Value);
+        return base.UpdateAsync(value);
     }
     [ValidationAspect(typeof(DeletePlanetValidator), Priority = 1)]
-    public override IReturnType Delete(Planet Value)
+    public override Task<IReturnType> DeleteAsync(Planet value)
     {
-        return base.Delete(Value);
+        return base.DeleteAsync(value);
     }
 }

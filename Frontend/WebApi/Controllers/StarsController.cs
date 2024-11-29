@@ -14,35 +14,41 @@ public class StarsController : ControllerBase
         _starDto = starDto;
     }
     [HttpPost("Ekle")]
-    public IActionResult Add(CreateStarRequest createRequest)
+    public async Task<IActionResult> Add([FromBody] CreateStarRequest createRequest)
     {
-        var response = _starDto.Add(createRequest);
-        return Ok(response);
+        var response = await _starDto.AddAsync(createRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
 
-    [HttpPost("Güncelle")]
-    public IActionResult Update(UpdateStarRequest updateRequest)
+    [HttpPut("Güncelle")]
+    public async Task<IActionResult> Update([FromBody] UpdateStarRequest updateRequest)
     {
-        var response = _starDto.Update(updateRequest);
-        return Ok(response);
+        var response = await _starDto.UpdateAsync(updateRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
-    [HttpDelete("Sil")]
-    public IActionResult Delete(DeleteStarRequest deleteRequest)
+    [HttpDelete("Sil{id}")]
+    public async Task<IActionResult> Delete(DeleteStarRequest deleteRequest)
     {
-        var response = _starDto.Delete(deleteRequest);
-        return Ok(response);
+        var response = await _starDto.DeleteAsync(deleteRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
 
     [HttpGet("Listele")]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll()
     {
-        var response = _starDto.GetAll();
+        var response = await _starDto.GetAllAsync();
         return Ok(response);
     }
-    [HttpGet("Getir")]
-    public IActionResult Get(int Id = 1)
+    [HttpGet("Getir{id}")]
+    public async Task<IActionResult> Get(int id)
     {
-        var response = _starDto.Get(Id);
+        var response = await _starDto.GetAsync(id);
         return Ok(response);
     }
 }

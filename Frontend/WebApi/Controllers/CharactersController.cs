@@ -15,35 +15,41 @@ public class CharactersController : ControllerBase
     }
 
     [HttpPost("Ekle")]
-    public IActionResult Add(CreateCharacterRequest createRequest)
+    public async Task<IActionResult> Add([FromBody] CreateCharacterRequest createRequest)
     {
-        var response = _characterDto.Add(createRequest);
-        return Ok(response);
+        var response = await _characterDto.AddAsync(createRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
 
-    [HttpPost("Güncelle")]
-    public IActionResult Update(UpdateCharacterRequest updateRequest)
+    [HttpPut("Güncelle")]
+    public async Task<IActionResult> Update([FromBody] UpdateCharacterRequest updateRequest)
     {
-        var response = _characterDto.Update(updateRequest);
-        return Ok(response);
+        var response = await _characterDto.UpdateAsync(updateRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
-    [HttpDelete("Sil")]
-    public IActionResult Delete(DeleteCharacterRequest deleteRequest)
+    [HttpDelete("Sil{id}")]
+    public async Task<IActionResult> Delete(DeleteCharacterRequest deleteRequest)
     {
-        var response = _characterDto.Delete(deleteRequest);
-        return Ok(response);
+        var response = await _characterDto.DeleteAsync(deleteRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
 
     [HttpGet("Listele")]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAllAsync()
     {
-        var response = _characterDto.GetAll();
+        var response = await _characterDto.GetAllAsync();
         return Ok(response);
     }
-    [HttpGet("Getir")]
-    public IActionResult Get(int Id = 1)
+    [HttpGet("Getir{id}")]
+    public async Task<IActionResult> Get(int id)
     {
-        var response = _characterDto.Get(Id);
+        var response = await _characterDto.GetAsync(id);
         return Ok(response);
     }
 }

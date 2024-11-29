@@ -12,6 +12,7 @@ public class UniverseConfiguration : BaseEntityConfiguration<Universe>
         base.Configure(builder);
         builder.ToTable("Universes");
         builder.Property(x => x.Name).HasColumnName("Name");
+        builder.Property(x => x.ThemeSettingId).HasColumnName("ThemeSettingId");
         builder.
             HasMany(x => x.Unions).
             WithOne(x => x.Universe).

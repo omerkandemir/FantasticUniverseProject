@@ -3,6 +3,6 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Abstracts;
 
-public interface IAbilityService : IEntityServiceRepository<Ability>
+public interface IAbilityService : IEntityServiceRepositoryAsync<Ability>
 {
 }

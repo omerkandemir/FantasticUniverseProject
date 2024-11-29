@@ -9,25 +9,25 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes.Managers;
 
-public class TimeLineManager : BaseManager<TimeLine, ITimeLineDal>, ITimeLineService
+public class TimeLineManager : BaseManagerAsync<TimeLine, ITimeLineDal>, ITimeLineService
 {
     public TimeLineManager(ITimeLineDal tdal) : base(tdal)
     {
     }
     [ValidationAspect(typeof(CreateTimeLineValidator), Priority = 1)]
-    public override IReturnType Add(TimeLine Value)
+    public override Task<IReturnType> AddAsync(TimeLine value)
     {
-        return base.Add(Value);
+        return base.AddAsync(value);
     }
     [ValidationAspect(typeof(UpdateTimeLineValidator), Priority = 1)]
-    public override IReturnType Update(TimeLine Value)
+    public override Task<IReturnType> UpdateAsync(TimeLine value)
     {
-        return base.Update(Value);
+        return base.UpdateAsync(value);
     }
     [ValidationAspect(typeof(DeleteTimeLineValidator), Priority = 1)]
-    public override IReturnType Delete(TimeLine Value)
+    public override Task<IReturnType> DeleteAsync(TimeLine value)
     {
-        return base.Delete(Value);
+        return base.DeleteAsync(value);
     }
 }
 

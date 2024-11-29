@@ -5,7 +5,8 @@ using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Entities.Concretes;
 using NLayer.Mapper.Requests.Adventure;
-using NLayer.Mapper.Responses.Adventure;
+using NLayer.Mapper.Responses.Abstract;
+using NLayer.Mapper.Responses.Concrete.Adventure;
 
 namespace NLayer.Dto.Managers.Concrete;
 
@@ -18,42 +19,42 @@ public class AdventureDto : IAdventureDto
         _adventureService = adventureService;
         _mapper = mapper;
     }
-    public IResponse Add(CreateAdventureRequest request)
+    public async Task<IResponse> AddAsync(CreateAdventureRequest request)
     {
         Adventure adventure = _mapper.Map<Adventure>(request);
-        var result = _adventureService.Add(adventure);
+        var result = await _adventureService.AddAsync(adventure);
         var response = _mapper.Map<CreatedAdventureResponse>(adventure);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Adventure>(response, adventure);
+            return ResponseFactory.CreateSuccessResponse<Adventure>(adventure, response);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IResponse Update(UpdateAdventureRequest request)
+    public async Task<IResponse> UpdateAsync(UpdateAdventureRequest request)
     {
         Adventure adventure = _mapper.Map<Adventure>(request);
-        var result = _adventureService.Update(adventure);
+        var result = await _adventureService.UpdateAsync(adventure);
         var response = _mapper.Map<UpdatedAdventureResponse>(adventure);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Adventure>(response, adventure);
+            return ResponseFactory.CreateSuccessResponse<Adventure>(adventure, response);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IResponse Delete(DeleteAdventureRequest request)
+    public async Task<IResponse> DeleteAsync(DeleteAdventureRequest request)
     {
         Adventure adventure = _mapper.Map<Adventure>(request);
-        var result = _adventureService.Delete(adventure);
+        var result = await _adventureService.DeleteAsync(adventure);
         var response = _mapper.Map<DeletedAdventureResponse>(adventure);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<Adventure>(response, adventure);
+            return ResponseFactory.CreateSuccessResponse<Adventure>(adventure, response);
         }
         else
         {
@@ -61,19 +62,17 @@ public class AdventureDto : IAdventureDto
         }
     }
 
-    public IGetResponse Get(object id)
+    public async Task<IGetResponse> GetAsync(object id)
     {
-        var value = _adventureService.Get(id);
+        var value = await _adventureService.GetAsync(id);
+        var response = _mapper.Map<GetAdventureResponse>(value.Data);
+        return response;
+    }
+
+    public async Task<IGetAllResponse<IGetAdventureResponse>> GetAllAsync()
+    {
+        var value = await _adventureService.GetAllAsync();
         var response = _mapper.Map<GetAllAdventureResponse>(value.Data);
         return response;
     }
-
-    public List<GetAllAdventureResponse> GetAll()
-    {
-        var value = _adventureService.GetAll();
-        var response = _mapper.Map<List<GetAllAdventureResponse>>(value.Data);
-        return response;
-    }
-
-    
 }

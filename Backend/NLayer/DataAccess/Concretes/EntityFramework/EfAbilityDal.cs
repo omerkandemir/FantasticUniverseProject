@@ -6,5 +6,4 @@ namespace NLayer.DataAccess.Concretes.EntityFramework;
 
 public class EfAbilityDal : EfEntityRepositoryBase<Ability, FantasticUniverseProjectContext> , IAbilityDal
 {
- 
 }

@@ -9,24 +9,24 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes.Managers;
 
-public class UnionCharacterManager : BaseManager<UnionCharacter, IUnionCharacterDal>, IUnionCharacterService
+public class UnionCharacterManager : BaseManagerAsync<UnionCharacter, IUnionCharacterDal>, IUnionCharacterService
 {
     public UnionCharacterManager(IUnionCharacterDal tdal) : base(tdal)
     {
     }
     [ValidationAspect(typeof(CreateUnionCharacterValidator), Priority = 1)]
-    public override IReturnType Add(UnionCharacter Value)
+    public override Task<IReturnType> AddAsync(UnionCharacter value)
     {
-        return base.Add(Value);
+        return base.AddAsync(value);
     }
     [ValidationAspect(typeof(UpdateUnionCharacterValidator), Priority = 1)]
-    public override IReturnType Update(UnionCharacter Value)
+    public override Task<IReturnType> UpdateAsync(UnionCharacter value)
     {
-        return base.Update(Value);
+        return base.UpdateAsync(value);
     }
     [ValidationAspect(typeof(DeleteUnionCharacterValidator), Priority = 1)]
-    public override IReturnType Delete(UnionCharacter Value)
+    public override Task<IReturnType> DeleteAsync(UnionCharacter value)
     {
-        return base.Delete(Value);
+        return base.DeleteAsync(value);
     }
 }

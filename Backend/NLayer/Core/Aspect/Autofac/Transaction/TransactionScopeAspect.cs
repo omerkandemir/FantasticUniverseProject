@@ -10,8 +10,48 @@ public class TransactionScopeAspect : MethodInterception
 
     public override void Intercept(IInvocation invocation)
     {
-        using (var transactionScope = new TransactionScope(TransactionScopeOption.Required,
-                        new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted })) //IsolationLevel veritabanı işlemlerinin diğer işlemlerden nasıl izole edileceğini belirler. ReadCommitted, bir işlem sırasında okunan verilerin, başka bir işlem tarafından henüz tamamlanmamış değişikliklerini engeller.
+        // Asenkron işlem mi değil mi kontrolü
+        if (invocation.Method.ReturnType == typeof(Task) ||
+            (invocation.Method.ReturnType.IsGenericType && invocation.Method.ReturnType.GetGenericTypeDefinition() == typeof(Task<>)))
+        {
+            // Asenkron işlemler için
+            InterceptAsync(invocation).GetAwaiter().GetResult();
+        }
+        else
+        {
+            // Senkron işlemler için 
+            InterceptSync(invocation);
+        }
+    }
+    private async Task InterceptAsync(IInvocation invocation)
+    {
+        using (var transactionScope = new TransactionScope(
+                    TransactionScopeOption.Required,
+                    new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted },
+                    TransactionScopeAsyncFlowOption.Enabled))
+        {
+            try
+            {
+                invocation.Proceed(); 
+                var task = (Task)invocation.ReturnValue; 
+                await task; 
+
+                transactionScope.Complete();
+            }
+            catch (Exception e)
+            {
+                transactionScope.Dispose();
+                OnException(invocation, e);
+                throw;
+            }
+        }
+    }
+    private void InterceptSync(IInvocation invocation)
+    {
+        using (var transactionScope = new TransactionScope(
+                                TransactionScopeOption.Required,
+                                new TransactionOptions { IsolationLevel = IsolationLevel.ReadCommitted },
+                                TransactionScopeAsyncFlowOption.Enabled))
         {
             try
             {

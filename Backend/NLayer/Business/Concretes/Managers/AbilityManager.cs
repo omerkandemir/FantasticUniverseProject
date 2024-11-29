@@ -11,32 +11,31 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes.Managers;
 
-public class AbilityManager : BaseManager<Ability, IAbilityDal>, IAbilityService
+public class AbilityManager : BaseManagerAsync<Ability, IAbilityDal>, IAbilityService
 {
     public AbilityManager(IAbilityDal tdal) : base(tdal)
     {
     }
-    [TransactionScopeAspect(Priority = 2)]
     [LogAspect(Priority = 3)]
     [ValidationAspect(typeof(CreateAbilityValidator), Priority = 1)]
-    public override IReturnType Add(Ability Value)
+    public override Task<IReturnType> AddAsync(Ability value)
     {
-        return base.Add(Value);
+        return base.AddAsync(value);
     }
     [ValidationAspect(typeof(UpdateAbilityValidator), Priority = 1)]
-    public override IReturnType Update(Ability Value)
+    public override Task<IReturnType> UpdateAsync(Ability value)
     {
-        return base.Update(Value);
+        return base.UpdateAsync(value);
     }
     [ValidationAspect(typeof(DeleteAbilityValidator), Priority = 1)]
-    public override IReturnType Delete(Ability Value)
+    public override Task<IReturnType> DeleteAsync(Ability value)
     {
-        return base.Delete(Value);
+        return base.DeleteAsync(value);
     }
 
-    [LogAspect] 
-    public override IDataReturnType<List<Ability>> GetAll()
+    [LogAspect]
+    public override Task<IDataReturnType<ICollection<Ability>>> GetAllAsync()
     {
-        return base.GetAll();
+        return base.GetAllAsync();
     }
 }

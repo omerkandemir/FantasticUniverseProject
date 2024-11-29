@@ -8,11 +8,11 @@ public static class CustomUnionCharacterValidator
 {
     public static IRuleBuilderOptions<T, object> DoesUnionCharacterPairExist<T>(this IRuleBuilder<T, object> ruleBuilder)
     {
-        return ruleBuilder.Must((rootObject, context) =>
+        var unionCharacterService = InstanceFactory.GetInstance<IUnionCharacterService>();
+        return ruleBuilder.MustAsync(async (rootObject, context) =>
         {
             var pair = (dynamic)rootObject;
-            var unionCharacterService = InstanceFactory.GetInstance<IUnionCharacterService>();
-            var pairExist = unionCharacterService.GetAll().Data.Any(p => p.UnionId == pair.UnionId && p.CharacterId == pair.CharacterId);
+            var pairExist = (await unionCharacterService.GetAllAsync()).Data.Any(p => p.UnionId == pair.UnionId && p.CharacterId == pair.CharacterId);
             return !pairExist;
         }).WithMessage("Belirtilen UnionId ve CharacterId çifti mevcut.");
     }

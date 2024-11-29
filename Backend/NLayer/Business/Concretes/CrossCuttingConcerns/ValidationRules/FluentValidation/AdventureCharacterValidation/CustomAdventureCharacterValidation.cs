@@ -8,11 +8,11 @@ public static class CustomAdventureCharacterValidation
 {
     public static IRuleBuilderOptions<T, object> DoesAdventureCharacterPairExist<T>(this IRuleBuilder<T, object> ruleBuilder)
     {
-        return ruleBuilder.Must((rootObject, context) =>
+        return ruleBuilder.MustAsync(async (rootObject, context) =>
         {
             var pair = (dynamic)rootObject;
             var adventureCharacterService = InstanceFactory.GetInstance<IAdventureCharacterService>();
-            var pairExist = adventureCharacterService.GetAll().Data.Any(p => p.AdventureId == pair.AdventureId && p.CharacterId == pair.CharacterId);
+            var pairExist = (await adventureCharacterService.GetAllAsync()).Data.Any(p => p.AdventureId == pair.AdventureId && p.CharacterId == pair.CharacterId);
             return !pairExist;
         }).WithMessage("Belirtilen AdventureId ve CharacterId çifti mevcut.");
     }

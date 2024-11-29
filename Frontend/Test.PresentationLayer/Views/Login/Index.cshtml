@@ -24,6 +24,7 @@
             </div>
         }
         <form method="post">
+            <input type="hidden" name="returnUrl" value="@ViewData["ReturnUrl"]" />
             <div class="form-row">
                 <div class="form-group col-md-12">
                     <label asp-for="Username"></label>
@@ -55,5 +56,12 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script>
+        document.querySelector("form").addEventListener("submit", function (event) {
+            const submitButton = this.querySelector("button[type='submit']");
+            submitButton.disabled = true;
+            submitButton.innerText = "Lütfen Bekleyin...";
+        });
+    </script>
 </body>
 </html>

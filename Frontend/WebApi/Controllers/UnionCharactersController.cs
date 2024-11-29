@@ -14,35 +14,41 @@ public class UnionCharactersController : ControllerBase
         _unionCharacterDto = unionCharacterDto;
     }
     [HttpPost("Ekle")]
-    public IActionResult Add(CreateUnionCharacterRequest createRequest)
+    public async Task<IActionResult> Add([FromBody] CreateUnionCharacterRequest createRequest)
     {
-        var response = _unionCharacterDto.Add(createRequest);
-        return Ok(response);
+        var response = await _unionCharacterDto.AddAsync(createRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
 
-    [HttpPost("Güncelle")]
-    public IActionResult Update(UpdateUnionCharacterRequest updateRequest)
+    [HttpPut("Güncelle")]
+    public async Task<IActionResult> Update([FromBody] UpdateUnionCharacterRequest updateRequest)
     {
-        var response = _unionCharacterDto.Update(updateRequest);
-        return Ok(response);
+        var response = await _unionCharacterDto.UpdateAsync(updateRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
-    [HttpDelete("Sil")]
-    public IActionResult Delete(DeleteUnionCharacterRequest deleteRequest)
+    [HttpDelete("Sil{id}")]
+    public async Task<IActionResult> Delete(DeleteUnionCharacterRequest deleteRequest)
     {
-        var response = _unionCharacterDto.Delete(deleteRequest);
-        return Ok(response);
+        var response = await _unionCharacterDto.DeleteAsync(deleteRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
 
     [HttpGet("Listele")]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll()
     {
-        var response = _unionCharacterDto.GetAll();
+        var response = await _unionCharacterDto.GetAllAsync();
         return Ok(response);
     }
-    [HttpGet("Getir")]
-    public IActionResult Get(int Id = 1)
+    [HttpGet("Getir{id}")]
+    public async Task<IActionResult> Get(int id)
     {
-        var response = _unionCharacterDto.Get(Id);
+        var response = await _unionCharacterDto.GetAsync(id);
         return Ok(response);
     }
 }

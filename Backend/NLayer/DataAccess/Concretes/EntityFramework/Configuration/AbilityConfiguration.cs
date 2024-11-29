@@ -12,6 +12,8 @@ public class AbilityConfiguration : BaseEntityConfiguration<Ability>
         base.Configure(builder);
         builder.ToTable("Abilities");
         builder.Property(x => x.Name).HasColumnName("Name");
+        builder.Property(x => x.AbilityTypeId).HasColumnName("AbilityTypeId");
+        builder.Property(x => x.AbilityCategoryId).HasColumnName("AbilityCategoryId");
         builder.
             HasMany(x=>x.AbilityCharacters).
             WithOne(x=>x.Ability).

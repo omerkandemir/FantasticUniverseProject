@@ -14,35 +14,41 @@ public class AbilityCharactersController : ControllerBase
         _abilityCharacterDto = abilityCharacterDto;
     }
     [HttpPost("Ekle")]
-    public IActionResult Add(CreateAbilityCharacterRequest createRequest)
+    public async Task<IActionResult> Add([FromBody] CreateAbilityCharacterRequest createRequest)
     {
-        var response = _abilityCharacterDto.Add(createRequest);
-        return Ok(response);
+        var response = await _abilityCharacterDto.AddAsync(createRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
 
-    [HttpPost("Güncelle")]
-    public IActionResult Update(UpdateAbilityCharacterRequest updateRequest)
+    [HttpPut("Güncelle")]
+    public async Task<IActionResult> Update([FromBody] UpdateAbilityCharacterRequest updateRequest)
     {
-        var response = _abilityCharacterDto.Update(updateRequest);
-        return Ok(response);
+        var response = await _abilityCharacterDto.UpdateAsync(updateRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
-    [HttpDelete("Sil")]
-    public IActionResult Delete(DeleteAbilityCharacterRequest deleteRequest)
+    [HttpDelete("Sil{id}")]
+    public async Task<IActionResult> Delete(DeleteAbilityCharacterRequest deleteRequest)
     {
-        var response = _abilityCharacterDto.Delete(deleteRequest);
-        return Ok(response);
+        var response = await _abilityCharacterDto.DeleteAsync(deleteRequest);
+        if (response.Success)
+            return Ok(response);
+        return BadRequest(response);
     }
 
     [HttpGet("Listele")]
-    public IActionResult GetAll()
+    public async Task<IActionResult> GetAll()
     {
-        var response = _abilityCharacterDto.GetAll();
+        var response = await _abilityCharacterDto.GetAllAsync();
         return Ok(response);
     }
-    [HttpGet("Getir")]
-    public IActionResult Get(int Id = 1)
+    [HttpGet("Getir{id}")]
+    public async Task<IActionResult> Get(int id)
     {
-        var response = _abilityCharacterDto.Get(Id);
+        var response = await _abilityCharacterDto.GetAsync(id);
         return Ok(response);
     }
 }

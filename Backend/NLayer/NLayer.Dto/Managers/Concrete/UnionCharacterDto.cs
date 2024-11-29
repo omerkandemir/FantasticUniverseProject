@@ -5,7 +5,8 @@ using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Entities.Concretes;
 using NLayer.Mapper.Requests.UnionCharacter;
-using NLayer.Mapper.Responses.UnionCharacter;
+using NLayer.Mapper.Responses.Abstract;
+using NLayer.Mapper.Responses.Concrete.UnionCharacter;
 
 namespace NLayer.Dto.Managers.Concrete;
 
@@ -18,42 +19,42 @@ public class UnionCharacterDto : IUnionCharacterDto
         _unionCharacterService = unionCharacterService;
         _mapper = mapper;
     }
-    public IResponse Add(CreateUnionCharacterRequest request)
+    public async Task<IResponse> AddAsync(CreateUnionCharacterRequest request)
     {
         UnionCharacter unionCharacter = _mapper.Map<UnionCharacter>(request);
-        var result = _unionCharacterService.Add(unionCharacter);
+        var result = await _unionCharacterService.AddAsync(unionCharacter);
         var response = _mapper.Map<CreatedUnionCharacterResponse>(unionCharacter);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<UnionCharacter>(response, unionCharacter);
+            return ResponseFactory.CreateSuccessResponse<UnionCharacter>(unionCharacter, response);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IResponse Update(UpdateUnionCharacterRequest request)
+    public async Task<IResponse> UpdateAsync(UpdateUnionCharacterRequest request)
     {
         UnionCharacter unionCharacter = _mapper.Map<UnionCharacter>(request);
-        var result = _unionCharacterService.Update(unionCharacter);
+        var result = await _unionCharacterService.UpdateAsync(unionCharacter);
         var response = _mapper.Map<UpdatedUnionCharacterResponse>(unionCharacter);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<UnionCharacter>(response, unionCharacter);
+            return ResponseFactory.CreateSuccessResponse<UnionCharacter>(unionCharacter, response);
         }
         else
         {
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public IResponse Delete(DeleteUnionCharacterRequest request)
+    public async Task<IResponse> DeleteAsync(DeleteUnionCharacterRequest request)
     {
         UnionCharacter unionCharacter = _mapper.Map<UnionCharacter>(request);
-        var result = _unionCharacterService.Delete(unionCharacter);
+        var result = await _unionCharacterService.DeleteAsync(unionCharacter);
         var response = _mapper.Map<DeletedUnionCharacterResponse>(unionCharacter);
         if (result.Success)
         {
-            return ResponseFactory.CreateSuccessResponse<UnionCharacter>(response, unionCharacter);
+            return ResponseFactory.CreateSuccessResponse<UnionCharacter>(unionCharacter, response);
         }
         else
         {
@@ -61,17 +62,17 @@ public class UnionCharacterDto : IUnionCharacterDto
         }
     }
 
-    public IGetResponse Get(object id)
+    public async Task<IGetResponse> GetAsync(object id)
     {
-        var value = _unionCharacterService.Get(id);
-        var response = _mapper.Map<GetAllUnionCharacterResponse>(value.Data);
+        var value = await _unionCharacterService.GetAsync(id);
+        var response = _mapper.Map<GetUnionCharacterResponse>(value.Data);
         return response;
     }
 
-    public List<GetAllUnionCharacterResponse> GetAll()
+    public async Task<IGetAllResponse<IGetUnionCharacterResponse>> GetAllAsync()
     {
-        var value = _unionCharacterService.GetAll();
-        var response = _mapper.Map<List<GetAllUnionCharacterResponse>>(value.Data);
+        var value = await _unionCharacterService.GetAllAsync();
+        var response = _mapper.Map<GetAllUnionCharacterResponse>(value.Data);
         return response;
     }
 }

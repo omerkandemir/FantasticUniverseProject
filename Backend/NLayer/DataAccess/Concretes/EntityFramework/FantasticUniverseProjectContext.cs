@@ -13,14 +13,20 @@ namespace NLayer.DataAccess.Concretes.EntityFramework;
 public class FantasticUniverseProjectContext : IdentityDbContext<AppUser, AppRole, int> // IdentityDbContext, DbContext sınıfından miras alır
 {    
     public DbSet<Ability> Abilities { get; set; }
+    public DbSet<AbilityCategory> AbilityCategories { get; set; }
     public DbSet<AbilityCharacter> AbilityCharacters { get; set; }
-    public DbSet<AdventureCharacter> AdventureCharacters { get; set; }
+    public DbSet<AbilityType> AbilityTypes { get; set; }
     public DbSet<Adventure> Adventures { get; set; }
+    public DbSet<AdventureAlternativePaths> AdventureAlternativePaths { get; set; }
+    public DbSet<AdventureCharacter> AdventureCharacters { get; set; }
+    public DbSet<AdventureCollection> AdventureCollections { get; set; }
+    public DbSet<AdventureCollectionItem> AdventureCollectionItems { get; set; }
     public DbSet<Character> Characters { get; set; }
     public DbSet<Galaxy> Galaxies { get; set; }
     public DbSet<Planet> Planets { get; set; }
     public DbSet<Species> Species { get; set; }
     public DbSet<Star> Stars { get; set; }
+    public DbSet<ThemeSetting> ThemeSettings { get; set; }
     public DbSet<TimeLine> TimeLines { get; set; }
     public DbSet<UnionCharacter> UnionCharacters { get; set; }
     public DbSet<Union> Unions { get; set; }
@@ -32,21 +38,27 @@ public class FantasticUniverseProjectContext : IdentityDbContext<AppUser, AppRol
     {
         if (!optionsBuilder.IsConfigured)
         {
-            optionsBuilder.UseSqlServer(@"Data Source=(localdb)\Omer; Initial Catalog = FantasticUniverseProjectDb;");
+            optionsBuilder.UseSqlServer(@"Data Source=(localdb)\Omer; Initial Catalog = FantasticUniverseProjectDb; Trusted_Connection=True; MultipleActiveResultSets=true");
         }
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new AbilityConfiguration());
+        modelBuilder.ApplyConfiguration(new AbilityCategoryConfiguration());
         modelBuilder.ApplyConfiguration(new AbilityCharacterConfiguration());
+        modelBuilder.ApplyConfiguration(new AbilityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new AdventureConfiguration());
+        modelBuilder.ApplyConfiguration(new AdventureAlternativePathsConfiguration());
         modelBuilder.ApplyConfiguration(new AdventureCharacterConfiguration());
+        modelBuilder.ApplyConfiguration(new AdventureCollectionConfiguration());
+        modelBuilder.ApplyConfiguration(new AdventureCollectionItemConfiguration());
         modelBuilder.ApplyConfiguration(new CharacterConfiguration());
         modelBuilder.ApplyConfiguration(new GalaxyConfiguration());
         modelBuilder.ApplyConfiguration(new PlanetConfiguration());
         modelBuilder.ApplyConfiguration(new SpeciesConfiguration());
         modelBuilder.ApplyConfiguration(new StarConfiguration());
+        modelBuilder.ApplyConfiguration(new ThemeSettingConfiguration());
         modelBuilder.ApplyConfiguration(new TimeLineConfiguration());
         modelBuilder.ApplyConfiguration(new UnionCharacterConfiguration());
         modelBuilder.ApplyConfiguration(new UnionConfiguration());
@@ -60,6 +72,12 @@ public class FantasticUniverseProjectContext : IdentityDbContext<AppUser, AppRol
         var userId = AccessUser.GetUserId();
         OnBeforeSaving(userId);
         return base.SaveChanges();
+    }
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        var userId = AccessUser.GetUserId();
+        OnBeforeSaving(userId);
+        return await base.SaveChangesAsync(cancellationToken);
     }
     protected virtual void OnBeforeSaving(int userId)
     {

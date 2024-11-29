@@ -5,5 +5,4 @@ namespace NLayer.DataAccess.Abstracts;
 
 public interface IAbilityDal : IEntityRepository<Ability>
 {
-
 }

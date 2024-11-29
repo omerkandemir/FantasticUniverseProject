@@ -9,14 +9,26 @@
 <div class="container">
     <br />
     <br />
+    @if (!ViewData.ModelState.IsValid)
+    {
+        <div class="alert alert-danger">
+            <ul>
+                @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    <li>@error.ErrorMessage</li>
+                }
+            </ul>
+        </div>
+    }
     <form method="post">
-        <h2>Taşınan Mail Adresi : @ViewBag.EMail</h2>
+        <h2>Lütfen E-posta Adresinizi onaylayın</h2>
         <br />
-        <label>Kullanıcı ID Değeri</label>
-        <input type="text" class="form-control" asp-for="Mail" value="@ViewBag.EMail" />
+        <label>Mail Adresiniz</label>
+        <input type="text" class="form-control" asp-for="Mail" value="@Model.Mail" />
         <br />
         <label>Mail Adresinize Gelen 6 Haneli Kodu Giriniz</label>
         <input type="text" class="form-control" asp-for="ConfirmCode"/>
+        <span asp-validation-for="ConfirmCode" class="text-danger"></span> 
         <br />
         <button class="btn btn-primary">Hesabı Aktifleştir</button>
     </form>

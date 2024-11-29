@@ -3,16 +3,18 @@ using NLayer.Core.Entities.Abstract;
 
 namespace NLayer.Core.Dto.ReturnTypes;
 
-public class SuccessListResponse<T> : ISuccessResponse<T>, IGetResponse where T : class, IEntity, new()
+public class SuccessListResponse<T> : ISuccessListResponse<T> where T : IGetResponse
 {
-    public int Id { get; set; }
-    public DateTime CreatedDate { get; set; }
-    public object Data { get; }
-    public T Entity { get; set; }
-    public SuccessListResponse(object data, T entity)
-    {
-        Data = data;
-        Entity = entity;
-    }
     public bool Success => true;
+    public ICollection<T>? Responses { get; }
+    public object Data { get; }
+    public string Message { get; }
+
+
+    public SuccessListResponse(ICollection<T>? responses, object data, string message = "Liste başarıyla döndürüldü.")
+    {
+        Responses = responses;
+        Data = data;
+        Message = message;
+    }
 }

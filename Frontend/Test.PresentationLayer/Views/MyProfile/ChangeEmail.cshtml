@@ -14,15 +14,9 @@
 </head>
 <body>
     <div class="form-container">
-        <h2>Kullanıcı Bilgileri</h2>
+        <h2>E-Mail Adresini Güncelle</h2>
         <br />
         <div asp-validation-summary="ModelOnly" class="validation-summary-errors"></div>
-        @if (ViewBag.SuccessMessage != null)
-        {
-            <div class="success-message">
-                @ViewBag.SuccessMessage
-            </div>
-        }
         <br />
         <form method="post">
             <div class="form-group">

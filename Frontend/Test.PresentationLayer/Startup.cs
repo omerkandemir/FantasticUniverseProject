@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.AppUserValidation;
 using NLayer.Core.Entities.Authentication;
 using NLayer.Core.Middleware;
@@ -41,6 +42,30 @@ public class Startup
 
         // .NET Core DI kullanarak Autofac'a geçiş yapacağız.
         services.AddAutofac();
+
+        var apiBaseUrl = Configuration["API:BaseUrl"];
+        services.AddHttpClient("APIClient", client =>
+        {
+            client.BaseAddress = new Uri(apiBaseUrl);
+            client.DefaultRequestHeaders.Add("Accept", "application/json");
+        });
+
+        // Cookie Authentication
+        services.AddAuthentication(options =>
+        {
+            options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+            options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        })
+            .AddCookie(options =>
+            {
+                options.LoginPath = "/Login/Index";
+                options.AccessDeniedPath = "/Login/AccessDenied";
+                options.Cookie.Name = "UserAuthCookie";
+                options.Cookie.HttpOnly = true;
+                options.Cookie.SecurePolicy = CookieSecurePolicy.SameAsRequest;
+                options.ExpireTimeSpan = TimeSpan.FromHours(1);
+                options.SlidingExpiration = true;
+            });
     }
 
     public void ConfigureContainer(ContainerBuilder builder)
@@ -71,7 +96,7 @@ public class Startup
         app.UseSession(); // Session middleware'i etkinleştir
         app.UseAuthentication();
         app.UseAuthorization();
-        app.UseMiddleware<UserContextMiddleware>(); 
+        app.UseMiddleware<UserContextMiddleware>();
 
 
 

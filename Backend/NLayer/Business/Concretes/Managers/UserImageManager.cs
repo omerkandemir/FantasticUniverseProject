@@ -9,7 +9,7 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes.Managers;
 
-public class UserImageManager : BaseManager<UserImage, IUserImageDal>, IUserImageService
+public class UserImageManager : BaseManagerAsync<UserImage, IUserImageDal>, IUserImageService
 {
     private readonly IUniverseImageDal _universeImageDal;
     public UserImageManager(IUserImageDal tdal, IUniverseImageDal userImageDal) : base(tdal)
@@ -17,42 +17,45 @@ public class UserImageManager : BaseManager<UserImage, IUserImageDal>, IUserImag
         _universeImageDal = userImageDal;
     }
 
-    public void AddUserFirstImages()
+    public async Task AddUserFirstImages()
     {
-        int UserId = AccessUser.GetUserId();
-        var universeImages = _universeImageDal.GetAll(x => x.Universe.Name == "Fantastic Universe", ui => ui.Include(ui => ui.Universe));
-
-        foreach (var universeImage in universeImages)
+        await ExecuteSafely(async () =>
         {
-            var userImage = new UserImage
+            int userId = AccessUser.GetUserId();
+            var universeImages = await _universeImageDal.GetAllAsync(
+                x => x.Universe.Name == "Fantastic Universe",
+                ui => ui.Include(ui => ui.Universe)
+            );
+
+            var userImages = universeImages.Select(universeImage => new UserImage
             {
                 UniverseImageId = universeImage.Id,
-                UserId = UserId
-            };
-            _tdal.Add(userImage);
-        }
+                UserId = userId
+            });
+
+            await _tdal.AddRangeAsync(userImages);
+        }, CrudOperation.Add);
     }
 
-    public IDataReturnType<List<UniverseImage>> GetUsersImage()
+    public async Task<IDataReturnType<ICollection<UniverseImage>>> GetUsersImage()
     {
-        try
-        {
-            int UserId = AccessUser.GetUserId();
-            List<UserImage> userImages = _tdal.GetAll(x => x.UserId == UserId).ToList();
-            List<UniverseImage> universeImages = new List<UniverseImage>();
-            foreach (var item in userImages)
+        return await ExecuteQuerySafelyWithResult(
+          async () =>
             {
-                var universeImage = _universeImageDal.Get(x => x.Id == item.UniverseImageId);
-                if (universeImage != null)
-                {
-                    universeImages.Add(universeImage);
-                }
-            }
-            return new DataReturnType<List<UniverseImage>>(universeImages, GetDatasInfo.SuccessListData, CrudOperation.List);
-        }
-        catch (Exception ex)
-        {
-            return new DataReturnType<List<UniverseImage>>(GetDatasInfo.FailedListData, CrudOperation.List, ex);
-        }
+                int userId = AccessUser.GetUserId();
+
+                // Kullanıcıya ait UserImage veriler,
+                var userImages = await _tdal.GetAllAsync(x => x.UserId == userId);
+
+                // Kullanıcının sahip olduğu UniverseImageId'lerin listesi
+                var universeImageIds = userImages.Select(ui => ui.UniverseImageId).ToList();
+
+                // UniverseImage'de bu ID'lere göre sorgu yap
+                var universeImages = await _universeImageDal.GetAllAsync(ui => universeImageIds.Contains(ui.Id));
+
+                return universeImages;
+            },
+                 CrudOperation.List
+            );
     }
 }
