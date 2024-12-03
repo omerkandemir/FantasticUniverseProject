@@ -1,8 +1,10 @@
 ﻿using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.Extensions.FileProviders;
 using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.AppUserValidation;
 using NLayer.Core.Entities.Authentication;
+using NLayer.Core.Helpers;
 using NLayer.Core.Middleware;
 using NLayer.Core.Utilities.UserOperations;
 using NLayer.DataAccess.Concretes.EntityFramework;
@@ -85,6 +87,15 @@ public class Startup
             app.UseExceptionHandler("/Home/Error");
             app.UseHsts();
         }
+
+        var rootPath = PathHelper.FindParentDirectory(AppContext.BaseDirectory, "FantasticUniverseProject");
+        var staticFilesPath = Path.Combine(rootPath, "node-app", "dist");
+        app.UseStaticFiles(new StaticFileOptions
+        {
+            FileProvider = new PhysicalFileProvider(staticFilesPath),
+            RequestPath = "/dist" 
+        });
+
         var httpContextAccessor = app.ApplicationServices.GetRequiredService<IHttpContextAccessor>();
         AccessUser.Configure(httpContextAccessor);
 
