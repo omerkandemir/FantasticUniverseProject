@@ -62,9 +62,9 @@ public class AbilityDto : IAbilityDto
         }
     }
 
-    public async Task<IGetResponse> GetAsync(object id)
+    public async Task<IGetAbilityResponse> GetAsync(object id)
     {
-        var value = await _abilityService.GetAsync(id);
+        var value = await _abilityService.GetAsync((int)id);
         var response = _mapper.Map<GetAbilityResponse>(value.Data);
         return response;
     }

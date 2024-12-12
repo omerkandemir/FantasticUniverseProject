@@ -1,5 +1,5 @@
 ﻿using NLayer.Core.Dto.Abstracts;
-using NLayer.Core.Entities.Authentication;
+using NLayer.Core.Entities.Authorization;
 using NLayer.Mapper.Requests.AppUser;
 using NLayer.Mapper.Responses.Abstract;
 using NLayer.Mapper.Responses.Concrete.AppUser;
@@ -22,8 +22,10 @@ public interface IAppUserDto : IEntityRepositoryAsyncDto<
     Task<IResponse> GetUserByNameAsync(string name);
     Task<IResponse> GetUserByMailAsync(string email);
     Task<IResponse> GetUserAsync(ClaimsPrincipal claimsPrincipal);
-    Task<IResponse> GetUserRolesAsync(AppUser user);
+    Task<List<string>> GetUserRolesAsync(string username);
     Task<LoginResponse> LoginAsync(LoginRequest loginRequest);
+    Task<LoginResponse> AdminLoginAsync(LoginRequest loginRequest);
     Task<IResponse> SignOutAsync();
     Task<IResponse> Register(CreateAppUserRequest request);
+    Task<IResponse> AssignRoleAsync(List<AssignRole> assignRole);
 }

@@ -4,7 +4,7 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes.Managers;
 
-public class AdventureCollectionManager : BaseManagerAsync<AdventureCollection, IAdventureCollectionDal>, IAdventureCollectionService
+public class AdventureCollectionManager : BaseManagerAsync<AdventureCollection, IAdventureCollectionDal, int>, IAdventureCollectionService
 {
     public AdventureCollectionManager(IAdventureCollectionDal tdal) : base(tdal)
     {

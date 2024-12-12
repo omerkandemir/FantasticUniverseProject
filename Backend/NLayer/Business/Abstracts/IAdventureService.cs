@@ -4,7 +4,7 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Abstracts;
 
-public interface IAdventureService : IEntityServiceRepositoryAsync<Adventure>
+public interface IAdventureService : IEntityServiceRepositoryAsync<Adventure, int>
 {
     Task<IDataReturnType<ICollection<Adventure>>> GetAdventuresByPlanetId(int planetId);
 }

@@ -62,9 +62,9 @@ public class PlanetDto : IPlanetDto
         }
     }
 
-    public async Task<IGetResponse> GetAsync(object id)
+    public async Task<IGetPlanetResponse> GetAsync(object id)
     {
-        var value = await _planetService.GetAsync(id);
+        var value = await _planetService.GetAsync((int)id);
         var response = _mapper.Map<GetPlanetResponse>(value.Data);
         return response;
     }

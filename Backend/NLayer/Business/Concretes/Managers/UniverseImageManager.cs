@@ -1,12 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NLayer.Business.Abstracts;
+using NLayer.Core.Exceptions;
 using NLayer.Core.Utilities.ImageOperations;
+using NLayer.Core.Utilities.Infos;
+using NLayer.Core.Utilities.ReturnTypes;
 using NLayer.DataAccess.Abstracts;
 using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes.Managers;
 
-public class UniverseImageManager : BaseManagerAsync<UniverseImage, IUniverseImageDal>, IUniverseImageService
+public class UniverseImageManager : BaseManagerAsync<UniverseImage, IUniverseImageDal, int>, IUniverseImageService
 {
     private readonly IUniverseDal _universeDal;
     private readonly IGetDefaultImages _getDefaultImages;
@@ -17,13 +20,22 @@ public class UniverseImageManager : BaseManagerAsync<UniverseImage, IUniverseIma
         _getDefaultImages = getDefaultImages;
         _themeSettingDal = themeSettingDal;
     }
-
-    public async Task<ICollection<UniverseImage>> PrepareUserForRegister()
+    public async Task<IDataReturnType<ICollection<UniverseImage>>> PrepareUserForRegister()
     {
-        await AddFirstUniverseData();
-        await UpdateDatabaseWithNewImages();
-        return await GetFirstUsersImages();
+        try
+        {
+            var universeImages = await GetFirstUsersImages();
+            if (universeImages == null)
+                throw new UserException("Görsel bulunamadı. Lütfen uygulama yöneticisine durumu bildiriniz.");
+
+            return new DataReturnType<ICollection<UniverseImage>>(universeImages, GetDatasInfo.SuccessListData, CrudOperation.List);
+        }
+        catch (Exception ex)
+        {
+            return new DataReturnType<ICollection<UniverseImage>>(GetDatasInfo.FailedListData, CrudOperation.List, ex);
+        }
     }
+
     private async Task UpdateDatabaseWithNewImages()
     {
         string universeName = "Fantastic Universe";
@@ -104,5 +116,9 @@ public class UniverseImageManager : BaseManagerAsync<UniverseImage, IUniverseIma
             ThemeSettingId = themeSetting.Id,
         };
         await _universeDal.AddAsync(universe);
+    }
+    public async Task<IReturnType> AddRangeAsync(List<UniverseImage> universeImage)
+    {
+        return await ExecuteSafely(() => _tdal.AddRangeAsync(universeImage), CrudOperation.Add);
     }
 }

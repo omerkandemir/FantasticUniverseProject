@@ -62,9 +62,9 @@ public class CharacterDto : ICharacterDto
         }
     }
 
-    public async Task<IGetResponse> GetAsync(object id)
+    public async Task<IGetCharacterResponse> GetAsync(object id)
     {
-        var value = await _characterService.GetAsync(id);
+        var value = await _characterService.GetAsync((int)id);
         var response = _mapper.Map<GetCharacterResponse>(value.Data);
         return response;
     }

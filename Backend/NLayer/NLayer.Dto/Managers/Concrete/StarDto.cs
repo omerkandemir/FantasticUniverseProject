@@ -62,9 +62,9 @@ public class StarDto : IStarDto
         }
     }
 
-    public async Task<IGetResponse> GetAsync(object id)
+    public async Task<IGetStarResponse> GetAsync(object id)
     {
-        var value = await _starService.GetAsync(id);
+        var value = await _starService.GetAsync((int)id);
         var response = _mapper.Map<GetStarResponse>(value.Data);
         return response;
     }

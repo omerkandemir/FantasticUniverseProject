@@ -3,7 +3,6 @@ using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValid
 using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.AbilityValidation.Delete;
 using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.AbilityValidation.Update;
 using NLayer.Core.Aspect.Autofac.Logging;
-using NLayer.Core.Aspect.Autofac.Transaction;
 using NLayer.Core.Aspect.Autofac.Validation;
 using NLayer.Core.Utilities.ReturnTypes;
 using NLayer.DataAccess.Abstracts;
@@ -11,7 +10,7 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes.Managers;
 
-public class AbilityManager : BaseManagerAsync<Ability, IAbilityDal>, IAbilityService
+public class AbilityManager : BaseManagerAsync<Ability, IAbilityDal, int>, IAbilityService
 {
     public AbilityManager(IAbilityDal tdal) : base(tdal)
     {

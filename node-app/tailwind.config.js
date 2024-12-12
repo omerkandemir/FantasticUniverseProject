@@ -1,26 +1,15 @@
 module.exports = {
+  mode: 'jit', 
   content: [
-  "./*.html",
-  "./Views/**/*.cshtml",
-  "./public/**/*.html",
-  "./src/**/*.{html,js,jsx,ts,tsx}"
-],
+  './Views/**/*.cshtml',
+  './src/**/*.{html,js,jsx,ts,tsx}',
+  './wwwroot/**/*.html',
+  ], 
   safelist: [
-     {
-    pattern: /text-(blue|red|green|yellow|orange|purple|pink|gray)-\d{3}/, // Renk sınıfları
-  },
-  {
-    pattern: /bg-(blue|red|green|yellow|orange|purple|pink|gray)-\d{3}/, // Arkaplan renk sınıfları
-  },
-  {
-    pattern: /p-\d/, // Padding sınıfları
-  },
-  {
-    pattern: /m-\d/, // Margin sınıfları
-  },
+    { pattern: /.*/ }, 
   ],
   theme: {
-    extend: {},
+    extend: {}, 
   },
   plugins: [
     require('@tailwindcss/typography'),

@@ -13,7 +13,7 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes.Managers;
 
-public class UniverseManager : BaseManagerAsync<Universe, IUniverseDal>, IUniverseService
+public class UniverseManager : BaseManagerAsync<Universe, IUniverseDal, int>, IUniverseService
 {
     private readonly IGalaxyDal _galaxyDal;
     private readonly IStarDal _starDal;
@@ -119,7 +119,7 @@ public class UniverseManager : BaseManagerAsync<Universe, IUniverseDal>, IUniver
         );
     }
     [CacheAspect(duration: 60)]
-    public override async Task<IDataReturnType<Universe>> GetAsync(object id)
+    public override async Task<IDataReturnType<Universe>> GetAsync(int id)
     {
         return await ExecuteQuerySafelyWithResult(() => _tdal.GetAsync(x => x.Id == Convert.ToInt32(id), include: query => query.Include(q => q.ThemeSetting)),
             CrudOperation.Get

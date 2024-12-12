@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Query;
 using NLayer.Core.DataAccess.Abstracts;
 using NLayer.Core.Entities.Abstract;
 using NLayer.Core.Entities.Authentication;
+using NLayer.Core.Entities.Authorization;
 using System.Linq.Expressions;
 
 namespace NLAyer.Core.DataAccess.Concretes.EntityFramework;
@@ -118,7 +119,7 @@ public class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEnti
                         entry.State = EntityState.Deleted;
                         break;
                     case EntityState.Modified:
-                        context.Attach(entity); 
+                        context.Attach(entity);
                         entry.State = EntityState.Modified;
                         break;
                     default:

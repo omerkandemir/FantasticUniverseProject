@@ -21,9 +21,11 @@ public class UniverseImageDto : IUniverseImageDto
         _mapper = mapper;
         _universeService = universeService;
     }
-    public async Task<ICollection<UniverseImage>> PrepareUserForRegister()
+    public async Task<List<GetUniverseImageResponse>> PrepareUserForRegister()
     {
-        return await _universeImageService.PrepareUserForRegister();
+        var value = await _universeImageService.PrepareUserForRegister();
+        var response = _mapper.Map<List<GetUniverseImageResponse>>(value.Data);
+        return response;
     }
     public async Task<IResponse> AddAsync(CreateUniverseImageRequest request)
     {
@@ -39,7 +41,20 @@ public class UniverseImageDto : IUniverseImageDto
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-
+    public async Task<IResponse> AddRangeAsync(List<CreateUniverseImageRequest> createRequest)
+    {
+        var universeImage = _mapper.Map<List<UniverseImage>>(createRequest);
+        var result = await _universeImageService.AddRangeAsync(universeImage);
+        var response = _mapper.Map<ICollection<GetUniverseImageResponse>>(universeImage);
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessListResponse<GetUniverseImageResponse>(response,universeImage);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
+    }
     public async Task<IResponse> UpdateAsync(UpdateUniverseImageRequest request)
     {
         UniverseImage universeImage = _mapper.Map<UniverseImage>(request);
@@ -70,9 +85,9 @@ public class UniverseImageDto : IUniverseImageDto
         }
     }
 
-    public async Task<IGetResponse> GetAsync(object id)
+    public async Task<IGetUniverseImageResponse> GetAsync(object id)
     {
-        var value = await _universeImageService.GetAsync(id);
+        var value = await _universeImageService.GetAsync((int)id);
         var response = _mapper.Map<GetUniverseImageResponse>(value.Data);
         return response;
     }

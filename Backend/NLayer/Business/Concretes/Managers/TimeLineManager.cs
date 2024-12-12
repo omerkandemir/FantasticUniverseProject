@@ -9,7 +9,7 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes.Managers;
 
-public class TimeLineManager : BaseManagerAsync<TimeLine, ITimeLineDal>, ITimeLineService
+public class TimeLineManager : BaseManagerAsync<TimeLine, ITimeLineDal, int>, ITimeLineService
 {
     public TimeLineManager(ITimeLineDal tdal) : base(tdal)
     {

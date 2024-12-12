@@ -1,0 +1,84 @@
+﻿@model GetAppUserResponse
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-4">Kullanıcı Düzenle</h1>
+    <form asp-action="Edit" method="post" class="space-y-4">
+        <input type="hidden" asp-for="Id" />
+        <div>
+            <label class="block">E-posta:</label>
+            <input asp-for="UserName" class="border border-gray-300 rounded p-2 w-full" />
+        </div>
+        <div>
+            <label class="block">Adı:</label>
+            <input asp-for="Name" class="border border-gray-300 rounded p-2 w-full" />
+        </div>
+        <div>
+            <label class="block">Adı:</label>
+            <input asp-for="Surname" class="border border-gray-300 rounded p-2 w-full" />
+        </div>
+        <div>
+            <label class="block">Adı:</label>
+            <input asp-for="District" class="border border-gray-300 rounded p-2 w-full" />
+        </div>
+        <div>
+            <label class="block">Adı:</label>
+            <input asp-for="City" class="border border-gray-300 rounded p-2 w-full" />
+        </div>
+        <div>
+            <label class="block">Aktiflik Durumu:</label>
+            <div class="flex items-center space-x-4">
+                <button type="button" id="activeButton" class="toggle-button px-4 py-2 rounded" data-status="active">
+                    Aktif
+                </button>
+                <button type="button" id="inactiveButton" class="toggle-button px-4 py-2 rounded" data-status="inactive">
+                    Pasif
+                </button>
+            </div>
+            <input type="hidden" asp-for="IsActive" id="isActiveInput" />
+        </div>
+        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Kaydet</button>
+        <a href="/UserManagement" class="bg-gray-500 text-white px-4 py-2 rounded">Geri</a>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const activeButton = document.getElementById('activeButton');
+        const inactiveButton = document.getElementById('inactiveButton');
+        const isActiveInput = document.getElementById('isActiveInput');
+
+        const updateToggle = (isActive) => {
+            if (isActive) {
+                // Aktif durumu için
+                activeButton.classList.add('bg-green-500');
+                activeButton.classList.remove('bg-gray-300');
+                inactiveButton.classList.add('bg-gray-300');
+                inactiveButton.classList.remove('bg-red-500');
+                isActiveInput.value = true; // Form gönderiminde değer true
+            } else {
+                // Pasif durumu için
+                inactiveButton.classList.add('bg-red-500');
+                inactiveButton.classList.remove('bg-gray-300');
+                activeButton.classList.add('bg-gray-300');
+                activeButton.classList.remove('bg-green-500');
+                isActiveInput.value = false; // Form gönderiminde değer false
+            }
+        };
+
+        const isActiveFromModel = @Html.Raw(Model.IsActive ? "true" : "false"); // Razor'dan doğru bool değer
+        updateToggle(isActiveFromModel === true);
+
+        // Butonlara tıklama olaylarını bağla
+        activeButton.addEventListener('click', function () {
+            updateToggle(true);
+        });
+
+        inactiveButton.addEventListener('click', function () {
+            updateToggle(false);
+        });
+    });
+</script>

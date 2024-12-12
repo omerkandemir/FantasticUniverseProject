@@ -38,6 +38,8 @@ public class BusinessModule : NinjectModule
         Bind<IStarService>().To<StarManager>().InSingletonScope();
         Bind<IStarDal>().To<EfStarDal>().InSingletonScope();
 
+        Bind<IThemeSettingDal>().To<EfThemeSettingDal>().InSingletonScope();
+
         Bind<ITimeLineService>().To<TimeLineManager>().InSingletonScope();
         Bind<ITimeLineDal>().To<EfTimeLineDal>().InSingletonScope();
 

@@ -1,0 +1,67 @@
+﻿@model ICollection<GetAppUserResponse>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mx-auto p-6">
+    <h1 class="text-2xl font-bold mb-4">Kullanıcı Yönetimi</h1>
+    <table class="table-auto w-full border-collapse border border-gray-300">
+        <thead>
+            <tr>
+                <th class="border border-gray-300 px-4 py-2 text-center">Kullanıcı Adı</th>
+                <th class="border border-gray-300 px-4 py-2 text-center">Adı</th>
+                <th class="border border-gray-300 px-4 py-2 text-center">Soyadı</th>
+                <th class="border border-gray-300 px-4 py-2 text-center">Email</th>
+                <th class="border border-gray-300 px-4 py-2 text-center">Aktiflik</th>
+                <th class="border border-gray-300 px-4 py-2 text-center">Rol</th>
+                <th class="border border-gray-300 px-4 py-2 text-center">İşlemler</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td class="border border-gray-300 px-4 py-2 text-center">@user.UserName</td>
+                    <td class="border border-gray-300 px-4 py-2 text-center">@user.Name</td>
+                    <td class="border border-gray-300 px-4 py-2 text-center">@user.Surname</td>
+                    <td class="border border-gray-300 px-4 py-2 text-center">@user.Email</td>
+                    <td class="border border-gray-300 px-4 py-2 text-center">
+                        @if (user.IsActive)
+                        {
+                            <span class="px-2 py-1 text-sm font-semibold text-white bg-green-500 rounded">Aktif</span>
+                        }
+                        else
+                        {
+                            <span class="px-2 py-1 text-sm font-semibold text-white bg-red-500 rounded">Pasif</span>
+                        }
+                    </td>
+                    <td class="border border-gray-300 px-4 py-2 text-center">
+                        <a href="/UserManagement/AssignRole/@user.Id" class="bg-blue-500 text-white px-4 py-2 rounded">Rol Atama</a>
+                    </td>
+                    <td class="border border-gray-300 px-4 py-2 text-center">
+                        <a href="/UserManagement/Edit/@user.Id" class="bg-yellow-500 text-white px-4 py-2 rounded">Düzenle</a>
+                        <a href="/UserManagement/Delete/@user.Id" class="bg-red-500 text-white px-4 py-2 rounded">Sil</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+
+<div id="roleModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white w-1/3 rounded-lg shadow-lg p-6">
+        <h2 class="text-xl font-bold mb-4">Rol Atama</h2>
+        <div id="roleList">
+        </div>
+        <form id="addRoleForm" class="mt-4">
+            <label for="newRole" class="block">Yeni Rol:</label>
+            <input type="text" id="newRole" class="border rounded p-2 w-full" placeholder="Rol adı girin" />
+            <button type="button" id="addRoleButton" class="bg-blue-500 text-white px-4 py-2 rounded mt-2">Ekle</button>
+        </form>
+        <button id="closeModalButton" class="bg-gray-500 text-white px-4 py-2 rounded mt-4">Kapat</button>
+    </div>
+</div>

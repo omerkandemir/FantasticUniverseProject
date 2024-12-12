@@ -9,7 +9,7 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes.Managers;
 
-public class GalaxyManager : BaseManagerAsync<Galaxy, IGalaxyDal>, IGalaxyService
+public class GalaxyManager : BaseManagerAsync<Galaxy, IGalaxyDal, int>, IGalaxyService
 {
     public GalaxyManager(IGalaxyDal tdal) : base(tdal)
     {

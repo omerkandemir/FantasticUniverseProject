@@ -9,7 +9,7 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes.Managers;
 
-public class SpeciesManager : BaseManagerAsync<Species, ISpeciesDal>, ISpeciesService
+public class SpeciesManager : BaseManagerAsync<Species, ISpeciesDal, int>, ISpeciesService
 {
     public SpeciesManager(ISpeciesDal tdal) : base(tdal)
     {

@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using NLayer.Core.Dto.ReturnTypes;
+using NLayer.Core.Entities.Authentication;
 using NLayer.Entities.Concretes;
 using NLayer.Mapper.Requests.AppUser;
+using NLayer.Mapper.Responses.Concrete.UniverseImage;
 using Test.PresentationLayer.Models.AppUser;
 
 namespace Test.PresentationLayer.Controllers;
@@ -16,7 +19,15 @@ public class RegisterController : BaseController
     [HttpGet]
     public async Task<IActionResult> Index()
     {
-        var viewModel = await LoadViewModel(new CreateAppUserRequest());
+        var requestBody = new CreateAppUserRequest();
+        var client = _httpClientFactory.CreateClient("APIClient");
+        var response = await client.GetAsync("/api/UniverseImages/PrepareUserForRegister");
+        var imageResponse = await response.Content.ReadFromJsonAsync<List<GetUniverseImageResponse>>();
+        var viewModel = new RegisterViewModel
+        {
+            CreateAppUserRequest = requestBody,
+            Images = imageResponse,
+        };
         return View(viewModel);
     }
     [HttpPost]
@@ -33,6 +44,12 @@ public class RegisterController : BaseController
         var response = await client.PostAsJsonAsync("/api/AppUser/Register", createAppUserRequest);
         if (response.IsSuccessStatusCode)
         {
+            var responseData = await response.Content.ReadFromJsonAsync<SuccessResponse<AppUser>>();
+            if (responseData != null)
+            {
+                HttpContext.Session.SetInt32("Id", responseData.Entity.Id);
+                HttpContext.Session.SetString("Email", createAppUserRequest.Email);
+            }
             return RedirectToAction("Index", "ConfirmMail");
         }
 
@@ -46,19 +63,12 @@ public class RegisterController : BaseController
         var client = _httpClientFactory.CreateClient("APIClient");
         var response = await client.GetAsync("/api/UniverseImages/PrepareUserForRegister");
 
-        if (!response.IsSuccessStatusCode)
-        {
-            ModelState.AddModelError(string.Empty, "Resimler yüklenemedi.");
-            return new RegisterViewModel(); 
-        }
-
         var imageResponse = await response.Content.ReadFromJsonAsync<List<UniverseImage>>();
         var imageList = imageResponse;
 
         var viewModel = new RegisterViewModel
         {
             CreateAppUserRequest = createAppUserRequest,
-            Images = imageList
         };
 
         return viewModel;

@@ -4,7 +4,7 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Abstracts;
 
-public interface IUniverseService : IEntityServiceRepositoryAsync<Universe>
+public interface IUniverseService : IEntityServiceRepositoryAsync<Universe, int>
 {
     Task<IReturnType> CreateUniverseAsync(Universe universe);
     Task<IDataReturnType<ICollection<Universe>>> GetUserUniversesAsync(int userId);

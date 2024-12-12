@@ -9,7 +9,7 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes.Managers;
 
-public class AbilityCharacterManager : BaseManagerAsync<AbilityCharacter, IAbilityCharacterDal>, IAbilityCharacterService
+public class AbilityCharacterManager : BaseManagerAsync<AbilityCharacter, IAbilityCharacterDal,int>, IAbilityCharacterService
 {
     public AbilityCharacterManager(IAbilityCharacterDal tdal) : base(tdal)
     {

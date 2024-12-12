@@ -11,7 +11,7 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes.Managers;
 
-public class AdventureManager : BaseManagerAsync<Adventure, IAdventureDal>, IAdventureService
+public class AdventureManager : BaseManagerAsync<Adventure, IAdventureDal, int>, IAdventureService
 {
     public AdventureManager(IAdventureDal tdal) : base(tdal)
     {

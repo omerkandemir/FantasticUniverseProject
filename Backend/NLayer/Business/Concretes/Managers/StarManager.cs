@@ -9,7 +9,7 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes.Managers;
 
-public class StarManager : BaseManagerAsync<Star, IStarDal>, IStarService
+public class StarManager : BaseManagerAsync<Star, IStarDal, int>, IStarService
 {
     public StarManager(IStarDal tdal) : base(tdal)
     {

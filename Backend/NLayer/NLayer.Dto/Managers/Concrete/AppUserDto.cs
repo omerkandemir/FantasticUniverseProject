@@ -3,6 +3,7 @@ using NLayer.Business.Abstracts;
 using NLayer.Core.Dto.Abstracts;
 using NLayer.Core.Dto.ReturnTypes;
 using NLayer.Core.Entities.Authentication;
+using NLayer.Core.Entities.Authorization;
 using NLayer.Core.Utilities.MailOperations.MailKit;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Mapper.Requests.AppUser;
@@ -13,11 +14,11 @@ namespace NLayer.Dto.Managers.Concrete;
 
 public class AppUserDto : IAppUserDto
 {
-    private readonly IAppUserService<AppUser> _appUserService;
+    private readonly IAppUserService<AppUser,int> _appUserService;
     private readonly IMapper _mapper;
     private readonly IUniverseImageService _universeImageService;
 
-    public AppUserDto(IAppUserService<AppUser> appUserService, IMapper mapper, IUniverseImageService universeImageService)
+    public AppUserDto(IAppUserService<AppUser,int> appUserService, IMapper mapper, IUniverseImageService universeImageService)
     {
         _appUserService = appUserService;
         _mapper = mapper;
@@ -66,6 +67,18 @@ public class AppUserDto : IAppUserDto
         if (result.Success)
         {
             return ResponseFactory.CreateSuccessResponse<AppUser>(user, response);
+        }
+        else
+        {
+            return ResponseFactory.CreateErrorResponse(result);
+        }
+    }
+    public async Task<IResponse> AssignRoleAsync(List<AssignRole> assignRole)
+    {
+        var result = await _appUserService.AssingRoleAsyncWithIdentityUser(assignRole);
+        if (result.Success)
+        {
+            return ResponseFactory.CreateSuccessResponse(result);
         }
         else
         {
@@ -129,24 +142,11 @@ public class AppUserDto : IAppUserDto
             return ResponseFactory.CreateErrorResponse(result);
         }
     }
-    public async Task<IResponse> GetUserRolesAsync(AppUser user)
+    public async Task<List<string>> GetUserRolesAsync(string username)
     {
-        try
-        {
-            var result = await _appUserService.GetUserRolesAsync(user);
-            if (result.Success)
-            {
-                return ResponseFactory.CreateSuccessResponse(result);
-            }
-            else
-            {
-                return ResponseFactory.CreateErrorResponse(result, result.Message);
-            }
-        }
-        catch (Exception ex)
-        {
-            return ResponseFactory.CreateErrorResponse(ex);
-        }
+        var value = await _appUserService.GetUserRolesAsync(username);
+        var response = _mapper.Map<List<string>>(value.Data.ToList());
+        return response;
     }
     public async Task<IResponse> GetUserByNameAsync(string name)
     {
@@ -191,6 +191,10 @@ public class AppUserDto : IAppUserDto
     {
         return await _appUserService.LoginProcessAsync(loginRequest);
     }
+    public async Task<LoginResponse> AdminLoginAsync(LoginRequest loginRequest)
+    {
+        return await _appUserService.AdminLoginProcessAsync(loginRequest);
+    }
     public async Task<IResponse> SignOutAsync()
     {
         var result = await _appUserService.SignOutAsync();
@@ -204,12 +208,16 @@ public class AppUserDto : IAppUserDto
         throw new NotImplementedException();
     }
 
-    public Task<IGetResponse> GetAsync(object id)
+    public async Task<IGetAppUserResponse> GetAsync(object id)
     {
-        throw new NotImplementedException();
+        var value = await _appUserService.GetUserByIdAsyncWithIdentityUser(id.ToString());
+        var response = _mapper.Map<GetAppUserResponse>(value.Data);
+        return response;
     }
-    public Task<IGetAllResponse<IGetAppUserResponse>> GetAllAsync()
+    public async Task<IGetAllResponse<IGetAppUserResponse>> GetAllAsync()
     {
-        throw new NotImplementedException();
+        var value = await _appUserService.GetAllAsync();
+        var response = _mapper.Map<GetAllAppUserResponse>(value.Data);
+        return response;
     }
 }

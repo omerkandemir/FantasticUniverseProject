@@ -27,7 +27,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Test.PresentationLayer", "F
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{B210DB75-E73E-4150-931F-C6CA65FDBD25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FantasticUniverse.Tests", "Test\FantasticUniverse.Tests\FantasticUniverse.Tests.csproj", "{0D4945DB-4154-4D87-9D01-BC80A48AEC42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FantasticUniverse.Tests", "Test\FantasticUniverse.Tests\FantasticUniverse.Tests.csproj", "{0D4945DB-4154-4D87-9D01-BC80A48AEC42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdminSphere", "Frontend\AdminSphere\AdminSphere.csproj", "{CB6B2E5E-FCB4-4BAE-B5DC-88F0C0AB7BE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -71,6 +73,10 @@ Global
 		{0D4945DB-4154-4D87-9D01-BC80A48AEC42}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D4945DB-4154-4D87-9D01-BC80A48AEC42}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D4945DB-4154-4D87-9D01-BC80A48AEC42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB6B2E5E-FCB4-4BAE-B5DC-88F0C0AB7BE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB6B2E5E-FCB4-4BAE-B5DC-88F0C0AB7BE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB6B2E5E-FCB4-4BAE-B5DC-88F0C0AB7BE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB6B2E5E-FCB4-4BAE-B5DC-88F0C0AB7BE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,6 +92,7 @@ Global
 		{387EB60B-6D1B-4222-AFA1-922A5DB8FCF3} = {EFD4CC4C-50D7-4D2F-9C7B-1B10C65BB4FE}
 		{33A12D45-1EEF-42D8-87B9-882A00474712} = {8281868E-585B-424A-A950-9D42F876A2AD}
 		{0D4945DB-4154-4D87-9D01-BC80A48AEC42} = {B210DB75-E73E-4150-931F-C6CA65FDBD25}
+		{CB6B2E5E-FCB4-4BAE-B5DC-88F0C0AB7BE7} = {8281868E-585B-424A-A950-9D42F876A2AD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F23CF6DC-7BF5-4311-AB9C-C302560D539C}

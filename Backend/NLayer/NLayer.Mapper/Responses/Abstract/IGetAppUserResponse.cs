@@ -11,4 +11,5 @@ public interface IGetAppUserResponse : IGetResponse
     public string Email { get; set; }
     public string UserName { get; set; }
     public int UniverseImageId { get; set; }
+    public bool IsActive { get; set; }
 }

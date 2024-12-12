@@ -1,0 +1,34 @@
+﻿@inject Microsoft.AspNetCore.Http.IHttpContextAccessor HttpContextAccessor
+
+@{
+    var userName = @HttpContextAccessor.HttpContext.Session.GetString("UserName");
+    var imageURL = @HttpContextAccessor.HttpContext.Session.Get("ImageURL");
+    string base64Image = imageURL != null ? Convert.ToBase64String(imageURL) : string.Empty;
+}
+
+<header class="bg-gray-800 text-white p-4 flex justify-between items-center shadow-md">
+    <div class="text-lg font-bold">Admin Panel</div>
+    <nav class="flex items-center space-x-4">
+        <button class="relative flex items-center justify-center w-10 h-10 bg-transparent hover:bg-gray-700 rounded-full">
+            <!-- Zil simgesi -->
+            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14V11a6 6 0 10-12 0v3a2 2 0 01-2 2H5m6 0v3m-3-3h6" />
+            </svg>
+            <!-- Bildirim Sayısı -->
+            <span class="absolute top-0 right-0 transform translate-x-1/3 -translate-y-1/3 bg-red-500 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full">
+                3
+            </span>
+        </button>
+        <div class="flex items-center space-x-2">
+            <img src="data:image/jpeg;base64,@base64Image" alt="Profil Resmi" class="w-8 h-8 rounded-full">
+            <span class="text-sm">@userName</span>
+        </div>
+        <form action="/AdminLogin/Logout" method="post" class="inline">
+            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded">
+                Çıkış
+            </button>
+            @Html.AntiForgeryToken() 
+        </form>
+    </nav>
+</header>

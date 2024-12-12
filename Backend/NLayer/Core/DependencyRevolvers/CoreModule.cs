@@ -9,6 +9,9 @@ using NLayer.Core.Entities.Authentication;
 using NLayer.Core.Security.Hashing;
 using NLayer.Core.Security.Jwt;
 using Microsoft.Extensions.Configuration;
+using NLayer.Core.Authorization.Abstract;
+using NLayer.Core.Authorization.Concrete;
+using NLayer.Core.Entities.Authorization;
 
 namespace NLayer.Core.DependencyRevolvers;
 
@@ -38,9 +41,10 @@ public class CoreModule : IModule
         builder.RegisterType<SignInManagerAdapter>().As<ISignInService<AppUser>>();
         builder.RegisterType<UserManagerAdapter>().As<IUserService<AppUser>>();
 
+        builder.RegisterType<AuthorizationManagerAdapter>().As<IAuthorizationService>();
+        builder.RegisterType<RoleManagerAdapter>().As<IRoleService<AppRole>>();
+
         builder.RegisterType<JwtTokenService>().As<ITokenService>().SingleInstance();
         builder.RegisterType<HashingService>().As<IHashingService>().SingleInstance();
-
-
     }
 }

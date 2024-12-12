@@ -6,6 +6,7 @@ using NLayer.Core.Entities.Authentication;
 using NLayer.Core.Middleware;
 using NLayer.DataAccess.Concretes.EntityFramework;
 using NLayer.Core.Utilities.UserOperations;
+using NLayer.Core.Entities.Authorization;
 
 internal class Program
 {

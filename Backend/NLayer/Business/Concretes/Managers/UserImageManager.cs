@@ -9,7 +9,7 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes.Managers;
 
-public class UserImageManager : BaseManagerAsync<UserImage, IUserImageDal>, IUserImageService
+public class UserImageManager : BaseManagerAsync<UserImage, IUserImageDal,int>, IUserImageService
 {
     private readonly IUniverseImageDal _universeImageDal;
     public UserImageManager(IUserImageDal tdal, IUniverseImageDal userImageDal) : base(tdal)
@@ -43,14 +43,8 @@ public class UserImageManager : BaseManagerAsync<UserImage, IUserImageDal>, IUse
           async () =>
             {
                 int userId = AccessUser.GetUserId();
-
-                // Kullanıcıya ait UserImage veriler,
                 var userImages = await _tdal.GetAllAsync(x => x.UserId == userId);
-
-                // Kullanıcının sahip olduğu UniverseImageId'lerin listesi
                 var universeImageIds = userImages.Select(ui => ui.UniverseImageId).ToList();
-
-                // UniverseImage'de bu ID'lere göre sorgu yap
                 var universeImages = await _universeImageDal.GetAllAsync(ui => universeImageIds.Contains(ui.Id));
 
                 return universeImages;

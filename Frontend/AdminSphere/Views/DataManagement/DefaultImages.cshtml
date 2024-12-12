@@ -1,0 +1,101 @@
+﻿@using NLayer.Mapper.Responses.Concrete.UniverseImage
+@model List<GetUniverseImageResponse>
+@{
+    ViewData["Title"] = "DefaultImages";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mx-auto p-6">
+    <div class="flex justify-between items-center mb-4">
+        <h1 class="text-2xl font-bold">Kullanıcı Görselleri</h1>
+        <button class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700" onclick="openAddImageModal()">
+            Yeni Görsel Ekle
+        </button>
+    </div>
+    <div class="grid grid-cols-4 gap-4">
+        @foreach (var image in Model)
+        {
+            var base64Image = Convert.ToBase64String(image.ImageURL);
+            <div class="border rounded-lg overflow-hidden h-40 aspect-w-1 aspect-h-1"
+                 data-id="@image.Id"
+                 data-createddate="@image.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss")"
+                 data-universeid="@image.UniverseId"
+                 onclick="selectImage('@image.Id', 'data:image/jpg;base64,@base64Image', '@image.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss")', '@image.UniverseId')">
+                <img src="data:image/jpg;base64,@base64Image" alt="Image" class="w-full h-full object-cover">
+            </div>
+        }
+    </div>
+</div>
+
+<!-- Görsel Görüntüleme Modal -->
+<div id="imageModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center">
+    <div class="bg-white p-6 rounded shadow-lg relative w-1/2 max-w-lg">
+        <button class="absolute top-2 right-2 text-red-500 hover:text-red-700" onclick="closeModal()">X</button>
+        <img id="modalImage" src="" alt="Image" class="w-full max-h-96 mb-4 rounded object-contain">
+        <div>
+            <p><strong>ID:</strong> <span id="imageId"></span></p>
+            <p><strong>Oluşturulma Tarihi:</strong> <span id="CreatedDate"></span></p>
+            <p><strong>Universe ID:</strong> <span id="UniverseId"></span></p>
+        </div>
+        <button id="deleteImageBtn" class="mt-4 bg-red-500 text-white px-4 py-2 rounded hover:bg-red-700">Sil</button>
+    </div>
+</div>
+
+
+<!-- Yeni Görsel Ekle Modal -->
+<div id="addImageModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-75 flex justify-center items-center">
+    <div class="bg-white p-6 rounded shadow-lg relative w-1/2">
+        <button class="absolute top-2 right-2 text-red-500 hover:text-red-700" onclick="closeAddImageModal()">X</button>
+        <h2 class="text-xl font-bold mb-4">Yeni Görsel Ekle</h2>
+        <form asp-action="DefaultImages" asp-controller="DataManagement" method="post" enctype="multipart/form-data">
+            <input type="file" name="images" multiple class="block w-full mb-4 border rounded px-3 py-2">
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">Kaydet</button>
+        </form>
+    </div>
+</div>
+
+
+<script>
+        function selectImage(id, imageUrl, createdDate, universeId) {
+        document.getElementById('imageModal').classList.remove('hidden');
+        document.getElementById('modalImage').src = imageUrl;
+        document.getElementById('imageId').textContent = id;
+        document.getElementById('CreatedDate').textContent = createdDate;
+        document.getElementById('UniverseId').textContent = universeId;
+
+        document.getElementById('deleteImageBtn').onclick = function () {
+            deleteImage(id);
+        };
+    }
+
+    function closeModal() {
+        document.getElementById('imageModal').classList.add('hidden');
+    }
+
+    function deleteImage(id) {
+        fetch('/DataManagement/DeleteDefaultImages', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+            },
+            body: JSON.stringify({ id: id })
+        })
+          .then(response => {
+            if (response.ok) {
+                closeModal();
+                location.reload();
+            }
+        })
+        .catch(() => {
+        });
+    }
+
+    function openAddImageModal() {
+        document.getElementById('addImageModal').classList.remove('hidden');
+    }
+
+    function closeAddImageModal() {
+        document.getElementById('addImageModal').classList.add('hidden');
+    }
+</script>

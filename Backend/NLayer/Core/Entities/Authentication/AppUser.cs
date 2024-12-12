@@ -3,7 +3,7 @@ using NLayer.Core.Entities.Abstract;
 
 namespace NLayer.Core.Entities.Authentication;
 
-public class AppUser : IdentityUser<int>, IEntity
+public class AppUser : IdentityUser<int>, IEntity<int>
 {
     public string Name { get; set; }
     public int UniverseImageId { get; set; }
@@ -17,9 +17,4 @@ public class AppUser : IdentityUser<int>, IEntity
     public DateTime? DeletedDate { get; set; }
     public int CreatedBy { get; set; }
     public int? ModifiedBy { get; set; }
-    object IEntity.Id 
-    {
-        get { return this.Id; }
-        set { this.Id = (int)value; }
-    }
 }

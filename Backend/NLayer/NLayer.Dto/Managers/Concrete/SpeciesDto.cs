@@ -62,9 +62,9 @@ public class SpeciesDto : ISpeciesDto
         }
     }
 
-    public async Task<IGetResponse> GetAsync(object id)
+    public async Task<IGetSpeciesResponse> GetAsync(object id)
     {
-        var value = await _speciesService.GetAsync(id);
+        var value = await _speciesService.GetAsync((int)id);
         var response = _mapper.Map<GetSpeciesResponse>(value.Data);
         return response;
     }

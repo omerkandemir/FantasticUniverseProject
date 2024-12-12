@@ -62,9 +62,9 @@ public class AdventureCharacterDto : IAdventureCharacterDto
         }
     }
 
-    public async Task<IGetResponse> GetAsync(object id)
+    public async Task<IGetAdventureCharacterResponse> GetAsync(object id)
     {
-        var value = await _adventureCharacterService.GetAsync(id);
+        var value = await _adventureCharacterService.GetAsync((int)id);
         var response = _mapper.Map<GetAdventureCharacterResponse>(value.Data);
         return response;
     }

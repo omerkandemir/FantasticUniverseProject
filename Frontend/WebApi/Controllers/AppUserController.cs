@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NLayer.Core.Entities.Authorization;
 using NLayer.Core.Exceptions;
 using NLayer.Dto.Managers.Abstract;
 using NLayer.Mapper.Requests.AppUser;
@@ -19,7 +20,7 @@ public class AppUserController : ControllerBase
     }
 
     #region Add
-    [HttpGet("Ekle")]
+    [HttpPost("Ekle")]
     public async Task<IActionResult> Add([FromBody] CreateAppUserRequest createRequest)
     {
         var response = await _appUserDto.AddAsync(createRequest);
@@ -28,7 +29,7 @@ public class AppUserController : ControllerBase
         return BadRequest(response);
     }
 
-    [HttpGet("Register")]
+    [HttpPost("Register")]
     public async Task<IActionResult> Register([FromBody] CreateAppUserRequest createRequest)
     {
         var response = await _appUserDto.Register(createRequest);
@@ -74,9 +75,8 @@ public class AppUserController : ControllerBase
     #endregion
 
     #region GetAll
-    [Authorize]
-    [HttpGet("Listele")]
-    public async Task<IActionResult> GetAll()
+    [HttpGet("GetAllAsync")]
+    public async Task<IActionResult> GetAllAsync()
     {
         var response = await _appUserDto.GetAllAsync();
         return Ok(response);
@@ -84,14 +84,29 @@ public class AppUserController : ControllerBase
     #endregion
 
     #region Get
-    [HttpGet("Getir{id}")]
-    public async Task<IActionResult> Get(int id)
+    [HttpGet("GetByIdAsync/{id}")]
+    public async Task<IActionResult> GetByIdAsync(int id)
     {
         var response = await _appUserDto.GetAsync(id);
         return Ok(response);
     }
     #endregion
 
+    #region UserRoles
+    [HttpGet("GetUserRolesAsync/{username}")]
+    public async Task<IActionResult> GetUserRolesAsync(string username)
+    {
+        var response = await _appUserDto.GetUserRolesAsync(username);
+        return Ok(response);
+    }
+    [HttpGet("GetUserRolesByIdAsync/{id}")]
+    public async Task<IActionResult> GetUserRolesByIdAsync(int id)
+    {
+        var userresponse = await _appUserDto.GetAsync(id);
+        var response = await _appUserDto.GetUserRolesAsync(userresponse.UserName);
+        return Ok(response);
+    }
+    #endregion
     #region GetUserByName
     [HttpGet("GetUserByName/{username}")]
     public async Task<IActionResult> GetUserByName(string username)
@@ -103,10 +118,6 @@ public class AppUserController : ControllerBase
         return BadRequest(userResponse);
     }
     #endregion
-
-    
-
-    
 
     #region ConfirmMail
     [HttpPost("ConfirmMail")]
@@ -163,7 +174,36 @@ public class AppUserController : ControllerBase
         }
     }
     #endregion
+    #region AdminLogin
+    [HttpPost("AdminLogin")]
+    public async Task<IActionResult> AdminLogin([FromBody] LoginRequest loginRequest)
+    {
+        try
+        {
+            var response = await _appUserDto.AdminLoginAsync(loginRequest);
 
+            return Ok(new
+            {
+                Id = response.Id,
+                Email = response.Email,
+                UserName = response.UserName,
+                ImageUrl = response.ImageURL,
+                Token = response.Token,
+                Message = response.Message,
+                Roles = response.Roles,
+            });
+        }
+        catch (UserException ex)
+        {
+            return BadRequest(new { Message = ex.Message });
+        }
+        catch (Exception ex)
+        {
+            // Genel bir hata oluşursa
+            return StatusCode(500, new { Message = "Sunucuda bir hata oluştu.", Detail = ex.Message });
+        }
+    }
+    #endregion
     #region LogOut
     [Authorize]
     [HttpPost("Logout")]
@@ -172,7 +212,6 @@ public class AppUserController : ControllerBase
         try
         {
             var response = await _appUserDto.SignOutAsync();
-            //HttpContext.SignOutAsync(); // Kullanıcı oturumunu kapat
             return response.Success ? Ok(new { Message = response.Message }) : BadRequest(new { Message = response.Message });
         }
         catch (Exception ex)
@@ -206,7 +245,6 @@ public class AppUserController : ControllerBase
     }
     #endregion
 
-
     #region UpdateProfileImage
     [HttpPut("UpdateProfileImage")]
     public async Task<IActionResult> UpdateProfileImage([FromBody] UpdateAppUserProfileImageRequest profileImageRequest)
@@ -238,6 +276,30 @@ public class AppUserController : ControllerBase
         try
         {
             var response = await _appUserDto.UpdateEmailAsync(updateAppUserEmailRequest);
+            if (response.Success)
+                return Ok(response);
+
+            return BadRequest(response);
+        }
+        catch (ValidationException ex)
+        {
+            var errors = ex.Errors.Select(e => new { e.PropertyName, e.ErrorMessage }).ToList();
+            return BadRequest(new { Message = "Validation hatası oluştu", Errors = errors });
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    #endregion
+
+    #region AssignRole
+    [HttpPost("UpdateUserRolesAsync")]
+    public async Task<IActionResult> UpdateUserRolesAsync([FromBody] List<AssignRole> AssignRole)
+    {
+        try
+        {
+            var response = await _appUserDto.AssignRoleAsync(AssignRole);
             if (response.Success)
                 return Ok(response);
 

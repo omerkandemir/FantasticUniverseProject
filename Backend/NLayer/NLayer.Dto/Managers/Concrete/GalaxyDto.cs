@@ -62,9 +62,9 @@ public class GalaxyDto : IGalaxyDto
         }
     }
 
-    public async Task<IGetResponse> GetAsync(object id)
+    public async Task<IGetGalaxyResponse> GetAsync(object id)
     {
-        var value = await _galaxyService.GetAsync(id);
+        var value = await _galaxyService.GetAsync((int)id);
         var response = _mapper.Map<GetGalaxyResponse>(value.Data);
         return response;
     }

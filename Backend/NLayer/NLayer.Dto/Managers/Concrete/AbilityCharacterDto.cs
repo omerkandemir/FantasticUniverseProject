@@ -62,9 +62,9 @@ public class AbilityCharacterDto : IAbilityCharacterDto
         }
     }
 
-    public async Task<IGetResponse> GetAsync(object id)
+    public async Task<IGetAbilityCharacterResponse> GetAsync(object id)
     {
-        var value = await _abilityCharacterService.GetAsync(id);
+        var value = await _abilityCharacterService.GetAsync((int)id);
         var response = _mapper.Map<GetAbilityCharacterResponse>(value.Data);
         return response;
     }

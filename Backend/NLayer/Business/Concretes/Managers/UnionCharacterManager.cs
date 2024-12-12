@@ -9,7 +9,7 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes.Managers;
 
-public class UnionCharacterManager : BaseManagerAsync<UnionCharacter, IUnionCharacterDal>, IUnionCharacterService
+public class UnionCharacterManager : BaseManagerAsync<UnionCharacter, IUnionCharacterDal, int>, IUnionCharacterService
 {
     public UnionCharacterManager(IUnionCharacterDal tdal) : base(tdal)
     {

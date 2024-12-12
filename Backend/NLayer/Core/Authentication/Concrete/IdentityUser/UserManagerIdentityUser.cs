@@ -39,6 +39,18 @@ public abstract class UserManagerIdentityUser<TUser> where TUser : class, IEntit
     {
         return await _userManager.GetRolesAsync(user);
     }
+    public async Task<IdentityResult> AddToRolesAsync(TUser user, ICollection<string> roles)
+    {
+       return await _userManager.AddToRolesAsync(user, roles);
+    }
+    public async Task<IdentityResult> RemoveFromRolesAsync(TUser user, ICollection<string> roles)
+    {
+        return await _userManager.RemoveFromRolesAsync(user, roles);
+    }
+    public async Task<ICollection<TUser>> RemoveFromRolesAsync(string role)
+    {
+        return await _userManager.GetUsersInRoleAsync(role);
+    }
     public async Task<bool> CheckPasswordAsync(TUser user, string password)
     {
         return await _userManager.CheckPasswordAsync(user, password);

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using NLayer.Core.Entities.Abstract;
 using NLayer.Core.Entities.Authentication;
+using NLayer.Core.Entities.Authorization;
 using NLayer.Core.Entities.Concrete;
 using NLayer.Core.Utilities.UserOperations;
 using NLayer.DataAccess.Concretes.EntityFramework.Configuration;
@@ -11,7 +12,7 @@ using System.Data;
 namespace NLayer.DataAccess.Concretes.EntityFramework;
 
 public class FantasticUniverseProjectContext : IdentityDbContext<AppUser, AppRole, int> // IdentityDbContext, DbContext sınıfından miras alır
-{    
+{
     public DbSet<Ability> Abilities { get; set; }
     public DbSet<AbilityCategory> AbilityCategories { get; set; }
     public DbSet<AbilityCharacter> AbilityCharacters { get; set; }
@@ -65,6 +66,7 @@ public class FantasticUniverseProjectContext : IdentityDbContext<AppUser, AppRol
         modelBuilder.ApplyConfiguration(new UniverseConfiguration());
         modelBuilder.ApplyConfiguration(new UniverseImageConfiguration());
         modelBuilder.ApplyConfiguration(new UserImageConfiguration());
+        modelBuilder.ApplyConfiguration(new AppRoleConfiguration());
         base.OnModelCreating(modelBuilder);
     }
     public override int SaveChanges()
@@ -81,7 +83,11 @@ public class FantasticUniverseProjectContext : IdentityDbContext<AppUser, AppRol
     }
     protected virtual void OnBeforeSaving(int userId)
     {
-        this.ChangeTracker.DetectChanges();
+        if (!ChangeTracker.AutoDetectChangesEnabled)
+        {
+            ChangeTracker.DetectChanges();
+        }
+            
         var added = this.ChangeTracker.Entries()
             .Where(t => t.Entity is IEntity && t.State == EntityState.Added)
             .Select(t => t.Entity)
@@ -111,7 +117,6 @@ public class FantasticUniverseProjectContext : IdentityDbContext<AppUser, AppRol
                 this.Entry(entity).Property(nameof(IEntity.UpdatedDate)).IsModified = true;
                 this.Entry(entity).Property(nameof(IEntity.CreatedDate)).IsModified = false;
                 track.UpdatedDate = GetDbDateTime();
-                track.IsActive = true;
                 track.ModifiedBy = userId;
             }
         }

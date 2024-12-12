@@ -78,9 +78,9 @@ public class UniverseDto : IUniverseDto
         }
     }
 
-    public async Task<IGetResponse> GetAsync(object id)
+    public async Task<IGetUniverseResponse> GetAsync(object id)
     {
-        var value = await _universeService.GetAsync(id);
+        var value = await _universeService.GetAsync((int)id);
         var response = _mapper.Map<GetUniverseResponse>(value.Data);
         return response;
     }

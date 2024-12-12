@@ -12,4 +12,5 @@ public class UpdateAppUserRequest : IUpdateRequest
     public string City { get; set; }
     public string District { get; set; }
     public int UniverseImageId { get; set; }
+    public bool IsActive { get; set; }
 }

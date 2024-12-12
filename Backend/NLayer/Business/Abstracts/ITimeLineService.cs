@@ -3,6 +3,6 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Abstracts;
 
-public interface ITimeLineService : IEntityServiceRepositoryAsync<TimeLine>
+public interface ITimeLineService : IEntityServiceRepositoryAsync<TimeLine, int>
 {
 }

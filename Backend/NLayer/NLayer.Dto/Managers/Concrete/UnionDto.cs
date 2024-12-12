@@ -62,9 +62,9 @@ public class UnionDto : IUnionDto
         }
     }
 
-    public async Task<IGetResponse> GetAsync(object id)
+    public async Task<IGetUnionResponse> GetAsync(object id)
     {
-        var value = await _unionService.GetAsync(id);
+        var value = await _unionService.GetAsync((int)id);
         var response = _mapper.Map<GetUnionResponse>(value.Data);
         return response;
     }

@@ -9,7 +9,7 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes.Managers;
 
-public class PlanetManager : BaseManagerAsync<Planet, IPlanetDal>, IPlanetService
+public class PlanetManager : BaseManagerAsync<Planet, IPlanetDal, int>, IPlanetService
 {
     public PlanetManager(IPlanetDal tdal) : base(tdal)
     {

@@ -15,4 +15,7 @@ public interface IUserService<TUser> where TUser : class, IEntity, new()
     Task<IdentityResult> UpdateAsync(TUser user);
     Task<TUser> GetUserAsync(ClaimsPrincipal principal);
     Task<ICollection<string>> GetUserRolesAsync(TUser user);
+    Task<IdentityResult> AddToRolesAsync(TUser user, ICollection<string> roles);
+    Task<IdentityResult> RemoveFromRolesAsync(TUser user, ICollection<string> roles);
+    Task<ICollection<TUser>> RemoveFromRolesAsync(string role);
 }

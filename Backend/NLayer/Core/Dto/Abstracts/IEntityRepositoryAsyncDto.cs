@@ -11,6 +11,6 @@ public interface IEntityRepositoryAsyncDto<TResponse, TAddRequest, TUpdateReques
     Task<IResponse> AddAsync(TAddRequest request);
     Task<IResponse> UpdateAsync(TUpdateRequest request);
     Task<IResponse> DeleteAsync(TDeleteRequest request);
-    Task<IGetResponse> GetAsync(object id);
+    Task<TResponse> GetAsync(object id);
     Task<IGetAllResponse<TResponse>> GetAllAsync();
 }

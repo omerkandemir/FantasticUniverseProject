@@ -2,9 +2,11 @@
 using NLayer.Business.Abstracts;
 using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.AppUserValidation.Create;
 using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.AppUserValidation.Update;
+using NLayer.Core.Aspect.Autofac.Caching;
 using NLayer.Core.Aspect.Autofac.Validation;
 using NLayer.Core.Authentication.Abstracts;
 using NLayer.Core.Entities.Authentication;
+using NLayer.Core.Entities.Authorization;
 using NLayer.Core.Exceptions;
 using NLayer.Core.Security.Jwt;
 using NLayer.Core.Utilities.Infos;
@@ -17,13 +19,17 @@ using LoginRequest = NLayer.Mapper.Requests.AppUser.LoginRequest;
 
 namespace NLayer.Business.Concretes.Managers;
 
-public class AppUserManager : BaseManagerAsync<AppUser, IAppUserDal>, IAppUserService<AppUser>
+public class AppUserManager : BaseManagerAsync<AppUser, IAppUserDal, int>, IAppUserService<AppUser, int>
 {
+    #region Services
     private readonly IUserService<AppUser> _userService;
     private readonly ISignInService<AppUser> _signInService;
     private readonly IUniverseImageService _universeImageService;
     private readonly ITokenService _tokenService;
     private readonly IUserImageService _userImageService;
+    #endregion
+
+    #region Constructor
     public AppUserManager(IAppUserDal tdal, IUserService<AppUser> userService, IUniverseImageService universeImageService, ISignInService<AppUser> signInService, ITokenService tokenService, IUserImageService userImageService) : base(tdal)
     {
         _userService = userService;
@@ -32,7 +38,10 @@ public class AppUserManager : BaseManagerAsync<AppUser, IAppUserDal>, IAppUserSe
         _tokenService = tokenService;
         _userImageService = userImageService;
     }
+    #endregion
 
+    #region AddAsyncWithIdentityUser
+    [CacheRemoveAspect("GetAllAsync")]
     [ValidationAspect(typeof(CreateAppUserValidator), Priority = 1)]
     public async Task<IReturnType> AddAsyncWithIdentityUser(AppUser user, string password)
     {
@@ -54,7 +63,10 @@ public class AppUserManager : BaseManagerAsync<AppUser, IAppUserDal>, IAppUserSe
             return new ReturnType(GetDatasInfo.AddedFailed, CrudOperation.Add, ex);
         }
     }
+    #endregion
 
+    #region Register
+    [CacheRemoveAspect("GetAllAsync")]
     [ValidationAspect(typeof(CreateAppUserValidator), Priority = 1)]
     public async Task<IReturnType> Register(AppUser user, string password, bool isPersistent)
     {
@@ -79,7 +91,10 @@ public class AppUserManager : BaseManagerAsync<AppUser, IAppUserDal>, IAppUserSe
             return new ReturnType(GetDatasInfo.AddedFailed, CrudOperation.Add, ex);
         }
     }
+    #endregion
 
+    #region UpdateAsyncWithIdentityUser
+    [CacheRemoveAspect("GetAllAsync")]
     [ValidationAspect(typeof(UpdateAppUserInfoValidator), Priority = 1)]
     public async Task<IReturnType> UpdateAsyncWithIdentityUser(AppUser user)
     {
@@ -92,7 +107,7 @@ public class AppUserManager : BaseManagerAsync<AppUser, IAppUserDal>, IAppUserSe
             existingUser.UserName = user.UserName;
             existingUser.City = user.City;
             existingUser.District = user.District;
-
+            existingUser.IsActive = user.IsActive; ;
             var result = await _userService.UpdateAsync(existingUser);
             if (result.Succeeded)
             {
@@ -111,7 +126,10 @@ public class AppUserManager : BaseManagerAsync<AppUser, IAppUserDal>, IAppUserSe
             return new ReturnType(GetDatasInfo.UpdatedFailed, CrudOperation.Update, ex);
         }
     }
+    #endregion
 
+    #region UpdateEmailAsyncWithIdentityUser
+    [CacheRemoveAspect("GetAllAsync")]
     [ValidationAspect(typeof(UpdateAppUserEmailValidator), Priority = 1)]
     public async Task<IReturnType> UpdateEmailAsyncWithIdentityUser(AppUser user, string password)
     {
@@ -156,19 +174,10 @@ public class AppUserManager : BaseManagerAsync<AppUser, IAppUserDal>, IAppUserSe
             return new ReturnType(GetDatasInfo.UpdatedFailed, CrudOperation.Update, ex);
         }
     }
-    private void GenerateCodeFromUser(AppUser user)
-    {
-        GenerateCode(user);
-        _userService.UpdateAsync(user);
-    }
+    #endregion
 
-    private static void GenerateCode(AppUser user)
-    {
-        int code = SendMail.GenerateConfirmCode();
-        SendMail.SendConfirmCodeMail(code, user);
-        user.ConfirmCode = code;
-    }
-
+    #region ConfirmEmailAsyncWithIdentityUser
+    [CacheRemoveAspect("GetAllAsync")]
     [ValidationAspect(typeof(ConfirmEmailAppUserValidator), Priority = 1)]
     public async Task<IReturnType> ConfirmEmailAsyncWithIdentityUser(ConfirmMailRequest request)
     {
@@ -206,7 +215,10 @@ public class AppUserManager : BaseManagerAsync<AppUser, IAppUserDal>, IAppUserSe
             return new ReturnType(GetDatasInfo.UpdatedFailed, CrudOperation.Update, ex);
         }
     }
+    #endregion
 
+    #region ChangePasswordAsyncWithIdentityUser
+    [CacheRemoveAspect("GetAllAsync")]
     [ValidationAspect(typeof(UpdateAppUserPasswordValidator), Priority = 1)]
     public async Task<IReturnType> ChangePasswordAsyncWithIdentityUser(UpdateAppUserPasswordRequest updateAppUserPasswordRequest)
     {
@@ -249,7 +261,10 @@ public class AppUserManager : BaseManagerAsync<AppUser, IAppUserDal>, IAppUserSe
             return new ReturnType(GetDatasInfo.UpdatedFailed, CrudOperation.Update, ex);
         }
     }
+    #endregion
 
+    #region ChangeProfileImageAsyncWithIdentityUser
+    [CacheRemoveAspect("GetAllAsync")]
     [ValidationAspect(typeof(UpdateAppUserProfileImageValidator), Priority = 1)]
     public async Task<IReturnType> ChangeProfileImageAsyncWithIdentityUser(UpdateAppUserProfileImageRequest request)
     {
@@ -285,7 +300,9 @@ public class AppUserManager : BaseManagerAsync<AppUser, IAppUserDal>, IAppUserSe
             return new ReturnType(GetDatasInfo.UpdatedFailed, CrudOperation.Update, ex);
         }
     }
+    #endregion
 
+    #region GetUserByNameAsyncWithIdentityUser
     public async Task<IDataReturnType<AppUser>> GetUserByNameAsyncWithIdentityUser(string userName)
     {
         try
@@ -307,6 +324,33 @@ public class AppUserManager : BaseManagerAsync<AppUser, IAppUserDal>, IAppUserSe
             return new DataReturnType<AppUser>(GetDatasInfo.FailedGetData, CrudOperation.Get, ex);
         }
     }
+    #endregion
+
+    #region GetUserByIdAsyncWithIdentityUser
+    public async Task<IDataReturnType<AppUser>> GetUserByIdAsyncWithIdentityUser(string userId)
+    {
+        try
+        {
+            var user = await _userService.FindByIdAsync(userId);
+            if (user == null)
+            {
+                throw new UserException("Kullanıcı bulunamadı. Lütfen kullanıcı ID'sini kontrol edin ve tekrar deneyin.");
+            }
+
+            return new DataReturnType<AppUser>(user, GetDatasInfo.SuccessGetData, CrudOperation.Get);
+        }
+        catch (UserException ex)
+        {
+            return new DataReturnType<AppUser>(GetDatasInfo.FailedGetData, CrudOperation.Get, ex);
+        }
+        catch (Exception ex)
+        {
+            return new DataReturnType<AppUser>(GetDatasInfo.FailedGetData, CrudOperation.Get, ex);
+        }
+    }
+    #endregion
+
+    #region GetUserByMailAsyncWithIdentityUser
     public async Task<IDataReturnType<AppUser>> GetUserByMailAsyncWithIdentityUser(string email)
     {
         try
@@ -327,6 +371,9 @@ public class AppUserManager : BaseManagerAsync<AppUser, IAppUserDal>, IAppUserSe
             return new DataReturnType<AppUser>(GetDatasInfo.FailedGetData, CrudOperation.Get, ex);
         }
     }
+    #endregion
+
+    #region GetUserAsyncWithIdentityUser
     public async Task<IDataReturnType<AppUser>> GetUserAsyncWithIdentityUser(System.Security.Claims.ClaimsPrincipal claimsPrincipal)
     {
         try
@@ -348,11 +395,16 @@ public class AppUserManager : BaseManagerAsync<AppUser, IAppUserDal>, IAppUserSe
             return new DataReturnType<AppUser>(GetDatasInfo.FailedGetData, CrudOperation.Get, ex);
         }
     }
+    #endregion
 
+    #region LoginAsync
     public async Task<SignInResult> LoginAsync(LoginRequest loginRequest)
     {
         return await _signInService.LoginAsync(loginRequest.Username, loginRequest.Password, loginRequest.IsPersistence, loginRequest.LockoutOnFailure);
     }
+    #endregion
+
+    #region SignOutAsync
     public async Task<IReturnType> SignOutAsync()
     {
         try
@@ -365,7 +417,9 @@ public class AppUserManager : BaseManagerAsync<AppUser, IAppUserDal>, IAppUserSe
             return new ReturnType("Çıkış yapılamadı!", false);
         }
     }
+    #endregion
 
+    #region LoginProcessAsync
     public async Task<LoginResponse> LoginProcessAsync(LoginRequest loginRequest)
     {
         var result = await _signInService.LoginAsync(loginRequest.Username, loginRequest.Password, loginRequest.IsPersistence, loginRequest.LockoutOnFailure);
@@ -415,11 +469,55 @@ public class AppUserManager : BaseManagerAsync<AppUser, IAppUserDal>, IAppUserSe
 
         };
     }
+    #endregion
 
-    public async Task<IDataReturnType<ICollection<string>>> GetUserRolesAsync(AppUser user)
+    #region AdminLoginProcessAsync
+    public async Task<LoginResponse> AdminLoginProcessAsync(LoginRequest loginRequest)
+    {
+        var result = await _signInService.LoginAsync(loginRequest.Username, loginRequest.Password, loginRequest.IsPersistence, loginRequest.LockoutOnFailure);
+        if (!result.Succeeded)
+        {
+            throw new UserException("Kullanıcı adı veya şifre hatalı.");
+        }
+
+        var userResult = await _userService.FindByNameAsync(loginRequest.Username);
+
+        var roles = await _userService.GetUserRolesAsync(userResult);
+        if (!roles.Contains("Admin"))
+        {
+            throw new UserException("Bu kullanıcı Admin Paneline erişim yetkisine sahip değil.");
+        }
+        // JWT Token oluştur
+        var token = _tokenService.GenerateAccessToken(userResult, roles);
+
+        var universeImage = await _universeImageService.GetAsync(userResult.UniverseImageId);
+        if (universeImage == null)
+        {
+            throw new UserException("Kullanıcının evren resmi bulunamadı.");
+        }
+        return new LoginResponse
+        {
+            Id = userResult.Id,
+            UserName = userResult.UserName,
+            ImageURL = universeImage.Data.ImageURL,
+            Token = token,
+            Message = "Giriş başarılı!",
+            Success = true,
+            Email = userResult.Email,
+            Roles = roles
+        };
+    }
+    #endregion
+
+    #region GetUserRolesAsync
+    public async Task<IDataReturnType<ICollection<string>>> GetUserRolesAsync(string username)
     {
         try
         {
+            var user = await _userService.FindByNameAsync(username);
+            if (user == null)
+                throw new UserException("Kullanıcı bulunamadı. Lütfen kullanıcı ID'sini kontrol edin ve tekrar deneyin.");
+
             var userRoleList = await _userService.GetUserRolesAsync(user);
 
             return new DataReturnType<ICollection<string>>(userRoleList, GetDatasInfo.SuccessListData, CrudOperation.List);
@@ -429,6 +527,57 @@ public class AppUserManager : BaseManagerAsync<AppUser, IAppUserDal>, IAppUserSe
             return new DataReturnType<ICollection<string>>(GetDatasInfo.FailedListData, CrudOperation.List, ex);
         }
     }
+    #endregion
+
+    #region AssingRoleAsyncWithIdentityUser
+    public async Task<IReturnType> AssingRoleAsyncWithIdentityUser(List<AssignRole> assignRole)
+    {
+        try
+        {
+            var user = await _userService.FindByNameAsync(assignRole.FirstOrDefault().Username);
+
+            if (user == null)
+                throw new UserException("Kullanıcı bulunamadı. Lütfen kullanıcı ID'sini kontrol edin ve tekrar deneyin.");
+
+            var userRoles = await _userService.GetUserRolesAsync(user);
+            
+            var rolesToAdd = assignRole.Where(r => r.HasAssign && !userRoles.Contains(r.RoleName)).Select(r => r.RoleName).ToList();
+            var rolesToRemove = assignRole.Where(r => !r.HasAssign && userRoles.Contains(r.RoleName)).Select(r => r.RoleName).ToList();
+
+            // Rolleri sil
+            if (rolesToRemove.Any())
+            {
+                var removeResult = await _userService.RemoveFromRolesAsync(user, rolesToRemove);
+            }
+
+            //Rolleri ekle
+            if (rolesToAdd.Any())
+            {
+                var addResult = await _userService.AddToRolesAsync(user, rolesToAdd);
+            }
+
+            return new ReturnType("Kullanıcı rolleri başarıyla güncellendi.", CrudOperation.Update, true);
+        }
+        catch (Exception ex)
+        {
+            return new ReturnType(GetDatasInfo.UpdatedFailed, CrudOperation.Update, ex);
+        }
+    }
+    #endregion
+
+    #region HelperMethods
+    private void GenerateCodeFromUser(AppUser user)
+    {
+        GenerateCode(user);
+        _userService.UpdateAsync(user);
+    }
+    private static void GenerateCode(AppUser user)
+    {
+        int code = SendMail.GenerateConfirmCode();
+        SendMail.SendConfirmCodeMail(code, user);
+        user.ConfirmCode = code;
+    }
+    #endregion
 }
 
 

@@ -6,9 +6,9 @@ using NLayer.Core.Utilities.ReturnTypes;
 
 namespace NLayer.Business.Abstracts;
 
-public abstract class BaseManager<T, Tdal> 
-    where T : class, IEntity, new()
-    where Tdal : IEntityRepository<T>  
+public abstract class BaseManager<T, Tdal, TId>
+    where T : class, IEntity<TId>, new()
+    where Tdal : IEntityRepository<T>
 {
     protected readonly Tdal _tdal;
     protected BaseManager(Tdal tdal)
@@ -56,12 +56,12 @@ public abstract class BaseManager<T, Tdal>
         }
     }
 
-    [CacheAspect(duration: 60)] 
+    [CacheAspect(duration: 60)]
     public virtual IDataReturnType<T> Get(object id)
     {
         try
         {
-            return new DataReturnType<T>(_tdal.Get(x => x.Id == id), GetDatasInfo.SuccessGetData, CrudOperation.Get);
+            return new DataReturnType<T>(_tdal.Get(x => x.Id.Equals(id)), GetDatasInfo.SuccessGetData, CrudOperation.Get);
         }
         catch (Exception ex)
         {
@@ -69,7 +69,7 @@ public abstract class BaseManager<T, Tdal>
         }
     }
 
-    [CacheAspect(duration: 60)] 
+    [CacheAspect(duration: 60)]
     public virtual IDataReturnType<ICollection<T>> GetAll()
     {
         try

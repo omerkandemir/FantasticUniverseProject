@@ -31,5 +31,6 @@ public class DataAccessModule : IModule
         builder.RegisterType<EfUniverseImageDal>().As<IUniverseImageDal>().SingleInstance();
         builder.RegisterType<EfUserImageDal>().As<IUserImageDal>().SingleInstance();
         builder.RegisterType<EfAppUserDal>().As<IAppUserDal>().SingleInstance();
+        builder.RegisterType<EfAppRoleDal>().As<IAppRoleDal>().SingleInstance();
     }
 }

@@ -62,9 +62,9 @@ public class AdventureDto : IAdventureDto
         }
     }
 
-    public async Task<IGetResponse> GetAsync(object id)
+    public async Task<IGetAdventureResponse> GetAsync(object id)
     {
-        var value = await _adventureService.GetAsync(id);
+        var value = await _adventureService.GetAsync((int)id);
         var response = _mapper.Map<GetAdventureResponse>(value.Data);
         return response;
     }

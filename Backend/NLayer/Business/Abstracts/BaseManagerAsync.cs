@@ -6,8 +6,8 @@ using NLayer.Core.Utilities.ReturnTypes;
 
 namespace NLayer.Business.Abstracts;
 
-public abstract class BaseManagerAsync<T, Tdal>
-    where T : class, IEntity, new()
+public abstract class BaseManagerAsync<T, Tdal,TId>
+    where T : class, IEntity<TId>, new()
     where Tdal : IEntityRepository<T>
 {
     protected readonly Tdal _tdal;
@@ -68,7 +68,7 @@ public abstract class BaseManagerAsync<T, Tdal>
 
 
     [CacheAspect(duration: 60)]
-    public virtual async Task<IDataReturnType<T>> GetAsync(object id) => await ExecuteQuerySafelyWithResult(() => _tdal.GetAsync(x => x.Id == id), CrudOperation.Get);
+    public virtual async Task<IDataReturnType<T>> GetAsync(TId id) => await ExecuteQuerySafelyWithResult(() => _tdal.GetAsync(x =>x.Id.Equals(id)), CrudOperation.Get);
 
 
     [CacheAspect(duration: 60)]

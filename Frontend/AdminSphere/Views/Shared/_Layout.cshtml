@@ -1,0 +1,17 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+@await Component.InvokeAsync("_AdminLayoutHeadPartial")
+<body class="bg-gray-100 text-gray-800">
+    <div class="flex min-h-screen">
+        @await Component.InvokeAsync("_AdminLayoutSidebarPartial")
+        <div class="flex flex-col flex-grow">
+            @await Component.InvokeAsync("_AdminLayoutHeaderPartial")
+            <main class="p-6 flex-1">
+                @RenderBody()
+            </main>
+            @await Component.InvokeAsync("_AdminLayoutFooterPartial")
+        </div>
+    </div>
+    @RenderSection("Scripts", false)
+</body>
+</html>

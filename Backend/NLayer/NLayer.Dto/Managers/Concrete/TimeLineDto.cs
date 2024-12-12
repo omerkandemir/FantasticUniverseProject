@@ -62,9 +62,9 @@ public class TimeLineDto : ITimeLineDto
         }
     }
 
-    public async Task<IGetResponse> GetAsync(object id)
+    public async Task<IGetTimeLineResponse> GetAsync(object id)
     {
-        var value = await _timeLineService.GetAsync(id);
+        var value = await _timeLineService.GetAsync((int)id);
         var response = _mapper.Map<GetTimeLineResponse>(value.Data);
         return response;
     }

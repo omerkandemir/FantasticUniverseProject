@@ -25,6 +25,7 @@ public class AutofacDtoMudule : Module
         builder.RegisterType<UniverseImageDto>().As<IUniverseImageDto>().SingleInstance();
         builder.RegisterType<UserImageDto>().As<IUserImageDto>().SingleInstance();
         builder.RegisterType<AppUserDto>().As<IAppUserDto>().SingleInstance();
+        builder.RegisterType<AppRoleDto>().As<IAppRoleDto>().SingleInstance();
         builder.RegisterModule<AutofacBusinessModule>(); // AutofacModule'ü yükle
     }
 }

@@ -65,9 +65,9 @@ public class UserImageDto : IUserImageDto
         }
     }
 
-    public async Task<IGetResponse> GetAsync(object id)
+    public async Task<IGetUserImageResponse> GetAsync(object id)
     {
-        var value = await _userImageService.GetAsync(id);
+        var value = await _userImageService.GetAsync((int)id);
         var response = _mapper.Map<GetUserImageResponse>(value.Data);
         return response;
     }

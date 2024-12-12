@@ -1,0 +1,35 @@
+﻿@model DeleteConfirmationAppRoleRequest
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container mx-auto p-6">
+    <div class="bg-white shadow-md rounded-lg p-6">
+        <h1 class="text-2xl font-bold text-red-600 mb-4">Rol Silme Onayı</h1>
+        <p class="mb-4">Bu rolü silmek istediğinizden emin misiniz?</p>
+
+        <!-- Rol Bilgileri -->
+        <div class="mb-4">
+            <p><strong>Rol Adı:</strong> @Model.Name</p>
+            <p><strong>Durum:</strong> @(Model.IsActive ? "Aktif" : "Pasif")</p>
+            <p><strong>Oluşturulma Tarihi:</strong> @Model.CreatedDate.ToShortDateString()</p>
+        </div>
+
+        <!-- İşlem Butonları -->
+        <form asp-action="Delete" method="post" class="flex justify-end space-x-4">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <input type="hidden" name="Name" value="@Model.Name" />
+            <input type="hidden" name="IsActive" value="@(Model.IsActive ? "true" : "false")" />
+            <input type="hidden" name="CreatedDate" value="@Model.CreatedDate" />
+            <a href="@Url.Action("Index", "Roles")" class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded">
+                İptal
+            </a>
+            <button type="submit" class="bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded">
+                Sil
+            </button>
+        </form>
+    </div>
+</div>
+

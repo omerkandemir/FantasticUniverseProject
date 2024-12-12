@@ -9,7 +9,7 @@ using NLayer.Entities.Concretes;
 
 namespace NLayer.Business.Concretes.Managers;
 
-public class CharacterManager : BaseManagerAsync<Character, ICharacterDal>, ICharacterService
+public class CharacterManager : BaseManagerAsync<Character, ICharacterDal, int>, ICharacterService
 {
     public CharacterManager(ICharacterDal tdal) : base(tdal)
     {

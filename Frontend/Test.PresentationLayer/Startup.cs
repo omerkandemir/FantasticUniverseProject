@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.FileProviders;
 using NLayer.Business.Concretes.CrossCuttingConcerns.ValidationRules.FluentValidation.AppUserValidation;
 using NLayer.Core.Entities.Authentication;
+using NLayer.Core.Entities.Authorization;
 using NLayer.Core.Helpers;
 using NLayer.Core.Middleware;
 using NLayer.Core.Utilities.UserOperations;

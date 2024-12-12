@@ -26,6 +26,9 @@ public class AppUserProfile : Profile
         CreateMap<AppUser, GetAllAppUserResponse>().ReverseMap();
         CreateMap<AppUser, ConfirmMailRequest>().ReverseMap();
         CreateMap<AppUser, LoginRequest>().ReverseMap();
+        CreateMap<AppUser, AssignRoleRequest>().ReverseMap();
+        CreateMap<AppUser, AssignRoleResponse>().ReverseMap();
+        
 
         CreateMap<AppUser, IGetAppUserResponse>().As<GetAppUserResponse>();
 
